@@ -1,0 +1,3 @@
+[console_scripts]
+oj-api = onlinejudge_api.main:main
+

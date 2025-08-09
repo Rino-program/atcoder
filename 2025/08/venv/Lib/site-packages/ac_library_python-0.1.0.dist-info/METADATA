@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: ac-library-python
+Version: 0.1.0
+Summary: Python port of AtCoder Library (ACL).
+License: CC0
+License-File: LICENSE
+Provides-Extra: benchmark
+Requires-Dist: asv ; extra == 'benchmark'
+Requires-Dist: virtualenv ; extra == 'benchmark'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Provides-Extra: lint
+Requires-Dist: flake8 ; extra == 'lint'
+Requires-Dist: pep8-naming ; extra == 'lint'
+Requires-Dist: mypy ; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+
