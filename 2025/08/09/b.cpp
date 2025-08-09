@@ -18,15 +18,12 @@ int main() {
     }
 
     for (int i : b) {
-        int s = 0, f = 0;
-        if (*max_element(a.begin(), a.end()) < i) {
-            cout << -1 << endl;
-            continue;
+        int s = 0;
+        for (int j : a) {
+            if (j < i) s += j;
+            else s += i;
         }
-        for (int j : a){
-            
-        }
-        cout << s << endl;
+        cout << s + 1 << endl;
     }
     return 0;
 }
