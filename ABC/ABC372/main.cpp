@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
+// #include <atcoder/all>  // 必要に応じてコメントアウト
 
-// 汎用的な競プロテンプレート（少しだけ整理・改良した版）
+// AtCoder競プロテンプレート（パフォーマンス測定機能付き）
 using namespace std;
 using ll = long long;
 using Pa = pair<int, int>;
@@ -9,14 +9,38 @@ using Vec = vector<int>;
 using VecVec = vector<Vec>;
 using VecPa = vector<Pa>;
 
-// 定数は constexpr / inline で定義しておくと良いです
+// 定数定義
 inline constexpr int INF = 1'000'000'000;
 inline constexpr ll LINF = (ll)4e18;
 inline constexpr int MOD = 1'000'000'007;
 
-// 高速入出力の初期化（グローバルに一つ置くパターン）
+// 高速入出力の初期化
 struct AutoIo { AutoIo(){ ios::sync_with_stdio(false); cin.tie(nullptr); } };
 static AutoIo auto_io;
+
+// パフォーマンス測定クラス
+class PerformanceMonitor {
+private:
+    chrono::high_resolution_clock::time_point start_time;
+    size_t initial_memory;
+    
+public:
+    PerformanceMonitor() {
+        start_time = chrono::high_resolution_clock::now();
+    }
+    
+    void report() {
+        auto end_time = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
+        
+        cerr << "[Performance] Time: " << duration.count() << "ms" << endl;
+        
+        // TLE警告
+        if (duration.count() > 2000) {
+            cerr << "⚠️  TLE Warning: Execution time > 2000ms" << endl;
+        }
+    }
+};
 
 // 汎用ユーティリティ
 template<typename T> inline bool chmax(T& a, const T& b) noexcept {
@@ -48,7 +72,7 @@ struct Debug {
 #define dbg(...) do{}while(0)
 #endif
 
-// 整数向け安全版 gcd / ceil / floor（符号処理に注意）
+// 安全版数学関数
 inline ll gcd_ll_safe(ll a, ll b) noexcept {
     if (a < 0) a = -a;
     if (b < 0) b = -b;
@@ -60,8 +84,6 @@ inline ll gcd_ll_safe(ll a, ll b) noexcept {
     return a;
 }
 
-// 整数の切り上げ除算（a / b の ceil）
-// b != 0 を仮定。符号混在にも対応。
 inline ll ceil_div_safe(ll a, ll b) {
     assert(b != 0);
     ll q = a / b;
@@ -70,8 +92,6 @@ inline ll ceil_div_safe(ll a, ll b) {
     return q;
 }
 
-// 整数の切り捨て除算（a / b の floor）
-// b != 0 を仮定。符号混在にも対応。
 inline ll floor_div_safe(ll a, ll b) {
     assert(b != 0);
     ll q = a / b;
@@ -81,8 +101,10 @@ inline ll floor_div_safe(ll a, ll b) {
 }
 
 int main() {
-    ios::sync_with_stdio(false); // 二重でも安全（AutoIo 経由で既に設定済み）
-    cin.tie(nullptr);
-
+    PerformanceMonitor monitor;
+    
+    // TODO: ここに問題の解法を実装
+    
+    monitor.report();
     return 0;
 }

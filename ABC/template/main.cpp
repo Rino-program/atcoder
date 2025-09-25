@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
+// #include <atcoder/all>  // 必要に応じてコメントアウト
 
 // AtCoder競プロテンプレート（パフォーマンス測定機能付き）
 using namespace std;
