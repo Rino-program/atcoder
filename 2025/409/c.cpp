@@ -1,29 +1,34 @@
-#include <iostream>
-#include <vector>
-#include <set>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
-#define rep(i, n) for (int i = 0; i < (n); i++)
 
 int main() {
-    int n, w;
-    cin >> n >> w;
-    vector<int> a(n);
-    rep(i, n) cin >> a[i];
-
-    rep(i, 1 << n) {
-        tmp = 0;
-        rep(j, n) {
-            if (i & (1 << j)) {
-                tmp += a[j];
-            }
-        }
-        if (tmp == w) {
-            cout << "Yes" << endl;
-            return 0;
+    int n;
+    string s;
+    cin >> n >> s;
+    
+    vector<int> pos_a, pos_b;
+    
+    // AとBの位置を記録
+    for (int i = 0; i < 2 * n; i++) {
+        if (s[i] == 'A') {
+            pos_a.push_back(i);
+        } else {
+            pos_b.push_back(i);
         }
     }
-    cout << "No" << endl;
-
+    
+    // パターン1: 奇数位置(1,3,5,...)にAを配置
+    int cost1 = 0;
+    for (int k = 0; k < n; k++) {
+        cost1 += abs(pos_a[k] - (2 * k + 1));
+    }
+    
+    // パターン2: 偶数位置(0,2,4,...)にAを配置
+    int cost2 = 0;
+    for (int k = 0; k < n; k++) {
+        cost2 += abs(pos_a[k] - (2 * k));
+    }
+    
+    cout << min(cost1, cost2) << endl;
     return 0;
 }

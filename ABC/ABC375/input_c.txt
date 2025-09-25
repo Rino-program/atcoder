@@ -1,0 +1,13 @@
+# C問題テスト入力ファイル
+
+## Test Case 1
+4
+abcd
+## Expected:
+dcba
+
+## Test Case 2
+6
+hello!
+## Expected:
+!olleh
