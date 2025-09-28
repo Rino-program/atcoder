@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "name": "C++ Debug",
+      "type": "cppdbg",
+      "externalConsole": true,
+      "cwd": "",
+      "stopAtEntry": false,
+      "MIMode": "gdb",
+      "program": "/main_debug.exe",
+      "args": [],
+      "request": "launch",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "ignoreFailures": true,
+          "text": "-enable-pretty-printing"
+        }
+      ],
+      "preLaunchTask": "Build C++ (Debug)",
+      "environment": []
+    }
+  ],
+  "version": "0.2.0"
+}

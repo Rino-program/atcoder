@@ -64,32 +64,8 @@ if ($vscodeResult.Success) {
     Write-Warning2 "VS Code設定の生成に失敗: $($vscodeResult.Error)"
 }
 
-# 複数テストケース対応入力ファイル生成
-$problems = @("a", "b", "c", "d")
-foreach ($problem in $problems) {
-    # メインの入力ファイル
-    $content1 = @"
-# $($problem.ToUpper())問題 テストケース1
-5
-
-# Expected Output:
-# 5
-"@
-    $inputFile1 = Join-Path $folderPath "in_${problem}_1.txt"
-    $content1 | Out-File -FilePath $inputFile1 -Encoding UTF8
-    
-    # 追加のテストケース
-    $content2 = @"
-# $($problem.ToUpper())問題 テストケース2
-10 20
-
-# Expected Output:
-# 30
-"@
-    $inputFile2 = Join-Path $folderPath "in_${problem}_2.txt"
-    $content2 | Out-File -FilePath $inputFile2 -Encoding UTF8
-}
-Write-Success "複数テストケース入力ファイルを生成"
+# テストケースファイルは完全に手動作成
+Write-Info "📝 テストケースファイルは手動で作成してください"
 
 # README.md生成（コンテスト情報・メモ用）
 $readmeResult = New-ContestReadme -ContestName $ContestName -FolderPath $folderPath -IsNumeric $isNumeric

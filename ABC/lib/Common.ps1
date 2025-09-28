@@ -63,7 +63,7 @@ function Test-ContestName {
 
 function Test-IsNumeric {
     param([string]$Value)
-    return $Value -match '^\d+$'
+    return $Value -match '^\d{3}$'  # 3桁の数字のみABCとして扱う
 }
 
 # ファイル操作
@@ -80,7 +80,10 @@ function Copy-TemplateFiles {
     
     try {
         Get-ChildItem $SourceDir | ForEach-Object {
-            if ($_.Name -notin @("vscode_tasks.ps1", ".gitkeep")) {
+            # 除外対象: vscode_tasks.ps1, .gitkeep, 入力ファイル系
+            if ($_.Name -notin @("vscode_tasks.ps1", ".gitkeep") -and 
+                $_.Name -notlike "in_*.txt" -and 
+                $_.Name -notlike "input_*.txt") {
                 Copy-Item $_.FullName -Destination $DestDir -Force -Recurse
             }
         }

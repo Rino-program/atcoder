@@ -13,7 +13,7 @@ function New-ContestReadme {
     )
     
     $dateString = Get-DateString
-    $isABC = $IsNumeric
+    $isABC = $IsNumeric -and ($ContestName -match '^\d{3}$')
     
     $readmeContent = @"
 # $ContestName コンテスト情報・記録
@@ -111,7 +111,7 @@ function New-ContestReadme {
 ## 🗂️ ファイル構成
 
 - **main.cpp** / **main.py** - 解答ファイル
-- **in_*_*.txt** - テストケース（複数対応）
+- **in_*_*.txt** - テストケース（手動作成）
 - **.vscode/** - VS Code設定
 
 ---
