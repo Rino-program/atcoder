@@ -1,0 +1,1 @@
+print(str(bin(8)[2:]))

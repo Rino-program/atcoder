@@ -403,10 +403,15 @@ def print_grid(grid):
 
 
 def main() -> None:
-    # N = INT()
-    # A = LIST()
-    # print(sum(A))
-    pass
+    N = int(input())
+    X = list(map(int, input().split())) + [2020]
+    M = int(input())
+    A = list(map(int, input().split()))
+    
+    for i in range(N):
+        if not (X[i] == (X[i + 1] - 1)):
+            X[i] += 1
+    print("\n".join(map(str, X[:N - 1])))
 
 
 if __name__ == "__main__":

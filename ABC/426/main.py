@@ -8,7 +8,7 @@ from functools import lru_cache, reduce
 from typing import List, Tuple, Optional, Set, Dict
 import operator
 
-sys.setrecursionlimit(10 ** 7)  # PyPy での再帰制限緩和
+sys.setrecursionlimit(10 ** 9)  # PyPy での再帰制限緩和
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -25,9 +25,6 @@ def LIST() -> List[int]:
 
 def LISTS(n: int) -> List[List[int]]:
     return [LIST() for _ in range(n)]
-
-def LISTSI(n: int) -> list[int]:
-    return [INT() for _ in range(n)]
 
 def STR() -> str:
     return input()
@@ -403,11 +400,7 @@ def print_grid(grid):
 
 
 def main() -> None:
-    # N = INT()
-    # A = LIST()
-    # print(sum(A))
-    pass
-
+    
 
 if __name__ == "__main__":
     main()

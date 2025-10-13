@@ -403,11 +403,78 @@ def print_grid(grid):
 
 
 def main() -> None:
-    # N = INT()
-    # A = LIST()
-    # print(sum(A))
-    pass
 
+    sys.setrecursionlimit(10**7)
+
+    N, M = map(int, input().split())
+
+    li = LISTS(M)
+
+    def huru(li):
+        # 無向グラフなので、両方向に辺を張る
+        d = {}  # 隣接リストを表す辞書
+        for i in range(N):
+            d[i] = set()  # 頂点iに隣接する頂点の集合
+        for A, B in li:
+            d[A - 1].add(B - 1)
+            d[B - 1].add(A - 1)
+        return d
+
+    def dfs(G, v, group):
+        for s in G[v]:
+            if group[s] != -1:
+                if group[s] == group[v]:
+                    return False
+                continue
+            group[s] = 1 if group[v] == 0 else 0
+            if not dfs(G, s, group):
+                return False
+        return True
+
+    def f(d):
+        # 訪問済み頂点を記録する配列を用意する
+        group = [-1] * N
+        group[0] = 0
+        # グラフが連結でない可能性があるので全ての要素に対してdfsを行う
+        ok = dfs(d, 0, group)
+        for v in range(1, N):
+            if group[v] != -1:
+                continue
+            if not dfs(d, v, group):
+                ok = False
+                break
+        return ok
+
+    def zikou(l):
+        if not l:  # 辺がない場合は二部グラフ
+            return True
+        return f(huru(l))
+
+    # 削除する辺の数を0から順に試す（最小を見つけたら終了）
+    for delete_count in range(M + 1):
+        # delete_count 本削除 = (M - delete_count) 本残す
+        remain_count = M - delete_count
+        
+        # remain_count 本の辺を選ぶ全組み合わせを試す
+        found = False
+        for mask in range(2 ** M):
+            if bin(mask).count('1') != remain_count:
+                continue
+            
+            # mask に対応する辺の集合を作る
+            tmp = []
+            for j in range(M):
+                if mask & (1 << j):
+                    tmp.append(li[j])
+            
+            # 二部グラフ判定
+            if zikou(tmp):
+                print(delete_count)
+                found = True
+                break
+        
+        if found:
+            break
 
 if __name__ == "__main__":
     main()

@@ -1,68 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// ===== 型定義 =====
+// 型定義
 using ll = long long;
 using ull = unsigned long long;
 using ld = long double;
 using pii = pair<int, int>;
 using pll = pair<ll, ll>;
-using pdd = pair<double, double>;
 using vi = vector<int>;
 using vl = vector<ll>;
-using vd = vector<double>;
 using vs = vector<string>;
-using vb = vector<bool>;
-using vc = vector<char>;
 using vvi = vector<vector<int>>;
 using vvl = vector<vector<ll>>;
-using vvd = vector<vector<double>>;
-using vvs = vector<vector<string>>;
-using vvb = vector<vector<bool>>;
-using vpii = vector<pii>;
-using vpll = vector<pll>;
 
-// ===== 基本マクロ =====
+// マクロ
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define rep1(i, n) for (int i = 1; i <= (int)(n); i++)
 #define repr(i, n) for (int i = (int)(n) - 1; i >= 0; i--)
-#define repd(i, a, b) for (int i = (int)(a); i < (int)(b); i++)
-#define reps(i, a, b) for (int i = (int)(a); i <= (int)(b); i++)
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
 #define sz(x) (int)(x).size()
-#define pb push_back
-#define eb emplace_back
-#define mp make_pair
-#define fi first
-#define se second
 
-// ===== デバッグ用マクロ =====
+// デバッグ用マクロ (提出時は無効化)
 #ifdef LOCAL
 #define debug(x) cerr << #x << " = " << (x) << endl
 #define debug2(x,y) cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl
-#define debug3(x,y,z) cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl
-#define debugv(v) cerr << #v << " = "; for(auto x : v) cerr << x << " "; cerr << endl
 #else
-#define debug(x)
+#define debug(x) 
 #define debug2(x,y)
-#define debug3(x,y,z)
-#define debugv(v)
 #endif
 
-// ===== 定数 =====
-const int INF = 1e9 + 7;  // 安全な値
+// 定数
+const int INF = 1e9;  // 加算でオーバーフローしない値
 const ll LINF = 1e18;
-const ld EPS = 1e-9;
 const ld PI = acos(-1.0);
-const int MOD = 998244353;  // AtCoderで最頻出
-// const int MOD = 1000000007;  // 切り替え時用
-
-// ===== 方向ベクトル =====
-const int dx4[4] = {1, 0, -1, 0};
-const int dy4[4] = {0, 1, 0, -1};
-const int dx8[8] = {1, 1, 0, -1, -1, -1, 0, 1};
-const int dy8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+const int MOD = 998244353;  // AtCoderで最頻出、切り替え時は 1000000007
 
 // 便利関数
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return true; } return false; }
@@ -112,18 +84,18 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout << fixed << setprecision(15);  // 精度を上げる
-
+    
     #ifdef LOCAL
     freopen("input.txt", "r", stdin);  // ローカルテスト用
     #endif
-
+    
     // ===== サンプル =====
     // int N; cin >> N;
     // vi a(N); rep(i,N) cin >> a[i];
     // ll ans = accumulate(all(a), 0LL);
     // cout << ans << "\n";
     // ====================
-
+    
     return 0;
 }
 
@@ -256,7 +228,7 @@ ll binary_search(ll ok, ll ng, F check) {
 
 // エラトステネス (is_prime と primes を返す)
 pair<vector<bool>, vector<int>> sieve(int N){
-    vector<bool> is(N+1, true); is[0]=false; if(N>=1) is[1]=false;
+    vector<bool> is(N+1, true); is[0]=false; if(N>=1) is[1]=false; 
     for(int p=2; p*p<=N; ++p) if(is[p]) for(long long q=1LL*p*p; q<=N; q+=p) is[(int)q]=false;
     vector<int> primes; for(int i=2;i<=N;i++) if(is[i]) primes.push_back(i);
     return {is, primes};
@@ -277,12 +249,12 @@ vi topological_sort(const vvi& g) {
     for (int v = 0; v < n; v++) {
         for (int to : g[v]) in_degree[to]++;
     }
-
+    
     queue<int> q;
     for (int i = 0; i < n; i++) {
         if (in_degree[i] == 0) q.push(i);
     }
-
+    
     vi result;
     while (!q.empty()) {
         int v = q.front(); q.pop();
@@ -301,11 +273,11 @@ struct RollingHash {
     static const ll BASE1 = 1007, BASE2 = 2009;
     int n; string s;
     vl hash1, hash2, pow1, pow2;
-
+    
     RollingHash(const string& str) : n(str.size()), s(str) {
         hash1.assign(n + 1, 0); hash2.assign(n + 1, 0);
         pow1.assign(n + 1, 1); pow2.assign(n + 1, 1);
-
+        
         for (int i = 0; i < n; i++) {
             hash1[i + 1] = (hash1[i] * BASE1 + s[i]) % MOD1;
             hash2[i + 1] = (hash2[i] * BASE2 + s[i]) % MOD2;
@@ -313,7 +285,7 @@ struct RollingHash {
             pow2[i + 1] = pow2[i] * BASE2 % MOD2;
         }
     }
-
+    
     pair<ll, ll> get(int l, int r) { // [l, r)
         ll h1 = (hash1[r] - hash1[l] * pow1[r - l]) % MOD1;
         ll h2 = (hash2[r] - hash2[l] * pow2[r - l]) % MOD2;
@@ -343,4 +315,5 @@ struct RollingHash {
 */
 
 // (EOF)
-
+    
+    
