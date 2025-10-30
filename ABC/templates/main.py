@@ -38,12 +38,6 @@ def STRS(n: int) -> List[str]:
 def CHARS() -> List[str]:
     return list(STR())
 
-def GRID(h: int) -> List[str]:
-    return [STR() for _ in range(h)]
-
-def GRID_INT(h: int) -> List[List[int]]:
-    return [LIST() for _ in range(h)]
-
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353  # AtCoderで最頻出
@@ -399,7 +393,7 @@ def debug(*args):
 def print_grid(grid):
     """2次元配列を見やすく表示"""
     for row in grid:
-        print(''.join(map(str, row)))
+        print(' '.join(map(str, row)))
 
 
 def main() -> None:

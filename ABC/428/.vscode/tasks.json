@@ -1,0 +1,85 @@
+{
+  "tasks": [
+    {
+      "problemMatcher": [
+        ""
+      ],
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "echo": true
+      },
+      "command": "g++",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "Build C++ (Release)",
+      "args": [
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "main.cpp",
+        "-o",
+        "main.exe"
+      ],
+      "type": "shell"
+    },
+    {
+      "problemMatcher": [
+        ""
+      ],
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "echo": true
+      },
+      "command": "g++",
+      "group": "build",
+      "label": "Build C++ (Debug)",
+      "args": [
+        "-std=c++20",
+        "-g",
+        "-DDEBUG",
+        "-Wall",
+        "-Wextra",
+        "main.cpp",
+        "-o",
+        "main_debug.exe"
+      ],
+      "type": "shell"
+    },
+    {
+      "dependsOn": "Build C++ (Release)",
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "echo": true
+      },
+      "command": "Get-Content in_a.txt | ./main.exe",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "label": "Run C++ (with input)",
+      "type": "shell"
+    },
+    {
+      "command": "Get-Content in_a.txt | python main.py",
+      "type": "shell",
+      "group": "test",
+      "label": "Run Python (with input)",
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "echo": true
+      }
+    }
+  ],
+  "version": "2.0.0"
+}

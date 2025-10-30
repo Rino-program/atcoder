@@ -1,0 +1,85 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "args": [
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "main.cpp",
+        "-o",
+        "main.exe"
+      ],
+      "type": "shell",
+      "label": "Build C++ (Release)",
+      "command": "g++",
+      "group": {
+        "isDefault": true,
+        "kind": "build"
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "echo": true
+      },
+      "problemMatcher": [
+        ""
+      ]
+    },
+    {
+      "args": [
+        "-std=c++20",
+        "-g",
+        "-DDEBUG",
+        "-Wall",
+        "-Wextra",
+        "main.cpp",
+        "-o",
+        "main_debug.exe"
+      ],
+      "type": "shell",
+      "label": "Build C++ (Debug)",
+      "command": "g++",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "echo": true
+      },
+      "problemMatcher": [
+        ""
+      ]
+    },
+    {
+      "type": "shell",
+      "dependsOn": "Build C++ (Release)",
+      "label": "Run C++ (with input)",
+      "command": "Get-Content in_a.txt | ./main.exe",
+      "group": {
+        "isDefault": true,
+        "kind": "test"
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "echo": true
+      }
+    },
+    {
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "echo": true
+      },
+      "label": "Run Python (with input)",
+      "type": "shell",
+      "group": "test",
+      "command": "Get-Content in_a.txt | python main.py"
+    }
+  ]
+}

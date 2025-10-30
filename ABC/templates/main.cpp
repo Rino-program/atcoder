@@ -323,7 +323,7 @@ struct RollingHash {
     }
 };
 
-/* 使用例 (コピペ用)
+// 使用例 (コピペ用)
 // 数学系
 // auto [fact, inv_fact] = factorials(200000); ll c = nCr(n, r, fact, inv_fact);
 
@@ -331,16 +331,12 @@ struct RollingHash {
 // BIT bit(N); bit.add(i, x); ll s = bit.sum_range(l,r); int pos = bit.lower_bound(w);
 // DSU uf(N); uf.merge(a,b); bool connected = uf.same(x,y);
 
-// グラフ
-// vi topo = topological_sort(g); if(topo.empty()) { /* 閉路検出 */ }
-// vector<bool> visited(N); dfs(g, start, visited);
 
 // 文字列
 // RollingHash rh(s); auto hash_val = rh.get(l, r);
 
 // 二分探索
 // ll ans = binary_search(ok, ng, [&](ll mid) { return check(mid); });
-*/
 
 // (EOF)
 
