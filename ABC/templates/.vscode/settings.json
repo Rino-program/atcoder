@@ -1,0 +1,4 @@
+{
+  "python.defaultInterpreterPath": "C:\\VSCode_program\\atcoder\\ABC\\.venv-pypy311\\Scripts\\Activate.ps1",
+  "python.terminal.activateEnvironment": true
+}

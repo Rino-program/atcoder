@@ -1,7 +1,29 @@
 # 📚 AtCoder ABC 多機能統合システム v4.0 - 取扱説明書
 
-**最終更新**: 2024-09-26  
+**最終更新**: 2025-11-01  
 **開発**: GitHub Copilot
+
+---
+
+## 🆕 新機能: atcoder-cli + online-judge-tools 統合！
+
+AtCoderから問題を自動ダウンロード・提出できる環境が整いました！
+
+### 🚀 3ステップで始める
+
+```powershell
+# 1. ログイン（初回のみ）
+.\acc-helper.ps1 login
+
+# 2. 問題をダウンロード
+.\acc-helper.ps1 download 373
+
+# 3. テスト & 提出
+.\acc-helper.ps1 test 373 a
+.\acc-helper.ps1 submit 373 a
+```
+
+📖 **詳細ガイド**: `docs/OJ_ACC_Setup.md` または `docs/OJ_ACC_QuickStart.md`
 
 ---
 
