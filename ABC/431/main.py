@@ -380,7 +380,7 @@ def binary_search(ok: int, ng: int, check) -> int:
             ok = mid
         else:
             ng = mid
-    return ng
+    return ok
 
 
 # ===== デバッグ支援 =====
@@ -395,35 +395,13 @@ def print_grid(grid):
     for row in grid:
         print(' '.join(map(str, row)))
 
+
 def main() -> None:
-    H, W, N = MAP()
-    T = input()
-    S = STRS(H)
-    
-    zahyou = {"L": [0, -1], "R": [0, 1], "U": [-1, 0], "D": [1, 0]}
-    
-    li = set()
-    i, j = 0, 0
-    for q in T:
-        tmp = zahyou[q]
-        i, j = i + tmp[0], j + tmp[1]
-        li.add((i, j))
-    li = list(li)
-    
-    ans = 0
-    for i in range(1, H - 1):
-        for j in range(1, W - 1):
-            if S[i][j] == "#":continue
-            ki, kj = i, j
-            for zi, zj in li:
-                i, j = i + zi, j + zj
-                if S[i][j] == "#":
-                    i, j = ki, kj
-                    break
-                i, j = ki, kj
-            else:
-                ans += 1
-    print(ans)
+    a = 0
+    for i in range(10 ** 8):
+        a += 1
+    print(a)
+    pass
 
 if __name__ == "__main__":
     main()

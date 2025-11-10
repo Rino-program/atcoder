@@ -8,7 +8,7 @@ from functools import lru_cache, reduce
 from typing import List, Tuple, Optional, Set, Dict
 import operator
 
-sys.setrecursionlimit(10 ** 7)  # PyPy での再帰制限緩和
+sys.setrecursionlimit(10 ** 5)  # PyPy での再帰制限緩和
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -380,7 +380,7 @@ def binary_search(ok: int, ng: int, check) -> int:
             ok = mid
         else:
             ng = mid
-    return ng
+    return ok
 
 
 # ===== デバッグ支援 =====
@@ -395,35 +395,50 @@ def print_grid(grid):
     for row in grid:
         print(' '.join(map(str, row)))
 
+
 def main() -> None:
-    H, W, N = MAP()
-    T = input()
-    S = STRS(H)
+    N = INT()
+    P = LIST()
+    Q = LIST()
+    # Pを計算する
+    tmp = 1
+    li = [i for i in range(1, N + 1)]
+    a = 0 if li == P else 1
+    for i, j in enumerate(P):
+        a *= j - tmp + 1
+        li[j - 1] = 10
+        k = 0
+        while len(li) != k and li[k] == 10:
+            k += 1
+        tmp = k
+    debug(a)
+    # q
+    tmp = 1
+    li = [i for i in range(1, N + 1)]
+    b = 0 if li == Q else 1
+    for i, j in enumerate(Q):
+        b *= j - tmp
+        li[j - 1] = 10
+        k = 0
+        while len(li) != k and li[k] == 10:
+            k += 1
+        tmp = k
+    debug(b)
+    print(abs(a - b))
+    # 終わりですかね
     
-    zahyou = {"L": [0, -1], "R": [0, 1], "U": [-1, 0], "D": [1, 0]}
-    
-    li = set()
-    i, j = 0, 0
-    for q in T:
-        tmp = zahyou[q]
-        i, j = i + tmp[0], j + tmp[1]
-        li.add((i, j))
-    li = list(li)
-    
-    ans = 0
-    for i in range(1, H - 1):
-        for j in range(1, W - 1):
-            if S[i][j] == "#":continue
-            ki, kj = i, j
-            for zi, zj in li:
-                i, j = i + zi, j + zj
-                if S[i][j] == "#":
-                    i, j = ki, kj
-                    break
-                i, j = ki, kj
-            else:
-                ans += 1
-    print(ans)
+    """# 四角形ができるか判定すればよい。
+    x = [LIST() for _ in range(3)]
+    # Aを固定し、A -> B, A -> Cへの距離を求める
+    ab = [(x[0][0] - x[1][0]), (x[0][1] - x[1][1])]
+    ac = [-(x[0][0] - x[2][0]), -(x[0][1] - x[2][1])]
+    # B -> d -> Cにいけるか判定。dはBからac進んだ地点。
+    for i, j in enumerate(x[1]):
+        x[1][i] = j + ac[i]
+    for i, j in enumerate(x[1]):
+        x[1][i] = j + ab[i]
+    Yes() if x[1] == x[2] else No()"""
 
 if __name__ == "__main__":
     main()
+    # 重くて全然動かない
