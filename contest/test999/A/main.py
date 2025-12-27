@@ -397,10 +397,9 @@ def print_grid(grid):
 
 
 def main() -> None:
-    A, B, D = MAP()
-    
-    # 三角関数かな？
-    
+    a, b = MAP()
+    print(a + b)
+
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,18 @@
+{
+  "python.defaultInterpreterPath": "C:\\VSCode_program\\atcoder\\contest\\.venv-pypy311\\Scripts\\python.exe",
+  "python.terminal.activateEnvironment": true,
+  "python-envs.pythonProjects": []
+  ,
+  "terminal.integrated.profiles.windows": {
+    "PowerShell (venv-pypy311)": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell",
+      "args": [
+        "-NoExit",
+        "-Command",
+        "& 'C:\\VSCode_program\\atcoder\\contest\\.venv-pypy311\\Scripts\\Activate.ps1'"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell (venv-pypy311)"
+}

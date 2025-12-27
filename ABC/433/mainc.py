@@ -6,9 +6,13 @@ import math
 from itertools import permutations, combinations, accumulate, product, chain
 from functools import lru_cache, reduce
 from typing import List, Tuple, Optional, Set, Dict
+from copy import deepcopy
 import operator
 
-sys.setrecursionlimit(10 ** 7)  # PyPy での再帰制限緩和
+sys.setrecursionlimit(10 ** 6)  # PyPy での再帰制限緩和
+
+# 全て動くか試していないので、壊れているテンプレがあるかも？
+# そしてテンプレあっても問題に確実に合うと判断しない限り使わない事があります。
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -38,6 +42,9 @@ def STRS(n: int) -> List[str]:
 def CHARS() -> List[str]:
     return list(STR())
 
+def STRSL(n: int) -> List[List[str]]:
+    return [list(STR()) for _ in range(n)]
+
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353  # AtCoderで最頻出
@@ -46,6 +53,7 @@ MOD = 998244353  # AtCoderで最頻出
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
+DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
 
 # ===== よく使う関数 =====
 def Yes(): print("Yes")
@@ -54,10 +62,6 @@ def yes(): print("yes")
 def no(): print("no")
 def YES(): print("YES")
 def NO(): print("NO")
-
-def lcm(a: int, b: int) -> int:
-    # Python 3.9+ では math.lcm(a, b) を使用可能
-    return a // math.gcd(a, b) * b
 
 def is_prime(n: int) -> bool:
     if n < 2: return False
@@ -395,12 +399,33 @@ def print_grid(grid):
     for row in grid:
         print(' '.join(map(str, row)))
 
+# ===== 問題ごとの関数定義 =====
 
+# ===== main関数 =====
+# AI解説あり(解説AC)
 def main() -> None:
-    A, B, D = MAP()
-    
-    # 三角関数かな？
-    
+    N = INT()
+    A = LIST()
+    li = []
+    for i in A:
+        if len(li) >= 3:
+            if li[-1] == li[-2] == li[-3] == i:
+                for j in range(3):li.pop()
+            else:
+                li.append(i)
+        else:
+            li.append(i)
+    print(len(li))
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     main()

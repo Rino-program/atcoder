@@ -8,7 +8,8 @@ param(
     [Parameter(Position = 3)] [string]$Language = "cpp",
     [switch]$VSCode = $false,
     [switch]$Browser = $false,
-    [switch]$Explorer = $false
+    [switch]$Explorer = $false,
+    [switch]$Fetch = $false
 )
 
 if (-not $Command) { $Command = "help" }
@@ -19,10 +20,14 @@ $scriptsPath = Join-Path $PSScriptRoot "scripts"
 $VERSION = "4.1"
 
 # ===== ライブラリ読み込み =====
-. "$libPath/Common.ps1"
-. "$libPath/VSCodeConfig.ps1"
-. "$libPath/ReadmeGenerator.ps1"
-. "$libPath/RunBatGenerator.ps1"
+foreach ($file in @('Common.ps1','VSCodeConfig.ps1','ReadmeGenerator.ps1','RunBatGenerator.ps1')) {
+    $path = Join-Path $libPath $file
+    if (Test-Path $path) {
+        . $path
+    } else {
+        Write-Host "[WARN] Missing optional lib file: $file" -ForegroundColor Yellow
+    }
+}
 
 function Show-Help {
     Write-Header "AtCoder ABC 多機能統合システム v$VERSION"
@@ -75,12 +80,18 @@ switch ($cmd) {
     "gen" { $cmd = "generate" }
     "g" { $cmd = "generate" }
 
+    "fetch" { $cmd = "fetch" }
+    "f" { $cmd = "fetch" }
+
     "validate" { $cmd = "validate" }
     "val" { $cmd = "validate" }
     "v" { $cmd = "validate" }
 
     "clean" { $cmd = "clean" }
     "cl" { $cmd = "clean" }
+
+    "submit" { $cmd = "submit" }
+    "s" { $cmd = "submit" }
 
     "help" { $cmd = "help" }
     "h" { $cmd = "help" }
@@ -92,7 +103,7 @@ try {
     switch ($cmd) {
         "new" {
             if (-not $ContestName) { Write-Error2 "コンテスト名が必要です"; return }
-            & "$scriptsPath/New.ps1" -ContestName $ContestName -VSCode:$VSCode -Browser:$Browser -Explorer:$Explorer
+            & "$scriptsPath/New.ps1" -ContestName $ContestName -VSCode:$VSCode -Browser:$Browser -Explorer:$Explorer -Fetch:$Fetch
         }
         "test" {
             if (-not ($ContestName -and $Problem)) { Write-Error2 "test には <contest> <problem> が必要"; return }
@@ -101,6 +112,14 @@ try {
         "open" {
             if (-not $ContestName) { Write-Error2 "open には <contest> が必要"; return }
             & "$scriptsPath/Open.ps1" -ContestNumber $ContestName
+        }
+        "fetch" {
+            if (-not $ContestName) { Write-Error2 "fetch には <contest> が必要"; return }
+            & "$scriptsPath/Fetch.ps1" -ContestName $ContestName -Problem $Problem
+        }
+        "submit" {
+            if (-not ($ContestName -and $Problem)) { Write-Error2 "submit には <contest> <problem> が必要"; return }
+            & "$scriptsPath/Submit.ps1" -ContestName $ContestName -Problem $Problem -Language $Language
         }
         "generate" {
             if (-not ($ContestName -and $Problem)) { Write-Error2 "generate には <contest> <problem> が必要"; return }

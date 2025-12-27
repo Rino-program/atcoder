@@ -6,9 +6,13 @@ import math
 from itertools import permutations, combinations, accumulate, product, chain
 from functools import lru_cache, reduce
 from typing import List, Tuple, Optional, Set, Dict
+from copy import deepcopy
 import operator
 
-sys.setrecursionlimit(10 ** 7)  # PyPy での再帰制限緩和
+sys.setrecursionlimit(10 ** 6)  # PyPy での再帰制限緩和
+
+# 全て動くか試していないので、壊れているテンプレがあるかも？
+# そしてテンプレあっても問題に確実に合うと判断しない限り使わない事があります。
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -38,6 +42,9 @@ def STRS(n: int) -> List[str]:
 def CHARS() -> List[str]:
     return list(STR())
 
+def STRSL(n: int) -> List[List[str]]:
+    return [list(STR()) for _ in range(n)]
+
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353  # AtCoderで最頻出
@@ -46,6 +53,7 @@ MOD = 998244353  # AtCoderで最頻出
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
+DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
 
 # ===== よく使う関数 =====
 def Yes(): print("Yes")
@@ -54,10 +62,6 @@ def yes(): print("yes")
 def no(): print("no")
 def YES(): print("YES")
 def NO(): print("NO")
-
-def lcm(a: int, b: int) -> int:
-    # Python 3.9+ では math.lcm(a, b) を使用可能
-    return a // math.gcd(a, b) * b
 
 def is_prime(n: int) -> bool:
     if n < 2: return False
@@ -395,12 +399,45 @@ def print_grid(grid):
     for row in grid:
         print(' '.join(map(str, row)))
 
+# ===== 問題ごとの関数定義 =====
 
+# ===== main関数 =====
 def main() -> None:
-    A, B, D = MAP()
-    
-    # 三角関数かな？
-    
+    # O(N)必須。
+    # 何法だ？
+    # 数列と最大値、動的計画法？
+    # 貪欲法の可能性もある。
+    # そういえばpaizaでドミノ倒しの動的計画があった。
+    # それが使えるかもしれない。
+    N = INT()
+    A = LIST()
+    n_A = []
+    tmp = 0
+    for i in range(N):
+        tmp += A[i]
+        n_A.append(tmp)
+    A = n_A
+    B = LIST()
+    li_b = []
+    for i, v in enumerate(B):
+        if len(li_b) > 1:
+            li_b.append(max(A[i-1], li_b[-1]) + v)
+        else:
+            if len(li_b) == 0:
+                li_b.append(0)
+            else:
+                li_b.append(v+A[i-1])
+    C = LIST()
+    li_c = []
+    for i, v in enumerate(C):
+        if len(li_c) > 2:
+            li_c.append(max(li_b[i-1], li_c[-1]) + v)
+        else:
+            if len(li_c) != 2:
+                li_c.append(0)
+            else:
+                li_c.append(v+li_b[i-1])
+    print(li_c[-1])
 
 if __name__ == "__main__":
     main()

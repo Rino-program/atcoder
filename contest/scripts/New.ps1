@@ -8,7 +8,8 @@ param(
     
     [switch]$VSCode,
     [switch]$Browser,
-    [switch]$Explorer
+    [switch]$Explorer,
+    [switch]$Fetch
 )
 
 # ライブラリ読み込み
@@ -17,6 +18,9 @@ $libPath = Join-Path (Split-Path -Parent $PSScriptRoot) "lib"
 . "$libPath\VSCodeConfig.ps1"
 . "$libPath\ReadmeGenerator.ps1"
 . "$libPath\RunBatGenerator.ps1"
+
+# スクリプトディレクトリ
+$scriptsPath = Join-Path (Split-Path -Parent $PSScriptRoot) "scripts"
 
 # 引数検証
 if (-not (Test-ContestName $ContestName)) {
@@ -48,29 +52,52 @@ if (-not $success) {
 }
 Write-Success "フォルダを作成: $ContestName"
 
-# テンプレートファイルコピー
-if (Copy-TemplateFiles -SourceDir $templateDir -DestDir $folderPath) {
-    Write-Success "テンプレートファイルをコピー完了"
-} else {
-    Write-Error2 "テンプレートファイルのコピーに失敗"
-    exit 1
+# 各問題ごとにフォルダを作成し、テンプレートを配置
+try {
+    $tcRoot = Join-Path $folderPath 'testcases'
+    if (-not (Test-Path $tcRoot)) { New-Item -Path $tcRoot -ItemType Directory | Out-Null }
+
+    $probs = Get-ContestProblems -ContestName $ContestName
+    foreach ($p in $probs) {
+        $prob = $p.ToString().ToUpper()
+        # 問題用フォルダ (例: <Contest>\A)
+        $probDir = Join-Path $folderPath $prob
+        if (-not (Test-Path $probDir)) { New-Item -Path $probDir -ItemType Directory | Out-Null }
+
+        # コピー先として問題フォルダにテンプレートファイルを配置
+        if (Copy-TemplateFiles -SourceDir $templateDir -DestDir $probDir) {
+            Write-Success "テンプレートを $probDir に配置"
+        } else {
+            Write-Warning2 "テンプレートのコピーに失敗: $probDir"
+        }
+
+        # 問題フォルダ内に testcases ディレクトリ (ユーザがここで `oj d` を叩けるように)
+        $localTc = Join-Path $probDir 'testcases'
+        if (-not (Test-Path $localTc)) { New-Item -Path $localTc -ItemType Directory | Out-Null }
+
+        # ルートの testcases/<Prob> も作成しておく（既存スクリプト互換用）
+        $rootProbTc = Join-Path $tcRoot $prob
+        if (-not (Test-Path $rootProbTc)) { New-Item -Path $rootProbTc -ItemType Directory | Out-Null }
+    }
+    Write-Success "問題ごとのフォルダと testcases を作成しました"
+} catch {
+    Write-Warning2 "問題フォルダの作成に失敗: $_"
 }
 
-# VS Code設定生成
+# VS Code設定生成 (ルートと各問題フォルダに対して最低限生成する)
 $vscodeResult = New-VSCodeConfig -FolderPath $folderPath -ContestName $ContestName -IsNumeric $isNumeric
-if ($vscodeResult.Success) {
-    Write-Success "VS Code設定を生成"
-} else {
-    Write-Warning2 "VS Code設定の生成に失敗: $($vscodeResult.Error)"
+if ($vscodeResult.Success) { Write-Success "ルートの VS Code 設定を生成" } else { Write-Warning2 "VS Code設定の生成に失敗: $($vscodeResult.Error)" }
+
+$probs | ForEach-Object {
+    $prob = $_.ToString().ToUpper()
+    $probDir = Join-Path $folderPath $prob
+    $v = New-VSCodeConfig -FolderPath $probDir -ContestName $ContestName -IsNumeric $isNumeric
+    if ($v.Success) { Write-Success "VS Code 設定を $probDir に生成" } else { Write-Warning2 "VS Code 設定生成失敗: $probDir : $($v.Error)" }
 }
 
 # README.md生成（コンテスト情報・メモ用）
 $readmeResult = New-ContestReadme -ContestName $ContestName -FolderPath $folderPath -IsNumeric $isNumeric
-if ($readmeResult.Success) {
-    Write-Success "コンテスト情報README.mdを生成"
-} else {
-    Write-Warning2 "README.md生成に失敗: $($readmeResult.Error)"
-}
+if ($readmeResult.Success) { Write-Success "コンテスト情報README.mdを生成" } else { Write-Warning2 "README.md生成に失敗: $($readmeResult.Error)" }
 
 # ブラウザ起動
 if ($Browser -and $isNumeric) {
@@ -113,3 +140,8 @@ Write-Host ""
 Write-Info "💡 次のステップ:"
 Write-Host "  cd $ContestName                          # フォルダに移動"
 Write-Host "  ..\main.ps1 test $ContestName a cpp      # A問題をテスト実行"
+
+if ($Fetch) {
+    Write-Info "📥 サンプルテストケースをダウンロードしています..."
+    & "$scriptsPath\Fetch.ps1" -ContestName $ContestName
+}

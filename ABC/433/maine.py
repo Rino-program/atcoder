@@ -6,9 +6,13 @@ import math
 from itertools import permutations, combinations, accumulate, product, chain
 from functools import lru_cache, reduce
 from typing import List, Tuple, Optional, Set, Dict
+from copy import deepcopy
 import operator
 
-sys.setrecursionlimit(10 ** 7)  # PyPy での再帰制限緩和
+sys.setrecursionlimit(10 ** 6)  # PyPy での再帰制限緩和
+
+# 全て動くか試していないので、壊れているテンプレがあるかも？
+# そしてテンプレあっても問題に確実に合うと判断しない限り使わない事があります。
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -38,6 +42,9 @@ def STRS(n: int) -> List[str]:
 def CHARS() -> List[str]:
     return list(STR())
 
+def STRSL(n: int) -> List[List[str]]:
+    return [list(STR()) for _ in range(n)]
+
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353  # AtCoderで最頻出
@@ -46,6 +53,7 @@ MOD = 998244353  # AtCoderで最頻出
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
+DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
 
 # ===== よく使う関数 =====
 def Yes(): print("Yes")
@@ -54,10 +62,6 @@ def yes(): print("yes")
 def no(): print("no")
 def YES(): print("YES")
 def NO(): print("NO")
-
-def lcm(a: int, b: int) -> int:
-    # Python 3.9+ では math.lcm(a, b) を使用可能
-    return a // math.gcd(a, b) * b
 
 def is_prime(n: int) -> bool:
     if n < 2: return False
@@ -395,12 +399,55 @@ def print_grid(grid):
     for row in grid:
         print(' '.join(map(str, row)))
 
+# ===== 問題ごとの関数定義 =====
 
+# ===== main関数 =====
 def main() -> None:
-    A, B, D = MAP()
-    
-    # 三角関数かな？
-    
+    pass
+    # Tiの通りにやるとTLEする。
+    # O(N+Q)が望ましいと思われる。
+    # グラフ探索であることは確定している。
+    # グラフが無限ループ無しでも2*10^5でTLEしない。
+    # 事前探索？
+    # N^2にならないようにメモ化する？
+    # だけどメモ化だと未来参照どうする？
+    # TiとBiの入力にどう対応すれば？
+    # Biが特に厄介。
+    # 事前探索で訪問リストを保持したところで
+    # Tiの入力から推測するとTLEする。
+    # Tiも厄介になってきた。
+    # バケツは分離しない、合体したらそのまま
+    # それだとクエリ処理ができないか
+    # さっき出したO(N+Q)だと事前探索は必須となる。
+    # グラフなのでO(N)で事前探索する事は不可能。
+    # 制限時間3秒、係数が大きめでも大丈夫そう。
+    # つまり想定解は計算量が重なるような物になっている。
+    # だけど掛け算は無しになる。
+    # Eの推定diffが1242か、、無理そう..
+    # 緑色ならまだできたかも？
+    # E問題茶色民5%台か、、
+    # 諦めかな。
+    # 一応もう少し考える。
+    # コーディングが間に合うかもしれない
+    # 最低ラインの残り15分まで
+    # 自己ループ含めるのか、、
+    # となると解の最大値は10^5*10^9=10^14になるから
+    # python以外でintでやってる民はWAに困ってそう。
+    # ペナ食らってる一部の人はそうなんだろうな..
+    # 基本は問題文に書いてあるけど
+    # テストケースで紹介されなかったからなかったのかも。
+    # 提出者数1570人自分がACするのは不可能だと判断したので
+    # 終了します。
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     main()
