@@ -1,3 +1,7 @@
 # Python virtual environments
 venv/
 .venv/
+
+# PyPy virtual environments (common naming in this repo)
+.venv-pypy*/
+venv-pypy*/
