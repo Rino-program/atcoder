@@ -403,41 +403,8 @@ def print_grid(grid):
 
 # ===== main関数 =====
 def main() -> None:
-    # O(N)必須。
-    # 何法だ？
-    # 数列と最大値、動的計画法？
-    # 貪欲法の可能性もある。
-    # そういえばpaizaでドミノ倒しの動的計画があった。
-    # それが使えるかもしれない。
-    N = INT()
-    A = LIST()
-    n_A = []
-    tmp = 0
-    for i in range(N):
-        tmp += A[i]
-        n_A.append(tmp)
-    A = n_A
-    B = LIST()
-    li_b = []
-    for i, v in enumerate(B):
-        if len(li_b) > 1:
-            li_b.append(max(A[i-1], li_b[-1]) + v)
-        else:
-            if len(li_b) == 0:
-                li_b.append(0)
-            else:
-                li_b.append(v+A[i-1])
-    C = LIST()
-    li_c = []
-    for i, v in enumerate(C):
-        if len(li_c) > 2:
-            li_c.append(max(li_b[i-1], li_c[-1]) + v)
-        else:
-            if len(li_c) != 2:
-                li_c.append(0)
-            else:
-                li_c.append(v+li_b[i-1])
-    print(li_c[-1])
+    pass
+    
 
 if __name__ == "__main__":
     main()

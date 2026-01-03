@@ -403,8 +403,8 @@ def print_grid(grid):
 
 # ===== main関数 =====
 def main() -> None:
-    D, F = MAP()
-    print(7-((D - F)%7))
+    N = INT()
+    print(2**N-2*N)
 
 
 

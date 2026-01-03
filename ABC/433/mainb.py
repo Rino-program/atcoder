@@ -403,23 +403,16 @@ def print_grid(grid):
 
 # ===== main関数 =====
 def main() -> None:
-    N, M = MAP()
-    S = STR()
-    T = STR()
-    ans = INF
-    for i in range(N-M + 1):
-        ans_tmp = 0
-        for j, v in enumerate(T):
-            # 1 9 = 2
-            # 9 1 = 8
-            v = int(v)
-            tmp = int(S[i+j])
-            if tmp < v:
-                tmp += 10
-            ans_tmp += tmp - v
-        ans = min(ans, ans_tmp)
-    print(ans)
-
+    N = STR()
+    for i in range(10**6):
+        tmp = 0
+        for j in N:
+            tmp += int(j) ** 2
+        N = str(tmp)
+        if N == "1":
+            Yes()
+            sys.exit()
+    No()
 
 
 
