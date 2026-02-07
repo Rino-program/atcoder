@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "problem",
+      "type": "pickString",
+      "description": "Select problem",
+      "options": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "label": "OJ Test",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "test",
+        "-c",
+        "${config:python.defaultInterpreterPath} main${input:problem}.py",
+        "-d",
+        "input/${input:problem}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "OJ Submit",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "-c",
+        "..\\atcoder.jp_cookies.lwp",
+        "submit",
+        "https://atcoder.jp/contests/ABC435/tasks/abc435_${input:problem}",
+        "main${input:problem}.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "params": {
+    "TAKE_DELAY_FACTOR": 1.3841918399216242,
+    "PLACE_BIAS": 3.8947419265820264,
+    "PLACE_MARGIN": 1.958884902244259,
+    "MAX_CAND_EVAL": 18,
+    "BEAM_DEPTH": 4,
+    "BEAM_WIDTH": 4
+  },
+  "score": 13263
+}

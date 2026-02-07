@@ -13,5 +13,6 @@
       ]
     }
   },
-  "terminal.integrated.defaultProfile.windows": "PowerShell (venv-pypy311)"
+  "terminal.integrated.defaultProfile.windows": "PowerShell (venv-pypy311)",
+  "python.REPL.enableREPLSmartSend": false
 }

@@ -1,0 +1,18 @@
+{
+  "contest": {
+    "static": [
+      ".vscode",
+      "input"
+    ]
+  },
+  "task": {
+    "program": [
+      [
+        "main.py",
+        "main{tasklabel}.py"
+      ]
+    ],
+    "submit": "main{tasklabel}.py",
+    "testdir": "input/{tasklabel}"
+  }
+}

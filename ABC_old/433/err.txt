@@ -1,0 +1,2 @@
+[DEBUG] [X-after-pick] topv=33 direct_cost=5 direct_cost_real=NA candidates=1 best_place=None best_cost=inf
+[DEBUG] [X-STATS] eval=1 no_partner=0 no_best=1 selected=0 executed=0 skipped_occupied=0 take_delayed=0
