@@ -2,9 +2,23 @@
   "version": "2.0.0",
   "inputs": [
     {
-      "id": "problem",
+      "id": "problemTest",
       "type": "pickString",
-      "description": "Select problem",
+      "description": "OJ Test: select problem",
+      "options": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "id": "problemSubmit",
+      "type": "pickString",
+      "description": "OJ Submit: select problem",
       "options": [
         "a",
         "b",
@@ -24,9 +38,9 @@
       "args": [
         "test",
         "-c",
-        "${config:python.defaultInterpreterPath} main${input:problem}.py",
+        "${config:python.defaultInterpreterPath} main${input:problemTest}.py",
         "-d",
-        "input/${input:problem}"
+        "input/${input:problemTest}"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -41,8 +55,8 @@
         "-c",
         "..\\atcoder.jp_cookies.lwp",
         "submit",
-        "https://atcoder.jp/contests/ABC435/tasks/abc435_${input:problem}",
-        "main${input:problem}.py"
+        "https://atcoder.jp/contests/ABC435/tasks/abc435_${input:problemSubmit}",
+        "main${input:problemSubmit}.py"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
