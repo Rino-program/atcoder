@@ -1,0 +1,75 @@
+{
+  "contest": {
+    "id": "arc214",
+    "title": "AtCoder Regular Contest 214",
+    "url": "https://atcoder.jp/contests/arc214"
+  },
+  "tasks": [
+    {
+      "id": "arc214_a",
+      "label": "A",
+      "title": "Same Sum Grid Path",
+      "url": "https://atcoder.jp/contests/arc214/tasks/arc214_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "arc214_b",
+      "label": "B",
+      "title": "Missing Number in Graph",
+      "url": "https://atcoder.jp/contests/arc214/tasks/arc214_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "arc214_c",
+      "label": "C",
+      "title": "Divide into 4 Teams",
+      "url": "https://atcoder.jp/contests/arc214/tasks/arc214_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "arc214_d",
+      "label": "D",
+      "title": "Distinct Sum Grid Path",
+      "url": "https://atcoder.jp/contests/arc214/tasks/arc214_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "arc214_e",
+      "label": "E",
+      "title": "Swap K times",
+      "url": "https://atcoder.jp/contests/arc214/tasks/arc214_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "arc214_f",
+      "label": "F",
+      "title": "Unpredictable Moves",
+      "url": "https://atcoder.jp/contests/arc214/tasks/arc214_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    }
+  ]
+}

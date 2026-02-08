@@ -1,0 +1,75 @@
+{
+  "contest": {
+    "id": "joi2026sf",
+    "title": "JOI 2025/2026 セミファイナルステージ 過去問",
+    "url": "https://atcoder.jp/contests/joi2026sf"
+  },
+  "tasks": [
+    {
+      "id": "joi2026_semifinal_a",
+      "label": "A",
+      "title": "座席 3 (Seats 3)",
+      "url": "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "joi2026_semifinal_b",
+      "label": "B",
+      "title": "宝石商 (Jeweler)",
+      "url": "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "joi2026_semifinal_c",
+      "label": "C",
+      "title": "衣服 (Clothes)",
+      "url": "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "joi2026_semifinal_d",
+      "label": "D",
+      "title": "川下り(River Rafting) ",
+      "url": "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "joi2026_semifinal_e",
+      "label": "E",
+      "title": "新たな橋 (New Bridge)",
+      "url": "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "joi2026_semifinal_f",
+      "label": "F",
+      "title": "奇妙な機械 (Strange Machine)",
+      "url": "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    }
+  ]
+}

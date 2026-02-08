@@ -1078,7 +1078,7 @@ def print_grid(grid:  List[List], sep: str = '') -> None:
     for row in grid:
         print(sep.join(map(str, row)))
 
-def yn(cond: bool) -> None:
+def print_yes_no(cond: bool) -> None:
     """条件に応じてYes/No出力"""
     print("Yes" if cond else "No")
 

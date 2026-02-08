@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc444",
+    "title": "AtCoder Beginner Contest 444",
+    "url": "https://atcoder.jp/contests/abc444"
+  },
+  "tasks": [
+    {
+      "id": "abc444_a",
+      "label": "A",
+      "title": "Repdigit",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc444_b",
+      "label": "B",
+      "title": "Digit Sum",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc444_c",
+      "label": "C",
+      "title": "AtCoder Riko",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc444_d",
+      "label": "D",
+      "title": "Many Repunit Sum",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc444_e",
+      "label": "E",
+      "title": "Sparse Range",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc444_f",
+      "label": "F",
+      "title": "Half and Median",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc444_g",
+      "label": "G",
+      "title": "Kyoen",
+      "url": "https://atcoder.jp/contests/abc444/tasks/abc444_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}

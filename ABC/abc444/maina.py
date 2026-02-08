@@ -1078,7 +1078,7 @@ def print_grid(grid:  List[List], sep: str = '') -> None:
     for row in grid:
         print(sep.join(map(str, row)))
 
-def yn(cond: bool) -> None:
+def print_yes_no(cond: bool) -> None:
     """条件に応じてYes/No出力"""
     print("Yes" if cond else "No")
 
@@ -1089,9 +1089,19 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
-    N = INT()
-    print(N)
-
+    N, M = MAP()
+    A = LISTSI(N)
+    B = LISTSI(M)
+    now = 0
+    for i, v in enumerate(B):
+        now += v
+        if now >= N - 1:
+            print(i+1)
+            break
+        now += A[now]
+        if now >= N - 1:
+            print(i+1)
+            break
 
 
 
