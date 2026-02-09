@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0001",
+    "title": "AtCoder Weekday Contest 0001 Beta",
+    "url": "https://atcoder.jp/contests/awc0001"
+  },
+  "tasks": [
+    {
+      "id": "awc0001_a",
+      "label": "A",
+      "title": "Bacteria Growth Experiment",
+      "url": "https://atcoder.jp/contests/awc0001/tasks/awc0001_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0001_b",
+      "label": "B",
+      "title": "Exam Passers",
+      "url": "https://atcoder.jp/contests/awc0001/tasks/awc0001_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0001_c",
+      "label": "C",
+      "title": "Discount Coupon",
+      "url": "https://atcoder.jp/contests/awc0001/tasks/awc0001_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0001_d",
+      "label": "D",
+      "title": "Merchant on the Highway",
+      "url": "https://atcoder.jp/contests/awc0001/tasks/awc0001_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0001_e",
+      "label": "E",
+      "title": "Temperature Fluctuation Range",
+      "url": "https://atcoder.jp/contests/awc0001/tasks/awc0001_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

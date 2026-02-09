@@ -1,0 +1,67 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "problemTest",
+      "type": "pickString",
+      "description": "OJ Test: select problem",
+      "options": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "id": "problemSubmit",
+      "type": "pickString",
+      "description": "OJ Submit: select problem",
+      "options": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "label": "OJ Test",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "test",
+        "-c",
+        "${config:python.defaultInterpreterPath} main${input:problemTest}.py",
+        "-d",
+        "input/${input:problemTest}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "OJ Submit",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "submit",
+        "-l",
+        "6083",
+        "https://atcoder.jp/contests/${workspaceFolderBasename}/tasks/${workspaceFolderBasename}_${input:problemSubmit}",
+        "main${input:problemSubmit}.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

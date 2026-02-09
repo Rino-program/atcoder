@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260209_2",
+    "title": "AtCoder Daily Training ALL 2026/02/09 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260209_2"
+  },
+  "tasks": [
+    {
+      "id": "abc376_a",
+      "label": "A",
+      "title": "Candy Button",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc376_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc269_a",
+      "label": "B",
+      "title": "Anyway Takahashi",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc269_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc345_b",
+      "label": "C",
+      "title": "Integer Division Returns",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc345_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc299_b",
+      "label": "D",
+      "title": "Trick Taking",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc299_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc298_c",
+      "label": "E",
+      "title": "Cards Query Problem",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc298_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc258_c",
+      "label": "F",
+      "title": "Rotation",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc258_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc350_d",
+      "label": "G",
+      "title": "New Friends",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc350_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc369_e",
+      "label": "H",
+      "title": "Sightseeing Tour ",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc369_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc389_f",
+      "label": "I",
+      "title": "Rated Range",
+      "url": "https://atcoder.jp/contests/adt_all_20260209_2/tasks/abc389_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}
