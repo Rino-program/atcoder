@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260210_2",
+    "title": "AtCoder Daily Training ALL 2026/02/10 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260210_2"
+  },
+  "tasks": [
+    {
+      "id": "abc439_a",
+      "label": "A",
+      "title": "2^n - 2*n",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc439_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc327_a",
+      "label": "B",
+      "title": "ab",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc327_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc375_b",
+      "label": "C",
+      "title": "Traveling Takahashi Problem",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc375_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc352_b",
+      "label": "D",
+      "title": "Typing",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc352_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc314_c",
+      "label": "E",
+      "title": "Rotate Colored Subsequence",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc314_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc212_c",
+      "label": "F",
+      "title": "Min Difference",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc212_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc344_d",
+      "label": "G",
+      "title": "String Bags",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc344_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc226_e",
+      "label": "H",
+      "title": "Just one",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc226_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc302_f",
+      "label": "I",
+      "title": "Merge Set",
+      "url": "https://atcoder.jp/contests/adt_all_20260210_2/tasks/abc302_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}
