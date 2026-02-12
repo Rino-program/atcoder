@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260211_1",
+    "title": "AtCoder Daily Training ALL 2026/02/11 16:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260211_1"
+  },
+  "tasks": [
+    {
+      "id": "abc283_a",
+      "label": "A",
+      "title": "Power",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc283_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc216_a",
+      "label": "B",
+      "title": "Signed Difficulty",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc216_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc370_b",
+      "label": "C",
+      "title": "Binary Alchemy",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc370_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc242_b",
+      "label": "D",
+      "title": "Minimize Ordering",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc242_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc411_c",
+      "label": "E",
+      "title": "Black Intervals",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc411_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc382_c",
+      "label": "F",
+      "title": "Kaiten Sushi",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc382_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc279_d",
+      "label": "G",
+      "title": "Freefall",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc279_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc311_e",
+      "label": "H",
+      "title": "Defect-free Squares",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc311_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc215_f",
+      "label": "I",
+      "title": "Dist Max 2",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_1/tasks/abc215_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

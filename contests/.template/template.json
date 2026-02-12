@@ -1,8 +1,7 @@
 {
   "contest": {
     "static": [
-      ".vscode",
-      "input"
+      ".vscode"
     ]
   },
   "task": {

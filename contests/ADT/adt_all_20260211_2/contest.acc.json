@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260211_2",
+    "title": "AtCoder Daily Training ALL 2026/02/11 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260211_2"
+  },
+  "tasks": [
+    {
+      "id": "abc284_a",
+      "label": "A",
+      "title": "Sequence of Strings",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc284_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc338_a",
+      "label": "B",
+      "title": "Capitalized?",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc338_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc435_b",
+      "label": "C",
+      "title": "No-Divisible Range",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc435_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc397_b",
+      "label": "D",
+      "title": "Ticket Gate Log",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc397_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc401_c",
+      "label": "E",
+      "title": "K-bonacci",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc401_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc416_c",
+      "label": "F",
+      "title": "Concat (X-th)",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc416_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc342_d",
+      "label": "G",
+      "title": "Square Pair",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc342_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc223_e",
+      "label": "H",
+      "title": "Placing Rectangles",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc223_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc272_f",
+      "label": "I",
+      "title": "Two Strings",
+      "url": "https://atcoder.jp/contests/adt_all_20260211_2/tasks/abc272_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

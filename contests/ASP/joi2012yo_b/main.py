@@ -1090,7 +1090,32 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    points = [0] * N
+    for i in range(N*(N-1)//2):
+        a, b, c, d = MAP()
+        if c > d:
+            points[a - 1] += 3
+        elif c < d:
+            points[b - 1] += 3
+        else:
+            points[a - 1] += 1
+            points[b - 1] += 1
+    ranking = sorted([(v, i) for i, v in enumerate(points)], reverse=True)
+    ans = [0] * N
+    current_rank = 1
+    same_count = 1
+    for i in range(N):
+        if i == 0:
+            ans[ranking[i][1]] = 1
+        else:
+            if ranking[i - 1][0] == ranking[i][0]:
+                ans[ranking[i][1]] = current_rank
+                same_count += 1
+            else:
+                current_rank += same_count
+                ans[ranking[i][1]] = current_rank
+                same_count = 1
+    print("\n".join(map(str, ans)))
 
 
 

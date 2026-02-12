@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260212_2",
+    "title": "AtCoder Daily Training ALL 2026/02/12 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260212_2"
+  },
+  "tasks": [
+    {
+      "id": "abc335_a",
+      "label": "A",
+      "title": "202<s>3</s>",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc335_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc433_a",
+      "label": "B",
+      "title": "Happy Birthday! 4",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc433_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc408_b",
+      "label": "C",
+      "title": "Compression",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc408_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc226_b",
+      "label": "D",
+      "title": "Counting Arrays",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc226_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc237_c",
+      "label": "E",
+      "title": "kasaka",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc237_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc248_c",
+      "label": "F",
+      "title": "Dice Sum",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc248_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc292_d",
+      "label": "G",
+      "title": "Unicyclic Components",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc292_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc334_e",
+      "label": "H",
+      "title": "Christmas Color Grid 1",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc334_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc388_f",
+      "label": "I",
+      "title": "Dangerous Sugoroku ",
+      "url": "https://atcoder.jp/contests/adt_all_20260212_2/tasks/abc388_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}
