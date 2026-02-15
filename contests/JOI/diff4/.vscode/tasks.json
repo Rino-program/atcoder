@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "problemId",
+      "type": "promptString",
+      "description": "Problem ID (e.g. joi2026_yo1a_d)",
+      "default": "joi2007yo_f"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "OJ Test",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "test",
+        "-c",
+        "${config:python.defaultInterpreterPath} ${input:problemId}.py",
+        "-d",
+        "input/${input:problemId}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

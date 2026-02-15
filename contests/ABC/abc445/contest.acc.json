@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc445",
+    "title": "AtCoder Beginner Contest 445",
+    "url": "https://atcoder.jp/contests/abc445"
+  },
+  "tasks": [
+    {
+      "id": "abc445_a",
+      "label": "A",
+      "title": "Strong Word",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc445_b",
+      "label": "B",
+      "title": "Center Alignment",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc445_c",
+      "label": "C",
+      "title": "Sugoroku Destination",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc445_d",
+      "label": "D",
+      "title": "Reconstruct Chocolate",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc445_e",
+      "label": "E",
+      "title": "Many LCMs",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc445_f",
+      "label": "F",
+      "title": "Exactly K Steps 2",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc445_g",
+      "label": "G",
+      "title": "Knight Placement",
+      "url": "https://atcoder.jp/contests/abc445/tasks/abc445_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}

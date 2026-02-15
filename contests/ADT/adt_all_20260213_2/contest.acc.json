@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260213_2",
+    "title": "AtCoder Daily Training ALL 2026/02/13 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260213_2"
+  },
+  "tasks": [
+    {
+      "id": "abc428_a",
+      "label": "A",
+      "title": "Grandma's Footsteps",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc428_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc384_a",
+      "label": "B",
+      "title": "aaaadaa",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc384_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc327_b",
+      "label": "C",
+      "title": "A^A",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc327_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc216_b",
+      "label": "D",
+      "title": "Same Name",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc216_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc376_c",
+      "label": "E",
+      "title": "Prepare Another Box",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc376_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc438_c",
+      "label": "F",
+      "title": "1D puyopuyo",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc438_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc290_d",
+      "label": "G",
+      "title": "Marking",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc290_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc403_e",
+      "label": "H",
+      "title": "Forbidden Prefix",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc403_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc252_f",
+      "label": "I",
+      "title": "Bread",
+      "url": "https://atcoder.jp/contests/adt_all_20260213_2/tasks/abc252_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

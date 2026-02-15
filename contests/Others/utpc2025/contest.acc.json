@@ -1,0 +1,163 @@
+{
+  "contest": {
+    "id": "utpc2025",
+    "title": "UTPC 2025",
+    "url": "https://atcoder.jp/contests/utpc2025"
+  },
+  "tasks": [
+    {
+      "id": "utpc2025_a",
+      "label": "A",
+      "title": "Apparently Make UTPC",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "utpc2025_b",
+      "label": "B",
+      "title": "Binary Tree Counting",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "utpc2025_c",
+      "label": "C",
+      "title": "Convex Crusher",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "utpc2025_d",
+      "label": "D",
+      "title": "Divisible by 11",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "utpc2025_e",
+      "label": "E",
+      "title": "Exchange or Not",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "utpc2025_f",
+      "label": "F",
+      "title": "Finite Bracket Sequence",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "utpc2025_g",
+      "label": "G",
+      "title": "Greatest Bracket Sequence",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "utpc2025_h",
+      "label": "H",
+      "title": "Heyawake-like Problem",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_h",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "utpc2025_i",
+      "label": "I",
+      "title": "Inversion Graph",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_i",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    },
+    {
+      "id": "utpc2025_j",
+      "label": "J",
+      "title": "Jelly",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_j",
+      "directory": {
+        "path": ".",
+        "testdir": "input/j",
+        "submit": "mainj.py"
+      }
+    },
+    {
+      "id": "utpc2025_k",
+      "label": "K",
+      "title": "Keep or Gamble",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_k",
+      "directory": {
+        "path": ".",
+        "testdir": "input/k",
+        "submit": "maink.py"
+      }
+    },
+    {
+      "id": "utpc2025_l",
+      "label": "L",
+      "title": "Linear Floor",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_l",
+      "directory": {
+        "path": ".",
+        "testdir": "input/l",
+        "submit": "mainl.py"
+      }
+    },
+    {
+      "id": "utpc2025_m",
+      "label": "M",
+      "title": "Max Conference",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_m",
+      "directory": {
+        "path": ".",
+        "testdir": "input/m",
+        "submit": "mainm.py"
+      }
+    },
+    {
+      "id": "utpc2025_n",
+      "label": "N",
+      "title": "Numerical Error",
+      "url": "https://atcoder.jp/contests/utpc2025/tasks/utpc2025_n",
+      "directory": {
+        "path": ".",
+        "testdir": "input/n",
+        "submit": "mainn.py"
+      }
+    }
+  ]
+}

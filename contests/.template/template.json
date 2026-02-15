@@ -1,7 +1,12 @@
 {
   "contest": {
     "static": [
-      ".vscode"
+      ".vscode",
+      "template.py",
+      [
+        ".md",
+        "{ContestID}.md"
+      ]
     ]
   },
   "task": {

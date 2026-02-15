@@ -3,8 +3,22 @@ param(
   [string]$Url
 )
 
-$root = Resolve-Path (Join-Path $PSScriptRoot ".")
-$aspRoot = Join-Path $root "ASP"
+$scriptDir = (Resolve-Path (Join-Path $PSScriptRoot ".")).Path
+$cwd = (Get-Location).Path
+
+if ((Split-Path -Leaf $cwd) -ieq "ASP") {
+  $aspRoot = $cwd
+  $root = (Resolve-Path (Join-Path $aspRoot "..")).Path
+} elseif (Test-Path (Join-Path $scriptDir "ASP")) {
+  $root = $scriptDir
+  $aspRoot = Join-Path $root "ASP"
+} elseif ((Split-Path -Leaf $scriptDir) -ieq "ASP") {
+  $aspRoot = $scriptDir
+  $root = (Resolve-Path (Join-Path $aspRoot "..")).Path
+} else {
+  Write-Error "Cannot determine root/ASP directory. Run this script from ASP or place asp.ps1 under contests/."
+  exit 1
+}
 
 if ($Url -notmatch "^https?://atcoder\.jp/contests/([^/]+)/tasks/([^/?#]+)") {
   Write-Error "Invalid AtCoder task URL: $Url"
@@ -46,6 +60,20 @@ $aspTasks = @"
       "problemMatcher": []
     },
     {
+      "label": "OJ Test+Submit",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "oj test -c `${config:python.defaultInterpreterPath} main.py -d input; if (`$LASTEXITCODE -ne 0) { exit `$LASTEXITCODE }; oj submit -l 6083 $Url main.py"
+      ],
+      "options": {
+        "cwd": "`${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "OJ Submit",
       "type": "shell",
       "command": "oj",
@@ -68,13 +96,21 @@ if (Test-Path $destVscode) {
   Set-Content -Path $tasksPath -Value $aspTasks -Encoding ascii
 }
 
-$templateMain = Join-Path $root ".template\main.py"
+$templateMainSource = Join-Path $root ".template\main.py"
+$templatePySource = Join-Path $root ".template\template.py"
 $mainPath = Join-Path $dest "main.py"
+$templatePath = Join-Path $dest "template.py"
 
-if (Test-Path $templateMain) {
-  Copy-Item -Force $templateMain $mainPath
+if (Test-Path $templateMainSource) {
+  Copy-Item -Force $templateMainSource $mainPath
+} elseif (Test-Path $templatePySource) {
+  Copy-Item -Force $templatePySource $mainPath
 } elseif (-not (Test-Path $mainPath)) {
   Set-Content -Path $mainPath -Value "" -NoNewline
+}
+
+if (Test-Path $templatePySource) {
+  Copy-Item -Force $templatePySource $templatePath
 }
 
 $contestAccPath = Join-Path $dest "contest.acc.json"

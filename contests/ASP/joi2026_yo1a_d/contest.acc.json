@@ -1,0 +1,20 @@
+{
+  "contest": {
+    "url": "https://atcoder.jp/contests/joi2026yo1a",
+    "title": "joi2026yo1a",
+    "id": "joi2026yo1a"
+  },
+  "tasks": [
+    {
+      "directory": {
+        "path": ".",
+        "testdir": "input",
+        "submit": "main.py"
+      },
+      "url": "https://atcoder.jp/contests/joi2026yo1a/tasks/joi2026_yo1a_d",
+      "title": "joi2026_yo1a_d",
+      "id": "joi2026_yo1a_d",
+      "label": "joi2026_yo1a_d"
+    }
+  ]
+}
