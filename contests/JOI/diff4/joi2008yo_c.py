@@ -89,8 +89,27 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
-
+    taro = [INT() for _ in range(N)]
+    hanako = [i for i in range(1, 2 * N + 1) if i not in taro]
+    taro.sort()
+    hanako.sort()
+    table = 0
+    trun = 0
+    while taro and hanako:
+        hand = taro if trun == 0 else hanako
+        ind = bisect_right(hand, table)
+        if ind < len(hand):
+            table = hand.pop(ind)
+        else:
+            table = 0
+        trun ^= 1
+    if not taro:
+        taro_score = len(hanako)
+        hanako_score = 0
+    else:
+        taro_score = 0
+        hanako_score = len(taro)
+    print(taro_score, hanako_score, sep="\n")
 
 
 

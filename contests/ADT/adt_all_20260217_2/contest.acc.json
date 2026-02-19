@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260217_2",
+    "title": "AtCoder Daily Training ALL 2026/02/17 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260217_2"
+  },
+  "tasks": [
+    {
+      "id": "abc219_a",
+      "label": "A",
+      "title": "AtCoder Quiz 2",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc219_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc385_a",
+      "label": "B",
+      "title": "Equally",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc385_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc360_b",
+      "label": "C",
+      "title": "Vertical Reading",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc360_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc223_b",
+      "label": "D",
+      "title": "String Shifting",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc223_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc280_c",
+      "label": "E",
+      "title": "Extra Character",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc280_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc318_c",
+      "label": "F",
+      "title": "Blue Spring",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc318_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc285_d",
+      "label": "G",
+      "title": "Change Usernames",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc285_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc250_e",
+      "label": "H",
+      "title": "Prefix Equality",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc250_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc326_f",
+      "label": "I",
+      "title": "Robot Rotation",
+      "url": "https://atcoder.jp/contests/adt_all_20260217_2/tasks/abc326_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

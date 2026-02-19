@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0009",
+    "title": "AtCoder Weekday Contest 0009 Beta",
+    "url": "https://atcoder.jp/contests/awc0009"
+  },
+  "tasks": [
+    {
+      "id": "awc0009_a",
+      "label": "A",
+      "title": "Total Shopping Amount",
+      "url": "https://atcoder.jp/contests/awc0009/tasks/awc0009_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0009_b",
+      "label": "B",
+      "title": "Dungeon Exploration",
+      "url": "https://atcoder.jp/contests/awc0009/tasks/awc0009_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0009_c",
+      "label": "C",
+      "title": "Apple Harvest",
+      "url": "https://atcoder.jp/contests/awc0009/tasks/awc0009_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0009_d",
+      "label": "D",
+      "title": "Planting Flower Seeds",
+      "url": "https://atcoder.jp/contests/awc0009/tasks/awc0009_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0009_e",
+      "label": "E",
+      "title": "Temperature Fluctuation Survey",
+      "url": "https://atcoder.jp/contests/awc0009/tasks/awc0009_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

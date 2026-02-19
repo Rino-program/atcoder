@@ -89,7 +89,17 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    A = LIST()
+    tmp = 0
+    left = [0] * (N+1)
+    right = [0] * (N+1)
+    for i in range(N):
+        left[i+1] = left[i] + (A[i] == 0)
+        right[i+1] = right[i] + (A[N-i-1] == 1)
+    ans = INF
+    for i in range(N+1):
+        ans = min(ans, left[i] + right[N-i])
+    print(ans)
 
 
 

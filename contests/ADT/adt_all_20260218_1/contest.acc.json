@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260218_1",
+    "title": "AtCoder Daily Training ALL 2026/02/18 16:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260218_1"
+  },
+  "tasks": [
+    {
+      "id": "abc266_a",
+      "label": "A",
+      "title": "Middle  Letter",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc266_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc249_a",
+      "label": "B",
+      "title": "Jogging",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc249_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc405_b",
+      "label": "C",
+      "title": "Not All",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc405_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc221_b",
+      "label": "D",
+      "title": "typo",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc221_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc306_c",
+      "label": "E",
+      "title": "Centers",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc306_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc331_c",
+      "label": "F",
+      "title": "Sum of Numbers Greater Than Me",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc331_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc261_d",
+      "label": "G",
+      "title": "Flipping and Bonus",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc261_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc424_e",
+      "label": "H",
+      "title": "Cut in Half",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc424_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc310_f",
+      "label": "I",
+      "title": "Make 10 Again",
+      "url": "https://atcoder.jp/contests/adt_all_20260218_1/tasks/abc310_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

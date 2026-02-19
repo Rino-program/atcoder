@@ -88,8 +88,15 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
-    N = INT()
-    print(N)
+    N, K = MAP()
+    A = [INT() for _ in range(N)]
+    tmp = 0
+    As = [0] + [(tmp := tmp + i) for i in A]
+    #print(As)
+    ans = -INF
+    for i in range(N-K+1):
+        ans = max(ans, As[i+K]-As[i])
+    print(ans)
 
 
 

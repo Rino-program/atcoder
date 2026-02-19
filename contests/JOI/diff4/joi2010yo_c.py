@@ -89,7 +89,30 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    M = INT()
+    AB = LISTS(M)
+    g = [list() for _ in range(N)]
+    for A, B in AB:
+        g[A-1].append(B-1)
+        g[B-1].append(A-1)
+    
+    ans = set()
+    stack = []
+    for i in range(1):
+        for j in g[i]:
+            stack.append(j)
+    stack2 = []
+    for i in stack:
+        for j in g[i]:
+            stack2.append(j)
+    ans = set()
+    for i in stack:
+        ans.add(i)
+    for i in stack2:
+        ans.add(i)
+    if 0 in ans:
+        ans.remove(0)
+    print(len(ans))
 
 
 

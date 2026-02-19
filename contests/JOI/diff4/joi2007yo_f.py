@@ -88,8 +88,29 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
+    A, B = MAP()
     N = INT()
-    print(N)
+    blocked = set()
+    for _ in range(N):
+        x, y = MAP()
+        blocked.add((x, y))
+
+    dp = [[0] * (B + 1) for _ in range(A + 1)]
+
+    if (1, 1) not in blocked:
+        dp[1][1] = 1
+
+    for i in range(1, A + 1):
+        for j in range(1, B + 1):
+            if (i, j) in blocked or (i == 1 and j == 1):
+                continue
+
+            if i > 1:
+                dp[i][j] += dp[i - 1][j]
+            if j > 1:
+                dp[i][j] += dp[i][j - 1]
+
+    print(dp[A][B])
 
 
 

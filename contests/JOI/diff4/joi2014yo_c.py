@@ -88,8 +88,18 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
-    N = INT()
-    print(N)
+    W, H, N = MAP()
+    XY = LISTS(N)
+    now = XY.pop(0)
+    ans = 0
+    for X, Y in XY:
+        if (now[0] < X and now[1] < Y) or (now[0] > X and now[1] > Y):
+            ans += min((tmp1:= abs(now[0]-X)), (tmp2 := abs(now[1]-Y)))
+            ans += abs(tmp1-tmp2)
+        else:
+            ans += abs(now[0]-X) + abs(now[1]-Y)
+        now = [X, Y]
+    print(ans)
 
 
 

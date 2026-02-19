@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260216_1",
+    "title": "AtCoder Daily Training ALL 2026/02/16 16:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260216_1"
+  },
+  "tasks": [
+    {
+      "id": "abc285_a",
+      "label": "A",
+      "title": "Edge Checker 2",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc285_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc273_a",
+      "label": "B",
+      "title": "A Recursive Function",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc273_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc422_b",
+      "label": "C",
+      "title": "Looped Rope",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc422_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc349_b",
+      "label": "D",
+      "title": "Commencement",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc349_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc307_c",
+      "label": "E",
+      "title": "Ideal Sheet",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc307_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc289_c",
+      "label": "F",
+      "title": "Coverage",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc289_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc254_d",
+      "label": "G",
+      "title": "Together Square",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc254_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc395_e",
+      "label": "H",
+      "title": "Flip Edge",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc395_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc225_f",
+      "label": "I",
+      "title": "String Cards",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_1/tasks/abc225_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

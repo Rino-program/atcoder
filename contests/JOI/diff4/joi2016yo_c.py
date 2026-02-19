@@ -88,8 +88,27 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
-    N = INT()
-    print(N)
+    N, M = MAP()
+    hata = STRS(N)
+    hatac = [dict(Counter(list(i))) for i in hata]
+    ans = INF
+    for n, i in enumerate(hatac):
+        d = defaultdict(int)
+        for j, v in i.items():
+            d[j] = v
+        hatac[n] = d
+    for i in range(1, N-1):
+        for j in range(i + 1, N):
+            tmp = 0
+            for k in range(N):
+                if i > k:
+                    tmp += hatac[k]["R"] + hatac[k]["B"]
+                elif j > k:
+                    tmp += hatac[k]["R"] + hatac[k]["W"]
+                else:
+                    tmp += hatac[k]["W"] + hatac[k]["B"]
+            ans = min(ans, tmp)
+    print(ans)
 
 
 

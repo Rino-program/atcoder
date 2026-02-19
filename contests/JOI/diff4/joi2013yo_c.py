@@ -89,7 +89,31 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    S = STR()
+    A = STRS(N)
+    ans = 0
+    # めんどくさい問題..
+    # え待って間に合う？
+    # 100**4 = 10**8
+    # うーん...
+    # 間に合う...????
+    for i in A:# 文字
+        lenge = len(i)
+        for j in range(lenge): # 開始位置
+            for k in range(1, lenge): # 間隔
+                s = ""
+                for l in range(j, lenge, k):
+                    s += i[l]
+                    if len(s) == len(S):
+                        break
+                #debug(s)
+                if s == S:
+                    ans += 1
+                    break
+            else:
+                continue
+            break
+    print(ans)
 
 
 

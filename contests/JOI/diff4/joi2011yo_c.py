@@ -89,7 +89,10 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    K = INT()
+    AB = LISTS(K)
+    for A, B in AB:
+        print([1, 2, 3][min(A-1,N-A,B-1,N-B)%3])
 
 
 

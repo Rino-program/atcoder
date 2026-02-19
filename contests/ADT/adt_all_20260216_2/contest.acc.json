@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260216_2",
+    "title": "AtCoder Daily Training ALL 2026/02/16 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260216_2"
+  },
+  "tasks": [
+    {
+      "id": "abc263_a",
+      "label": "A",
+      "title": "Full House",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc263_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc415_a",
+      "label": "B",
+      "title": "Unsupported Type",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc415_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc243_b",
+      "label": "C",
+      "title": "Hit and Blow",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc243_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc356_b",
+      "label": "D",
+      "title": "Nutrients",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc356_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc385_c",
+      "label": "E",
+      "title": "Illuminate Buildings",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc385_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc294_c",
+      "label": "F",
+      "title": "Merge Sequences",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc294_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc417_d",
+      "label": "G",
+      "title": "Takahashi's Expectation",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc417_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc300_e",
+      "label": "H",
+      "title": "Dice Product 3",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc300_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc231_f",
+      "label": "I",
+      "title": "Jealous Two",
+      "url": "https://atcoder.jp/contests/adt_all_20260216_2/tasks/abc231_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}
