@@ -1,74 +1,74 @@
 {
-  "version": "2.0.0",
-  "inputs": [
-    {
-      "id": "problemTest",
-      "type": "promptString",
-      "description": "OJ Test: problem label (e.g. a)",
-      "default": "a"
-    },
-    {
-      "id": "problemSubmit",
-      "type": "promptString",
-      "description": "OJ Submit: problem label (e.g. a)",
-      "default": "a"
-    },
-    {
-      "id": "problemTestSubmit",
-      "type": "promptString",
-      "description": "OJ Test+Submit: problem label (e.g. a)",
-      "default": "a"
-    }
-  ],
-  "tasks": [
-    {
-      "label": "OJ Test",
-      "type": "shell",
-      "command": "oj",
-      "args": [
-        "test",
-        "-c",
-        "${config:python.defaultInterpreterPath} main${input:problemTest}.py",
-        "-d",
-        "input/${input:problemTest}"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "OJ Test+Submit",
-      "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-NoProfile",
-        "-File",
-        ".vscode/oj_test_submit.ps1",
-        "${config:python.defaultInterpreterPath}",
-        "${input:problemTestSubmit}",
-        "${workspaceFolderBasename}"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "OJ Submit",
-      "type": "shell",
-      "command": "oj",
-      "args": [
-        "submit",
-        "-l",
-        "6083",
-        "https://atcoder.jp/contests/${workspaceFolderBasename}/tasks/${workspaceFolderBasename}_${input:problemSubmit}",
-        "main${input:problemSubmit}.py"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": []
-    }
-  ]
+	"version": "2.0.0",
+	"inputs": [
+		{
+			"id": "problemTest",
+			"type": "promptString",
+			"description": "OJ Test: problem label (e.g. a)",
+			"default": "a"
+		},
+		{
+			"id": "problemSubmit",
+			"type": "promptString",
+			"description": "OJ Submit: problem label (e.g. a)",
+			"default": "a"
+		},
+		{
+			"id": "problemTestSubmit",
+			"type": "promptString",
+			"description": "OJ Test+Submit: problem label (e.g. a)",
+			"default": "a"
+		}
+	],
+	"tasks": [
+		{
+			"label": "OJ Test",
+			"type": "shell",
+			"command": "oj",
+			"args": [
+				"test",
+				"-c",
+				"${config:python.defaultInterpreterPath} main${input:problemTest}.py",
+				"-d",
+				"input/${input:problemTest}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "OJ Test+Submit",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-File",
+				".vscode/oj_test_submit.ps1",
+				"${config:python.defaultInterpreterPath}",
+				"${input:problemTestSubmit}",
+				"${workspaceFolderBasename}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "OJ Submit",
+			"type": "shell",
+			"command": "oj",
+			"args": [
+				"submit",
+				"-l",
+				"6083",
+				"https://atcoder.jp/contests/${workspaceFolderBasename}/tasks/${workspaceFolderBasename}_${input:problemSubmit}",
+				"main${input:problemSubmit}.py"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		}
+	]
 }
