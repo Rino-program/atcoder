@@ -16,7 +16,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -74,7 +74,7 @@ def NO(): print("NO")
 # 数学・整数論（出題頻度：非常に高い）
 # ============================================================
 
-def is_prime(n:  int) -> bool:
+def is_prime(n: int) -> bool:
     """素数判定 O(√n)"""
     if n < 2: return False
     if n == 2: return True
@@ -83,7 +83,7 @@ def is_prime(n:  int) -> bool:
         if n % i == 0: return False
     return True
 
-def prime_factors(n:  int) -> dict[int, int]:
+def prime_factors(n: int) -> dict[int, int]:
     """素因数分解 O(√n) → {素因数: 指数}"""
     factors = defaultdict(int)
     d = 2
@@ -109,7 +109,7 @@ def divisors(n: int) -> list[int]:
 def sieve(n: int) -> tuple[list[bool], list[int]]:
     """エラトステネスの篩 O(n log log n) → (is_prime配列, 素数リスト)"""
     is_prime_arr = [True] * (n + 1)
-    if n >= 0:  is_prime_arr[0] = False
+    if n >= 0: is_prime_arr[0] = False
     if n >= 1: is_prime_arr[1] = False
     for p in range(2, int(n ** 0.5) + 1):
         if is_prime_arr[p]:
@@ -135,7 +135,7 @@ def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     g, x, y = ext_gcd(b, a % b)
     return g, y, x - (a // b) * y
 
-def pow_mod(x: int, n: int, mod:  int = MOD) -> int:
+def pow_mod(x: int, n: int, mod: int = MOD) -> int:
     """高速べき乗 O(log n)"""
     res = 1
     x %= mod
@@ -146,7 +146,7 @@ def pow_mod(x: int, n: int, mod:  int = MOD) -> int:
         n >>= 1
     return res
 
-def mod_inverse(a:  int, mod: int = MOD) -> int:
+def mod_inverse(a: int, mod: int = MOD) -> int:
     """逆元 (modが素数の場合) O(log mod)"""
     return pow_mod(a, mod - 2, mod)
 
@@ -157,7 +157,7 @@ def mod_inverse(a:  int, mod: int = MOD) -> int:
 
 class Combination:
     """組み合わせ計算 前処理O(n)、クエリO(1)
-    
+
     使用例:
         comb = Combination(200000)
         print(comb.nCr(10, 3))  # 120
@@ -166,25 +166,25 @@ class Combination:
         self.mod = mod
         self.fact = [1] * (n + 1)
         self.inv_fact = [1] * (n + 1)
-        
+
         for i in range(1, n + 1):
             self.fact[i] = self.fact[i - 1] * i % mod
-        
-        self.inv_fact[n] = pow_mod(self. fact[n], mod - 2, mod)
+
+        self.inv_fact[n] = pow_mod(self.fact[n], mod - 2, mod)
         for i in range(n - 1, -1, -1):
             self.inv_fact[i] = self.inv_fact[i + 1] * (i + 1) % mod
 
-    def nCr(self, n:  int, r: int) -> int:
+    def nCr(self, n: int, r: int) -> int:
         """組み合わせ nCr"""
-        if r < 0 or r > n:  return 0
-        return self.fact[n] * self. inv_fact[r] % self.mod * self.inv_fact[n - r] % self.mod
+        if r < 0 or r > n: return 0
+        return self.fact[n] * self.inv_fact[r] % self.mod * self.inv_fact[n - r] % self.mod
 
-    def nPr(self, n: int, r:  int) -> int:
+    def nPr(self, n: int, r: int) -> int:
         """順列 nPr"""
         if r < 0 or r > n: return 0
         return self.fact[n] * self.inv_fact[n - r] % self.mod
 
-    def nHr(self, n: int, r:  int) -> int:
+    def nHr(self, n: int, r: int) -> int:
         """重複組み合わせ nHr = C(n+r-1, r)"""
         return self.nCr(n + r - 1, r)
 
@@ -197,7 +197,7 @@ class Combination:
 # 累積和（出題頻度：非常に高い）
 # ============================================================
 
-def prefix_sum(arr:  list[int]) -> list[int]:
+def prefix_sum(arr: list[int]) -> list[int]:
     """1次元累積和 → ps[r] - ps[l] で [l, r) の和"""
     ps = [0]
     for x in arr:
@@ -224,7 +224,7 @@ def range_sum_2d(ps: list[list[int]], y1: int, x1: int, y2: int, x2: int) -> int
 
 class Imos1D:
     """1次元いもす法
-    
+
     使用例:
         imos = Imos1D(10)
         imos.add(2, 5, 1)   # [2, 5) に +1
@@ -235,7 +235,7 @@ class Imos1D:
         self.n = n
         self.diff = [0] * (n + 1)
 
-    def add(self, l: int, r:  int, x: int = 1) -> None:
+    def add(self, l: int, r: int, x: int = 1) -> None:
         """[l, r) に x を加算"""
         self.diff[l] += x
         self.diff[r] -= x
@@ -251,21 +251,20 @@ class Imos1D:
 
 
 class Imos2D:
-    """2次元いもす法
-    
+    """2次元いもす法（0-indexed 半開区間）
+
     使用例:
         imos = Imos2D(H, W)
         imos.add(y1, x1, y2, x2, 1)  # [y1,y2) × [x1,x2) に +1
         result = imos.build()
     """
-    def __init__(self, h: int, w:  int):
+    def __init__(self, h: int, w: int):
         self.h = h
         self.w = w
         self.diff = [[0] * (w + 1) for _ in range(h + 1)]
 
     def add(self, y1: int, x1: int, y2: int, x2: int, x: int = 1) -> None:
-        """[y1, y2) × [x1, x2) に x を加算"""
-        x1, y1 = x1-1, y1-1
+        """[y1, y2) × [x1, x2) に x を加算（0-indexed）"""
         self.diff[y1][x1] += x
         self.diff[y1][x2] -= x
         self.diff[y2][x1] -= x
@@ -290,7 +289,7 @@ class Imos2D:
 
 class DSU:
     """union-Find木（経路圧縮 + サイズ併合）
-    
+
     使用例:
         uf = DSU(n)
         uf.merge(0, 1)
@@ -302,16 +301,16 @@ class DSU:
         self.n = n
         self._group_count = n
 
-    def leader(self, x:  int) -> int:
+    def leader(self, x: int) -> int:
         """根を取得"""
         if self.parent[x] != x:
-            self.parent[x] = self. leader(self.parent[x])
+            self.parent[x] = self.leader(self.parent[x])
         return self.parent[x]
 
-    def merge(self, a: int, b:  int) -> bool:
+    def merge(self, a: int, b: int) -> bool:
         """併合（成功でTrue）"""
-        a, b = self. leader(a), self.leader(b)
-        if a == b:  return False
+        a, b = self.leader(a), self.leader(b)
+        if a == b: return False
         if self.rank[a] < self.rank[b]: a, b = b, a
         self.parent[b] = a
         self.rank[a] += self.rank[b]
@@ -322,9 +321,9 @@ class DSU:
         """同じグループか"""
         return self.leader(a) == self.leader(b)
 
-    def size(self, x:  int) -> int:
+    def size(self, x: int) -> int:
         """xが属するグループのサイズ"""
-        return self. rank[self.leader(x)]
+        return self.rank[self.leader(x)]
 
     def group_count(self) -> int:
         """グループ数"""
@@ -340,7 +339,7 @@ class DSU:
 
 class WeightedDSU:
     """重み付きUnion-Find（ポテンシャル付き）
-    
+
     weight(x) - weight(y) = w となるような重みを管理
     使用例:
         wuf = WeightedDSU(n)
@@ -350,7 +349,7 @@ class WeightedDSU:
     def __init__(self, n: int):
         self.parent = list(range(n))
         self.rank = [1] * n
-        self. weight = [0] * n  # 親への重み
+        self.weight = [0] * n  # 親への重み
 
     def leader(self, x: int) -> int:
         if self.parent[x] == x:
@@ -365,21 +364,21 @@ class WeightedDSU:
         self.leader(x)
         return self.weight[x]
 
-    def diff(self, x: int, y:  int) -> int:
+    def diff(self, x: int, y: int) -> int:
         """weight[x] - weight[y] を返す"""
         return self.get_weight(x) - self.get_weight(y)
 
-    def merge(self, x: int, y:  int, w: int) -> bool:
+    def merge(self, x: int, y: int, w: int) -> bool:
         """weight[x] - weight[y] = w となるよう併合"""
         w += self.get_weight(y) - self.get_weight(x)
-        x, y = self. leader(x), self.leader(y)
+        x, y = self.leader(x), self.leader(y)
         if x == y: return False
         if self.rank[x] < self.rank[y]:
             x, y = y, x
             w = -w
-        self. parent[y] = x
-        self. weight[y] = w
-        self. rank[x] += self.rank[y]
+        self.parent[y] = x
+        self.weight[y] = -w
+        self.rank[x] += self.rank[y]
         return True
 
     def same(self, x: int, y: int) -> bool:
@@ -390,7 +389,7 @@ class WeightedDSU:
 # グラフアルゴリズム（出題頻度：非常に高い）
 # ============================================================
 
-def build_graph(n:  int, edges: list[tuple[int, int]], directed: bool = False) -> list[list[int]]:
+def build_graph(n: int, edges: list[tuple[int, int]], directed: bool = False) -> list[list[int]]:
     """隣接リスト構築（重みなし）"""
     g = [[] for _ in range(n)]
     for a, b in edges:
@@ -399,7 +398,7 @@ def build_graph(n:  int, edges: list[tuple[int, int]], directed: bool = False) -
             g[b].append(a)
     return g
 
-def build_weighted_graph(n:  int, edges: list[tuple[int, int, int]], directed: bool = False) -> list[list[tuple[int, int]]]:
+def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], directed: bool = False) -> list[list[tuple[int, int]]]:
     """隣接リスト構築（重みあり）"""
     g = [[] for _ in range(n)]
     for a, b, c in edges:
@@ -421,7 +420,7 @@ def bfs(g: list[list[int]], s: int) -> list[int]:
                 q.append(to)
     return dist
 
-def bfs_grid(grid: list[list[str]], sy: int, sx:  int, wall: str = '#') -> list[list[int]]: 
+def bfs_grid(grid: list[list[str]], sy: int, sx: int, wall: str = '#') -> list[list[int]]:
     """グリッドBFS → 到達不能は-1"""
     H, W = len(grid), len(grid[0])
     dist = [[-1] * W for _ in range(H)]
@@ -442,15 +441,15 @@ def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     dist[s] = 0
     pq = [(0, s)]
     while pq:
-        d, v = heapq. heappop(pq)
-        if d > dist[v]:  continue
+        d, v = heapq.heappop(pq)
+        if d > dist[v]: continue
         for to, w in g[v]:
             if dist[v] + w < dist[to]:
                 dist[to] = dist[v] + w
-                heapq. heappush(pq, (dist[to], to))
+                heapq.heappush(pq, (dist[to], to))
     return dist
 
-def bellman_ford(n: int, edges:  list[tuple[int, int, int]], s: int) -> tuple[list[int], bool]:
+def bellman_ford(n: int, edges: list[tuple[int, int, int]], s: int) -> tuple[list[int], bool]:
     """Bellman-Ford法 O(VE) → (距離, 負閉路あり?)"""
     dist = [INF] * n
     dist[s] = 0
@@ -461,7 +460,7 @@ def bellman_ford(n: int, edges:  list[tuple[int, int, int]], s: int) -> tuple[li
                 dist[v] = dist[u] + w
                 updated = True
         if not updated: break
-        if i == n - 1:  return dist, True
+        if i == n - 1: return dist, True
     return dist, False
 
 def warshall_floyd(n: int, edges: list[tuple[int, int, int]]) -> list[list[int]]:
@@ -492,17 +491,17 @@ def topological_sort(g: list[list[int]]) -> list[int] | None:
         for to in g[v]:
             indeg[to] -= 1
             if indeg[to] == 0:
-                q. append(to)
+                q.append(to)
     return result if len(result) == n else None
 
-def detect_cycle(g:  list[list[int]]) -> list[int] | None:
+def detect_cycle(g: list[list[int]]) -> list[int] | None:
     """有向グラフの閉路検出 → 閉路の頂点リスト or None"""
     n = len(g)
     color = [0] * n  # 0:未訪問, 1: 訪問中, 2:訪問済
     parent = [-1] * n
     cycle = []
-    
-    def dfs(v:  int) -> bool:
+
+    def dfs(v: int) -> bool:
         color[v] = 1
         for to in g[v]:
             if color[to] == 1:  # 閉路発見
@@ -518,7 +517,7 @@ def detect_cycle(g:  list[list[int]]) -> list[int] | None:
                 if dfs(to): return True
         color[v] = 2
         return False
-    
+
     for i in range(n):
         if color[i] == 0:
             if dfs(i): return cycle
@@ -535,7 +534,7 @@ def tree_diameter(g: list[list[int]]) -> tuple[int, int, int]:
         dist = bfs(g, s)
         farthest = max(range(len(g)), key=lambda x: dist[x])
         return farthest, dist[farthest]
-    
+
     u, _ = bfs_farthest(0)
     v, d = bfs_farthest(u)
     return d, u, v
@@ -566,7 +565,7 @@ def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
     size = [1] * n
     parent = tree_parent(g, root)
     depth = tree_depth(g, root)
-    order = sorted(range(n), key=lambda x:  -depth[x])
+    order = sorted(range(n), key=lambda x: -depth[x])
     for v in order:
         if parent[v] != -1:
             size[parent[v]] += size[v]
@@ -575,32 +574,32 @@ def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
 
 class LCA:
     """最小共通祖先（ダブリング）
-    
+
     使用例:
         lca = LCA(g, root=0)
         print(lca.query(u, v))
-        print(lca. dist(u, v))
+        print(lca.dist(u, v))
     """
     def __init__(self, g: list[list[int]], root: int = 0):
         self.n = len(g)
         self.log = max(1, (self.n - 1).bit_length())
-        self.depth = [-1] * self. n
-        self. parent = [[-1] * self. n for _ in range(self.log)]
-        
+        self.depth = [-1] * self.n
+        self.parent = [[-1] * self.n for _ in range(self.log)]
+
         # BFSで深さと親を計算
         self.depth[root] = 0
         q = deque([root])
         while q:
             v = q.popleft()
             for to in g[v]:
-                if self. depth[to] == -1:
-                    self.depth[to] = self. depth[v] + 1
+                if self.depth[to] == -1:
+                    self.depth[to] = self.depth[v] + 1
                     self.parent[0][to] = v
-                    q. append(to)
-        
+                    q.append(to)
+
         # ダブリングテーブル構築
         for k in range(1, self.log):
-            for v in range(self. n):
+            for v in range(self.n):
                 if self.parent[k-1][v] != -1:
                     self.parent[k][v] = self.parent[k-1][self.parent[k-1][v]]
 
@@ -613,17 +612,17 @@ class LCA:
         for k in range(self.log):
             if (diff >> k) & 1:
                 v = self.parent[k][v]
-        if u == v:  return u
+        if u == v: return u
         # 二分探索でLCAを求める
         for k in range(self.log - 1, -1, -1):
             if self.parent[k][u] != self.parent[k][v]:
-                u = self. parent[k][u]
+                u = self.parent[k][u]
                 v = self.parent[k][v]
         return self.parent[0][u]
 
-    def dist(self, u: int, v:  int) -> int:
+    def dist(self, u: int, v: int) -> int:
         """u-v間の距離"""
-        return self. depth[u] + self.depth[v] - 2 * self. depth[self.query(u, v)]
+        return self.depth[u] + self.depth[v] - 2 * self.depth[self.query(u, v)]
 
 
 # ============================================================
@@ -632,14 +631,14 @@ class LCA:
 
 class BIT:
     """Binary Indexed Tree (Fenwick Tree) 0-indexed
-    
+
     使用例:
         bit = BIT(n)
         bit.add(i, x)        # a[i] += x
-        bit. sum(i)           # a[0] + ...  + a[i]
+        bit.sum(i)           # a[0] + ...  + a[i]
         bit.range_sum(l, r)  # a[l] + ... + a[r-1]
     """
-    def __init__(self, n:  int):
+    def __init__(self, n: int):
         self.n = n
         self.data = [0] * (n + 1)
 
@@ -649,7 +648,7 @@ class BIT:
             self.data[i] += x
             i += i & -i
 
-    def sum(self, i:  int) -> int:
+    def sum(self, i: int) -> int:
         """a[0] + ... + a[i]"""
         s = 0
         i += 1
@@ -660,7 +659,7 @@ class BIT:
 
     def range_sum(self, l: int, r: int) -> int:
         """a[l] + ... + a[r-1]"""
-        if l >= r:  return 0
+        if l >= r: return 0
         return self.sum(r - 1) - (self.sum(l - 1) if l > 0 else 0)
 
     def lower_bound(self, w: int) -> int:
@@ -678,7 +677,7 @@ class BIT:
 
 class SegTree:
     """汎用Segment Tree
-    
+
     使用例:
         # 区間和
         st = SegTree(n, op=operator.add, e=0)
@@ -693,16 +692,16 @@ class SegTree:
         self.op = op
         self.e = e
         self.size = 1
-        while self.size < n:  self.size <<= 1
+        while self.size < n: self.size <<= 1
         self.data = [e] * (2 * self.size)
 
-    def build(self, arr:  list[int]) -> None:
+    def build(self, arr: list[int]) -> None:
         for i, v in enumerate(arr):
             self.data[self.size + i] = v
         for i in range(self.size - 1, 0, -1):
-            self.data[i] = self.op(self.data[i << 1], self. data[i << 1 | 1])
+            self.data[i] = self.op(self.data[i << 1], self.data[i << 1 | 1])
 
-    def set(self, i:  int, v: int) -> None:
+    def set(self, i: int, v: int) -> None:
         """a[i] = v"""
         i += self.size
         self.data[i] = v
@@ -714,21 +713,22 @@ class SegTree:
         """a[i]を取得"""
         return self.data[self.size + i]
 
-    def query(self, l:  int, r: int) -> int:
+    def query(self, l: int, r: int) -> int:
         """[l, r) の演算結果"""
-        res = self.e
+        sml = self.e
+        smr = self.e
         l += self.size
-        r += self. size
+        r += self.size
         while l < r:
             if l & 1:
-                res = self.op(res, self. data[l])
+                sml = self.op(sml, self.data[l])
                 l += 1
             if r & 1:
                 r -= 1
-                res = self.op(res, self. data[r])
+                smr = self.op(self.data[r], smr)
             l >>= 1
             r >>= 1
-        return res
+        return self.op(sml, smr)
 
     def all_query(self) -> int:
         """全区間の演算結果"""
@@ -739,7 +739,7 @@ class SegTree:
 
 class SortedMultiset:
     """平方分割によるMultiset（要素の重複OK）
-    
+
     使用例:
         ms = SortedMultiset()
         ms.add(5)
@@ -763,14 +763,14 @@ class SortedMultiset:
         if self.size == 0:
             self.buckets = []
         else:
-            bucket_size = int(math.ceil(math.sqrt(self. size / self.BUCKET_RATIO)))
+            bucket_size = int(math.ceil(math.sqrt(self.size / self.BUCKET_RATIO)))
             self.buckets = [a[i:i + bucket_size] for i in range(0, self.size, bucket_size)]
 
     def __len__(self) -> int:
         return self.size
 
     def __contains__(self, x: int) -> bool:
-        if not self.buckets:  return False
+        if not self.buckets: return False
         for bucket in self.buckets:
             if bucket[0] <= x <= bucket[-1]:
                 i = bisect_left(bucket, x)
@@ -778,13 +778,13 @@ class SortedMultiset:
                     return True
         return False
 
-    def add(self, x:  int) -> None:
+    def add(self, x: int) -> None:
         if not self.buckets:
-            self. buckets = [[x]]
+            self.buckets = [[x]]
             self.size = 1
             return
         for i, bucket in enumerate(self.buckets):
-            if x <= bucket[-1] or i == len(self. buckets) - 1:
+            if x <= bucket[-1] or i == len(self.buckets) - 1:
                 pos = bisect_right(bucket, x)
                 bucket.insert(pos, x)
                 self.size += 1
@@ -797,10 +797,10 @@ class SortedMultiset:
             if bucket[0] <= x <= bucket[-1]:
                 i = bisect_left(bucket, x)
                 if i < len(bucket) and bucket[i] == x:
-                    bucket. pop(i)
+                    bucket.pop(i)
                     self.size -= 1
                     if not bucket:
-                        self. buckets. remove(bucket)
+                        self.buckets.remove(bucket)
                     return True
         return False
 
@@ -812,10 +812,10 @@ class SortedMultiset:
             i -= len(bucket)
         raise IndexError
 
-    def index(self, x:  int) -> int:
+    def index(self, x: int) -> int:
         """x未満の要素数を返す"""
         cnt = 0
-        for bucket in self. buckets:
+        for bucket in self.buckets:
             if x <= bucket[0]:
                 return cnt
             if x > bucket[-1]:
@@ -824,7 +824,7 @@ class SortedMultiset:
                 return cnt + bisect_left(bucket, x)
         return cnt
 
-    def index_right(self, x:  int) -> int:
+    def index_right(self, x: int) -> int:
         """x以下の要素数を返す"""
         cnt = 0
         for bucket in self.buckets:
@@ -843,7 +843,7 @@ class SortedMultiset:
 
 class RollingHash:
     """ローリングハッシュ（ダブルハッシュ版）
-    
+
     使用例:
         rh = RollingHash("abcabc")
         print(rh.get(0, 3) == rh.get(3, 6))  # True ("abc" == "abc")
@@ -855,21 +855,21 @@ class RollingHash:
         self.n = len(s)
         self.hash1 = [0] * (self.n + 1)
         self.hash2 = [0] * (self.n + 1)
-        self.pow1 = [1] * (self. n + 1)
-        self.pow2 = [1] * (self. n + 1)
+        self.pow1 = [1] * (self.n + 1)
+        self.pow2 = [1] * (self.n + 1)
         for i in range(self.n):
             self.hash1[i + 1] = (self.hash1[i] * self.BASE1 + ord(s[i])) % self.MOD1
-            self.hash2[i + 1] = (self. hash2[i] * self.BASE2 + ord(s[i])) % self.MOD2
-            self.pow1[i + 1] = self.pow1[i] * self.BASE1 % self. MOD1
+            self.hash2[i + 1] = (self.hash2[i] * self.BASE2 + ord(s[i])) % self.MOD2
+            self.pow1[i + 1] = self.pow1[i] * self.BASE1 % self.MOD1
             self.pow2[i + 1] = self.pow2[i] * self.BASE2 % self.MOD2
 
     def get(self, l: int, r: int) -> tuple[int, int]:
         """[l, r) のハッシュ"""
         h1 = (self.hash1[r] - self.hash1[l] * self.pow1[r - l]) % self.MOD1
-        h2 = (self.hash2[r] - self.hash2[l] * self. pow2[r - l]) % self.MOD2
+        h2 = (self.hash2[r] - self.hash2[l] * self.pow2[r - l]) % self.MOD2
         return (h1, h2)
 
-    def lcp(self, i: int, j:  int) -> int:
+    def lcp(self, i: int, j: int) -> int:
         """位置i, jから始まる最長共通接頭辞の長さ"""
         ok, ng = 0, min(self.n - i, self.n - j) + 1
         while ng - ok > 1:
@@ -882,7 +882,7 @@ class RollingHash:
 
 
 def z_algorithm(s: str) -> list[int]:
-    """Z-algorithm:  z[i] = s と s[i: ] の最長共通接頭辞の長さ"""
+    """Z-algorithm: z[i] = s と s[i: ] の最長共通接頭辞の長さ"""
     n = len(s)
     z = [0] * n
     z[0] = n
@@ -905,7 +905,7 @@ def z_algorithm(s: str) -> list[int]:
 
 def run_length_encode(s: str | list) -> list[tuple]:
     """ランレングス圧縮 → [(文字, 連続数), ...]"""
-    if not s:  return []
+    if not s: return []
     result = []
     current, count = s[0], 1
     for i in range(1, len(s)):
@@ -924,11 +924,11 @@ def run_length_encode(s: str | list) -> list[tuple]:
 
 def binary_search_min(ng: int, ok: int, check: Callable[[int], bool]) -> int:
     """条件を満たす最小値を探す
-    
+
     check(x) = True となる最小の x を返す
     ng: 条件を満たさない値, ok: 条件を満たす値
-    
-    例:  x >= 5 となる最小のx → binary_search_min(0, 10, lambda x: x >= 5)
+
+    例: x >= 5 となる最小のx → binary_search_min(0, 10, lambda x: x >= 5)
     """
     while abs(ok - ng) > 1:
         mid = (ok + ng) // 2
@@ -938,12 +938,12 @@ def binary_search_min(ng: int, ok: int, check: Callable[[int], bool]) -> int:
             ng = mid
     return ok
 
-def binary_search_max(ok: int, ng:  int, check:  Callable[[int], bool]) -> int:
+def binary_search_max(ok: int, ng: int, check: Callable[[int], bool]) -> int:
     """条件を満たす最大値を探す
-    
+
     check(x) = True となる最大の x を返す
     ok: 条件を満たす値, ng: 条件を満たさない値
-    
+
     例: x <= 5 となる最大のx → binary_search_max(0, 10, lambda x: x <= 5)
     """
     while abs(ok - ng) > 1:
@@ -993,11 +993,11 @@ def chebyshev(x1: int, y1: int, x2: int, y2: int) -> int:
     """チェビシェフ距離"""
     return max(abs(x1 - x2), abs(y1 - y2))
 
-def ceil_div(a: int, b:  int) -> int:
+def ceil_div(a: int, b: int) -> int:
     """切り上げ除算 (a, b > 0)"""
     return (a + b - 1) // b
 
-def floor_sum(n: int, m: int, a: int, b:  int) -> int:
+def floor_sum(n: int, m: int, a: int, b: int) -> int:
     """Σ_{i=0}^{n-1} floor((a*i + b) / m)"""
     ans = 0
     if a >= m:
@@ -1074,7 +1074,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -1092,13 +1092,6 @@ def main() -> None:
     #out = Output()
     N = INT()
     print(N)
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
