@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc446",
+    "title": "AtCoder Beginner Contest 446",
+    "url": "https://atcoder.jp/contests/abc446"
+  },
+  "tasks": [
+    {
+      "id": "abc446_a",
+      "label": "A",
+      "title": "Handmaid",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc446_b",
+      "label": "B",
+      "title": "Greedy Draft",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc446_c",
+      "label": "C",
+      "title": "Omelette Restaurant",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc446_d",
+      "label": "D",
+      "title": "Max Straight",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc446_e",
+      "label": "E",
+      "title": "Multiple-Free Sequences",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc446_f",
+      "label": "F",
+      "title": "Reachable Set 2",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc446_g",
+      "label": "G",
+      "title": "221 Subsequence",
+      "url": "https://atcoder.jp/contests/abc446/tasks/abc446_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
