@@ -83,10 +83,40 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def rotate_90(grid: list[list]) -> list[list]:
+    """グリッドを時計回りに90度回転"""
+    H, W = len(grid), len(grid[0])
+    return [[grid[H - 1 - j][i] for j in range(H)] for i in range(W)]
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    H, W = MAP()
+    X = LISTS(H)
+    Xn = [[0 for i in range(W+1)]]
+    for i in X:
+        tmp = [0]
+        s = 0
+        for j in i:
+            tmp.append((s := s + j))
+        Xn.append(tmp)
+    X = deepcopy(Xn)
+    X = rotate_90(X)
+    X = rotate_90(X)
+    X = rotate_90(X)
+    Xn = []
+    for i in X:
+        tmp = []
+        s = 0
+        for j in i:
+            tmp.append((s := s + j))
+        Xn.append(tmp)
+    Xn = rotate_90(Xn)
+    #print_grid(Xn,sep="_")
+    Q = INT()
+    for i in range(Q):
+        A, B, C, D = MAP()
+        #debug(Xn[C][D], Xn[A-1][D], Xn[C-1][A-1], Xn[A-1][B-1])
+        print(Xn[C][D] - Xn[A-1][D] - Xn[C][B-1] + Xn[A-1][B-1])
 
 
 

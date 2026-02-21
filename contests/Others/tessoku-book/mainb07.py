@@ -85,18 +85,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    D = INT()
+    T = INT()
     N = INT()
     LR = LISTS(N)
-    li = [0] * D
+    li = [0] * (T)
     for L, R in LR:
-        li[L-1] += 1
-        if R != D:li[R] -= 1
+        li[L] += 1
+        if R != T:li[R] -= 1
     tmp = 0
-    for i in range(D):
+    for i in range(T):
         li[i] = (tmp := tmp + li[i])
     print("\n".join(map(str, li)))
-
 
 
 

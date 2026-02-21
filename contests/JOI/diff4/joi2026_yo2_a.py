@@ -89,7 +89,14 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    A = sorted(LIST())
+    ans = (INF, 0)
+    for i in range(N-1):
+        if A[i] < A[i+1]:
+            ans = min(ans, (tmp := (abs((N-i)-i-1), i)))
+            #debug(A[i], tmp, ans)
+    debug(ans)
+    print(A[(list(ans)[1]+1)])
 
 
 

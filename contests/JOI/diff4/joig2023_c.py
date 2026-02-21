@@ -88,8 +88,16 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
-    N = INT()
-    print(N)
+    N, M, K = MAP()
+    A = LIST()
+    B = LIST()
+    for i in B:
+        idx = bisect_left(A, i)
+        #debug(idx)
+        tmp = 0
+        if idx != N:tmp = max(tmp, max(0, K-abs(A[idx]-i)))
+        if idx != 0:tmp = max(tmp, max(0, K-abs(A[idx-1]-i)))
+        print(tmp)
 
 
 

@@ -86,6 +86,11 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    XY = LISTS(N)
+    
+    Q = INT()
+    for i in range(Q):
+        pass
     print(ans)
 
 

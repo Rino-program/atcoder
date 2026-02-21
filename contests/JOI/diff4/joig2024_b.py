@@ -88,8 +88,13 @@ def yn(cond: bool) -> None:
 def main() -> None:
     # ここに解答を書く
     #out = Output()
-    N = INT()
-    print(N)
+    N, D = MAP()
+    A = sorted(LIST())
+    for i in range(N):
+        if abs(A[i*2] - A[i*2+1]) > D:
+            No()
+            return
+    Yes()
 
 
 
