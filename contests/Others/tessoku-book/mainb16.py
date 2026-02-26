@@ -85,8 +85,20 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    # 理解しなおしてから再提出します
+    n = INT()
+    h = LIST()
+    dp = [INF] * n
+    dp[0] = 0
+    for i in range(1, n):
+        tonari = dp[i - 1] + abs(h[i] - h[i - 1]) # 1距離でdp
+        # 2距離でdp
+        if i == 1:
+            ikkotobashi = INF
+        else:
+            ikkotobashi = dp[i - 2] + abs(h[i] - h[i - 2])
+        dp[i] = min(tonari, ikkotobashi)
+    print(dp[-1]) # 初心者の頃(灰色の頃)だったから-1使ってなかったのか、
 
 
 

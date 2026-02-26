@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260225_1",
+    "title": "AtCoder Daily Training ALL 2026/02/25 16:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260225_1"
+  },
+  "tasks": [
+    {
+      "id": "abc358_a",
+      "label": "A",
+      "title": "Welcome to AtCoder Land",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc358_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc438_a",
+      "label": "B",
+      "title": "First Contest of the Year",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc438_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc296_b",
+      "label": "C",
+      "title": "Chessboard",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc296_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc294_b",
+      "label": "D",
+      "title": "ASCII Art",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc294_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc372_c",
+      "label": "E",
+      "title": "Count ABC Again",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc372_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc218_c",
+      "label": "F",
+      "title": "Shapes",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc218_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc411_d",
+      "label": "G",
+      "title": "Conflict 2",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc411_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc297_e",
+      "label": "H",
+      "title": "Kth Takoyaki Set",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc297_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc255_f",
+      "label": "I",
+      "title": "Pre-order and In-order",
+      "url": "https://atcoder.jp/contests/adt_all_20260225_1/tasks/abc255_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

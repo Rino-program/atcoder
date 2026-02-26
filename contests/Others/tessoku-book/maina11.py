@@ -85,8 +85,11 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    # queryにすればいいのに...
+    N, X = MAP()
+    A = LIST()
+    print(bisect_left(A, X)+1)
+    #print(A.index(A)+1)
 
 
 

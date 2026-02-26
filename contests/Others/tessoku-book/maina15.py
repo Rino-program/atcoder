@@ -85,8 +85,26 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
+    # 二分探索(尺取り法、半分全挙列含む)チャレンジ問題
+    # 全く関係ないけど優先度付きキューで解けそう。
+    # 今回の章でなんか使える物は無いかな？
+    # ソートして、順番求めて、元配列を変えるみたいな感じらしい。
+    # どちらも同じくらいか、、
+    # どっちもやりたい
+    # そういえばどっちも同じ原理でした(笑)
     N = INT()
-    print(ans)
+    A = LIST()
+    An = [(v, i) for i, v in enumerate(A)]
+    As = sorted(An)
+    tmp = 0
+    now = 0
+    for v, i in As:
+        if tmp != v:
+            now += 1
+            tmp = v
+        A[i] = now
+
+    print(" ".join(map(str, A)))
 
 
 

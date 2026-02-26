@@ -86,7 +86,44 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    B = LIST()
+    dp = [0]
+    for i in range(N):
+        tmp = INF
+        f = ""
+        #debug(dp)
+        if i != 0:
+            f = "A"
+            if i == 1:
+                tmp = min(tmp, dp[-1]+A[i-1])
+            else:
+                tmp = min(tmp, list(dp[-1])[0]+A[i-1])
+        if i > 1:
+            if i == 2:
+                if tmp > dp[-2]+B[i-2]:
+                    f = "B"
+                tmp = min(tmp, dp[-2]+B[i-2])
+            else:
+                if tmp > list(dp[-2])[0]+B[i-2]:
+                    f = "B"
+                tmp = min(tmp, list(dp[-2])[0]+B[i-2])
+        if i != 0:dp.append((tmp, f))
+    debug(dp)
+    #print(list(dp[-1])[0])
+    dp = deque(dp[::-1])
+    dp.pop()
+    ans = []
+    while dp:
+        tmp = len(dp)
+        _, X = dp.popleft()
+        if X == "B":
+            dp.popleft()
+        ans.append(tmp+1)
+    print(len(ans)+1)
+    print(" ".join(map(str, (ans+[1])[::-1])))
+
+
 
 
 

@@ -84,29 +84,30 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # ==============================================
 
 def main() -> None:
-    # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    A = LIST()
+
+    def check(T: int) -> bool:
+        """T秒後までに合計K枚以上印刷できるか判定"""
+        total = 0
+        for a in A:
+            total += T // a
+        return total >= K
+
+    # 二分探索 (答えの範囲: 1秒から10^9秒)
+    left = 1
+    right = 10**9
+    ans = right
+
+    while left <= right:
+        mid = (left + right) // 2
+        if check(mid):
+            ans = mid  # K枚以上なら、もっと短い時間でいける可能性がある
+            right = mid - 1
+        else:
+            left = mid + 1 # 足りないので時間を増やす
+
     print(ans)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()

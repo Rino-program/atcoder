@@ -85,7 +85,13 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    A = LIST()
+    tmp = 0
+    As = [0] + [(tmp := tmp + i) for i in A]
+    ans = 0
+    for i in range(N):
+        ans += bisect_right(As, As[i]+K)-i-1
     print(ans)
 
 

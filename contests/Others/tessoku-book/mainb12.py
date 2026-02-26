@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+from collections.abc import Callable
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -83,9 +84,39 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def f(N, x) -> bool:
+    return N >= x + x ** 3
+
+def binary_search_max(N: int, ok: int, ng: int, check) -> int:
+    """条件を満たす最大値を探す
+
+    check(x) = True となる最大の x を返す
+    ok: 条件を満たす値, ng: 条件を満たさない値
+
+    例: x <= 5 となる最大のx → binary_search_max(0, 10, lambda x: x <= 5)
+    """
+    while abs(ok - ng) > 1:
+        mid = (ok + ng) // 2
+        if check(N, mid):
+            ok = mid
+        else:
+            ng = mid
+    return ok
+
 def main() -> None:
     # ここに解答を書く
+    # 全く分からん
     N = INT()
+    tmp = binary_search_max(N, 1, 100000, f)
+    # 全探索する
+    now = tmp
+    mi = INF
+    ans = 0
+    for i in range(1000):
+        if mi > abs(N - (now + now ** 3)):
+            mi = abs(N - (now + now ** 3))
+            ans = now
+        now += 0.001
     print(ans)
 
 

@@ -85,7 +85,11 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    A = LIST()
+    ans = 0
+    for j, i in enumerate(A):
+        ans += bisect_right(A, i+K)-j-1
     print(ans)
 
 

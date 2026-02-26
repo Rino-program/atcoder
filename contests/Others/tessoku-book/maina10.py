@@ -85,8 +85,23 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
+    # 区間最大値？
+    # いったん本読んで見る
     N = INT()
-    print(ans)
+    A = LIST()
+    P = []
+    m = 0
+    for i in A:
+        m = max(i, m)
+        P.append(m)
+    m = 0
+    Q = []
+    for i in reversed(A):
+        m = max(i, m)
+        Q.append(m)
+    for i in range(INT()):
+        L, R = MAP()
+        print(max(P[L-2], Q[N-R-1]))
 
 
 

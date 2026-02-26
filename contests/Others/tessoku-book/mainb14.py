@@ -85,8 +85,31 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    A = LIST()
+    A1 = A[:N//2]
+    A2 = A[N//2:]
+    P = []
+    for i in range(2 ** len(A1)):
+        tmp = 0
+        for j in range(len(A1)):
+            if ((i>>j)&1):
+                tmp += A1[j]
+        P.append(tmp)
+    Q = set()
+    for i in range(2 ** len(A2)):
+        tmp = 0
+        for j in range(len(A2)):
+            if ((i>>j)&1):
+                tmp += A2[j]
+        Q.add(tmp)
+    debug(P, Q, A1, A2)
+    for i in P:
+        if (K - i) in Q:
+            Yes()
+            return
+    No()
+
 
 
 

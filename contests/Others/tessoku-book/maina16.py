@@ -85,8 +85,20 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
+    # dp編開幕ですね
     N = INT()
-    print(ans)
+    A = LIST()
+    B = LIST()
+    dp = [0]
+    for i in range(N):
+        tmp = INF
+        if i != 0:
+            tmp = min(tmp, dp[-1]+A[i-1])
+        if i > 1:
+            tmp = min(tmp, dp[-2]+B[i-2])
+        if i != 0:dp.append(tmp)
+    debug(dp)
+    print(dp[-1])
 
 
 

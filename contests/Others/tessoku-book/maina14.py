@@ -85,9 +85,22 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
-
+    N, K = MAP()
+    li = LISTS(4)
+    P = []
+    for i in li[0]:
+        for j in li[1]:
+            P.append(i+j)
+    Q = []
+    for i in li[2]:
+        for j in li[3]:
+            Q.append(i+j)
+    Q = set(Q)
+    for i in P:
+        if K-i in Q:
+            Yes()
+            return
+    No()
 
 
 

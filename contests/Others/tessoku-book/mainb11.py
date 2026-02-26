@@ -86,7 +86,9 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = sorted(LIST())
+    for i in range(INT()):
+        print(bisect_left(A, INT()))
 
 
 

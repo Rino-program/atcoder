@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260224_2",
+    "title": "AtCoder Daily Training ALL 2026/02/24 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260224_2"
+  },
+  "tasks": [
+    {
+      "id": "abc419_a",
+      "label": "A",
+      "title": "AtCoder Language",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc419_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc220_a",
+      "label": "B",
+      "title": "Find Multiple",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc220_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc421_b",
+      "label": "C",
+      "title": "Fibonacci Reversed",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc421_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc271_b",
+      "label": "D",
+      "title": "Maintain Multiple Sequences",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc271_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc292_c",
+      "label": "E",
+      "title": "Four Variables",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc292_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc407_c",
+      "label": "F",
+      "title": "Security 2",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc407_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc376_d",
+      "label": "G",
+      "title": "Cycle",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc376_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc387_e",
+      "label": "H",
+      "title": "Digit Sum Divisible 2",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc387_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc213_f",
+      "label": "I",
+      "title": "Common Prefixes",
+      "url": "https://atcoder.jp/contests/adt_all_20260224_2/tasks/abc213_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

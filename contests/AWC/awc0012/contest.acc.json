@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0012",
+    "title": "AtCoder Weekday Contest 0012 Beta",
+    "url": "https://atcoder.jp/contests/awc0012"
+  },
+  "tasks": [
+    {
+      "id": "awc0012_a",
+      "label": "A",
+      "title": "Typhoon Damage Survey",
+      "url": "https://atcoder.jp/contests/awc0012/tasks/awc0012_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0012_b",
+      "label": "B",
+      "title": "Factory Quality Inspection",
+      "url": "https://atcoder.jp/contests/awc0012/tasks/awc0012_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0012_c",
+      "label": "C",
+      "title": "Team Formation",
+      "url": "https://atcoder.jp/contests/awc0012/tasks/awc0012_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0012_d",
+      "label": "D",
+      "title": "Escape from the Maze",
+      "url": "https://atcoder.jp/contests/awc0012/tasks/awc0012_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0012_e",
+      "label": "E",
+      "title": "Stone Crossing Game",
+      "url": "https://atcoder.jp/contests/awc0012/tasks/awc0012_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
