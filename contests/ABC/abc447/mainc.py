@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -73,7 +74,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -85,35 +86,46 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    H, W = MAP()
-    H, W = H+1, W+1
-    A = LIST()
-    dp = [[0 for _ in range(W)] for _ in range(H)]
-    dp[0][0] = 1
-    for i in range(1, H):
-        for j in range(W):
-            if dp[i-1][j]:
-                dp[i][j] = 1
-            elif j-A[i-1] >= 0 and dp[i-1][j-A[i-1]]:
-                dp[i][j] = 1
-            else:
-                dp[i][j] = 0
-    ans = []
-    if dp[-1][-1]:
-        # 逆に見ていく
-        # 順番に並べてある必要はない。
-        now = H-1, W-1
-        while now != [0, 0]:
-            if dp[now[0]-1][now[1]]: # 選んでない
-                now = [now[0]-1, now[1]]
-            elif dp[now[0]-1][now[1]-A[now[0]-1]]:
-                ans.append(now[0])
-                now = [now[0]-1, now[1]-A[now[0]-1]]
-        print(len(ans))
-        print(" ".join(map(str, ans)))
-    else:
-        pr(-1)
-        S = input()
+    S = STR()
+    T = STR()
+    li1 = []
+    li2 = []
+    Sn = []
+    Tn = []
+    tmp1 = 0
+    tmp2 = 0
+    for i in S:
+        if i != "A":
+            Sn.append(i)
+            li1.append(tmp1)
+            tmp1 = 0
+        else:
+            tmp1 += 1
+    li1.append(tmp1)
+    for j in T:
+        if j != "A":
+            Tn.append(j)
+            li2.append(tmp2)
+            tmp2 = 0
+        else:
+            tmp2 += 1
+    li2.append(tmp2)
+
+    if len(Sn) != len(Tn):
+        print(-1)
+        return
+    for i, j in zip(Sn, Tn):
+        if i != j:
+            print(-1)
+            return
+
+    debug(li1)
+    debug(li2)
+
+    ans = 0
+    for i, j in zip(li1, li2):
+        ans += abs(i-j)
+    print(ans)
 
 
 

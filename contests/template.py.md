@@ -103,6 +103,7 @@
 ## 16. 座標圧縮・転倒数・その他
 - `lis(arr)`: 最長増加部分列。
 - `compress()` / `compress_list()`: 座標圧縮。
+- `rank_data(arr, reverse, competition)`: データの順位付け。
 - `inversion_count(arr)`: 転倒数。
 - `manhattan(x1, y1, x2, y2)`: マンハッタン距離。
 - `chebyshev(x1, y1, x2, y2)`: チェビシェフ距離。

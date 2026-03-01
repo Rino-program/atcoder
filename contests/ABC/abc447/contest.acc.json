@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc447",
+    "title": "AtCoder Beginner Contest 447",
+    "url": "https://atcoder.jp/contests/abc447"
+  },
+  "tasks": [
+    {
+      "id": "abc447_a",
+      "label": "A",
+      "title": "Seats 2",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc447_b",
+      "label": "B",
+      "title": "mpp",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc447_c",
+      "label": "C",
+      "title": "Insert and Erase A",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc447_d",
+      "label": "D",
+      "title": "Take ABC 2",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc447_e",
+      "label": "E",
+      "title": "Divide Graph",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc447_f",
+      "label": "F",
+      "title": "Centipede Graph",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc447_g",
+      "label": "G",
+      "title": "Div. 1 & Div. 2",
+      "url": "https://atcoder.jp/contests/abc447/tasks/abc447_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}

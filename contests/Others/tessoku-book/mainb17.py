@@ -85,20 +85,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    n = INT()
-    h = LIST()
-    dp = [INF] * n
-    dp[0] = 0
-    for i in range(1, n):
-        if i == 1:
-            tonari = dp[i - 1] + abs(h[i] - h[i - 1]) # 1距離でdp
-        else:
-            
+    N = INT()
+    H = LIST()
+    dp = [(INF, "")] * N
+    dp[0] = (0, "E")
+    for i in range(1, N):
+        tonari = dp[i - 1][0] + abs(H[i] - H[i - 1]) # 1距離でdp
         # 2距離でdp
         if i == 1:
             ikkotobashi = INF
         else:
-            ikkotobashi = dp[i - 2] + abs(h[i] - h[i - 2])
+            ikkotobashi = dp[i - 2][0] + abs(H[i] - H[i - 2])
         if tonari < ikkotobashi:
             f = "A"
         else:

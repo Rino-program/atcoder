@@ -1091,7 +1091,8 @@ def main() -> None:
     # ここに解答を書く
     #out = Output()
     N = INT()
-    print(N)
+    for i in range(N):
+        print("There!")
 
 
 if __name__ == "__main__":

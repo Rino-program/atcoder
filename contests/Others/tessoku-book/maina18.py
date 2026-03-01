@@ -85,8 +85,23 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    H, W = MAP()
+    H, W = H+1, W+1
+    A = LIST()
+    dp = [[0 for _ in range(W)] for _ in range(H)]
+    dp[0][0] = 1
+    for i in range(1, H):
+        for j in range(W):
+            if dp[i-1][j]:
+                dp[i][j] = 1
+            elif j-A[i-1] >= 0 and dp[i-1][j-A[i-1]]:
+                dp[i][j] = 1
+            else:
+                dp[i][j] = 0
+    if dp[-1][-1]:
+        Yes()
+    else:
+        No()
 
 
 
