@@ -85,8 +85,23 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    S = STR()
+    T = STR()
+    dp = [[0 for i in range(len(T)+1)] for i in range(len(S)+1)]
+    for i in range(1, len(S)+1):
+        for j in range(1, len(T)+1):
+            tmp = 0
+            if S[i-1] == T[j-1]:
+                tmp = 1
+                if i-1 >= 0 and j-1 >= 0:
+                    tmp = max(tmp, dp[i-1][j-1]+1)
+            else:
+                if i-1 >= 0:
+                    tmp = max(tmp, dp[i-1][j])
+                if j-1 >= 0:
+                    tmp = max(tmp, dp[i][j-1])
+            dp[i][j] = tmp
+    print(dp[-1][-1])
 
 
 

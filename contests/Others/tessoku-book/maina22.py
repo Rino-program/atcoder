@@ -86,7 +86,14 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    B = LIST()
+    li = [-INF] * N
+    li[0] = 0
+    for i, j, k in zip(range(N), A, B):
+        li[j-1] = max(li[j-1], li[i]+100)
+        li[k-1] = max(li[k-1], li[i]+150)
+    print(li[N-1])
 
 
 

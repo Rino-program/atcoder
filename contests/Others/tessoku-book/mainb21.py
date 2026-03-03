@@ -86,7 +86,23 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    S = STR()
+    dp = [[0] * N for _ in range(N)]
+    # 長さ1の部分文字列は回文
+    for i in range(N):
+        dp[i][i] = 1
+    for l in range(2, N + 1):
+        for i in range(N - l + 1):
+            # iが左, jが右
+            j = i + l - 1
+            if S[i] == S[j]:
+                if l == 2: # ここで判定しないと、参照がおかしくなる？
+                    dp[i][j] = 2
+                else:
+                    dp[i][j] = dp[i+1][j-1] + 2
+            else:
+                dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+    print(dp[0][-1])
 
 
 

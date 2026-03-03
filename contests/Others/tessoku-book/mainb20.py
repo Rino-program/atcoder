@@ -83,10 +83,40 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def levenshtein_distance(s: str, t: str) -> int:
+    """概要:
+        文字列 s と t の編集距離（レーベンシュタイン距離）を求める。
+    入力:
+        s (str): 文字列1。
+        t (str): 文字列2。
+    出力:
+        int: 挿入・削除・置換（各コスト1）で s を t に変換する最小操作回数。
+    補足:
+        計算量は O(|s|*|t|)、メモリは O(min(|s|,|t|))。
+    """
+    if len(s) < len(t):
+        s, t = t, s
+    n, m = len(s), len(t)
+    if m == 0:
+        return n
+
+    prev = list(range(m + 1))
+    for i in range(1, n + 1):
+        curr = [i] + [0] * m
+        si = s[i - 1]
+        for j in range(1, m + 1):
+            cost = 0 if si == t[j - 1] else 1
+            curr[j] = min(
+                prev[j] + 1,
+                curr[j - 1] + 1,
+                prev[j - 1] + cost,
+            )
+        prev = curr
+    return prev[m]
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    print(levenshtein_distance(STR(), STR()))
 
 
 

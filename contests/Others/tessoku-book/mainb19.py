@@ -83,10 +83,44 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def main() -> None:
-    # ここに解答を書く
-    N = INT()
+import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    idx = 0
+    N, W = int(input_data[idx]), int(input_data[idx+1])
+    idx += 2
+    
+    items = []
+    for i in range(N):
+        w, v = int(input_data[idx]), int(input_data[idx+1])
+        items.append((w, v))
+        idx += 2
+    
+    # 価値の合計の最大値
+    max_value = sum(v for w, v in items)
+    
+    # dp[j] = 価値がちょうどjのときの重さの最小値
+    INF = float('inf')
+    dp = [INF] * (max_value + 1)
+    dp[0] = 0
+    
+    for w, v in items:
+        # 後ろから更新（0/1ナップザックなので同じ品物を2度使わないため）
+        for j in range(max_value, v - 1, -1):
+            if dp[j - v] != INF:
+                dp[j] = min(dp[j], dp[j - v] + w)
+    
+    # dp[j] <= W となる最大のjを探す
+    ans = 0
+    for j in range(max_value, -1, -1):
+        if dp[j] <= W:
+            ans = j
+            break
+    
     print(ans)
+
+
 
 
 

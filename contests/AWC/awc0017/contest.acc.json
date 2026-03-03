@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0017",
+    "title": "AtCoder Weekday Contest 0017 Beta",
+    "url": "https://atcoder.jp/contests/awc0017"
+  },
+  "tasks": [
+    {
+      "id": "awc0017_a",
+      "label": "A",
+      "title": "Organizing the Bookshelf",
+      "url": "https://atcoder.jp/contests/awc0017/tasks/awc0017_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0017_b",
+      "label": "B",
+      "title": "Brightness of Street Lights",
+      "url": "https://atcoder.jp/contests/awc0017/tasks/awc0017_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0017_c",
+      "label": "C",
+      "title": "Same Color Check in the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0017/tasks/awc0017_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0017_d",
+      "label": "D",
+      "title": "Team Building",
+      "url": "https://atcoder.jp/contests/awc0017/tasks/awc0017_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0017_e",
+      "label": "E",
+      "title": "Optimization of Delivery Routes",
+      "url": "https://atcoder.jp/contests/awc0017/tasks/awc0017_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

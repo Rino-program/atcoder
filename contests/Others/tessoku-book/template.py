@@ -1699,6 +1699,88 @@ def kmp_search(text: str, pattern: str) -> list[int]:
     return res
 
 
+def levenshtein_distance(s: str, t: str) -> int:
+    """概要:
+        文字列 s と t の編集距離（レーベンシュタイン距離）を求める。
+    入力:
+        s (str): 文字列1。
+        t (str): 文字列2。
+    出力:
+        int: 挿入・削除・置換（各コスト1）で s を t に変換する最小操作回数。
+    補足:
+        計算量は O(|s|*|t|)、メモリは O(min(|s|,|t|))。
+    """
+    if len(s) < len(t):
+        s, t = t, s
+    n, m = len(s), len(t)
+    if m == 0:
+        return n
+
+    prev = list(range(m + 1))
+    for i in range(1, n + 1):
+        curr = [i] + [0] * m
+        si = s[i - 1]
+        for j in range(1, m + 1):
+            cost = 0 if si == t[j - 1] else 1
+            curr[j] = min(
+                prev[j] + 1,
+                curr[j - 1] + 1,
+                prev[j - 1] + cost,
+            )
+        prev = curr
+    return prev[m]
+
+
+# ============================================================
+# 動的計画法（DP）
+# ============================================================
+
+def interval_dp_min(n: int, merge_cost: Callable[[int, int, int], int], base: int = 0, inf: int = INF) -> list[list[int]]:
+    """概要:
+        区間 DP（最小化）を行うための汎用テンプレート。
+    入力:
+        n (int): 要素数（区間 [0, n-1] を扱う）。
+        merge_cost (Callable[[int, int, int], int]):
+            遷移で区間 [l, r] を分割点 k で結合するときの追加コストを返す関数。
+            値は `merge_cost(l, k, r)` で受け取る。
+        base (int): 長さ1区間 dp[i][i] の初期値。
+        inf (int): 十分大きい初期値。
+    出力:
+        list[list[int]]: dp テーブル。
+            dp[l][r] = 区間 [l, r] を最適化した最小値（0 <= l <= r < n）。
+    補足:
+        遷移式は
+            dp[l][r] = min(dp[l][k] + dp[k+1][r] + merge_cost(l, k, r))
+        （l <= k < r）。
+        計算量は O(n^3)（`merge_cost` を O(1) とした場合）。
+
+    使用例:
+        # 区間和をマージコストにする典型例
+        # A の prefix sum を先に作っておく
+        # ps = prefix_sum(A)
+        # cost = lambda l, k, r: ps[r + 1] - ps[l]
+        # dp = interval_dp_min(len(A), cost)
+        # ans = dp[0][len(A) - 1]
+    """
+    if n <= 0:
+        return []
+
+    dp = [[inf] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = base
+
+    for length in range(2, n + 1):
+        for l in range(n - length + 1):
+            r = l + length - 1
+            best = inf
+            for k in range(l, r):
+                cand = dp[l][k] + dp[k + 1][r] + merge_cost(l, k, r)
+                if cand < best:
+                    best = cand
+            dp[l][r] = best
+    return dp
+
+
 # ============================================================
 # 二分探索
 # ============================================================

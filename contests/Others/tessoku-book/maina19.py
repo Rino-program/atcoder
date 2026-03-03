@@ -85,8 +85,26 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, W = MAP()
+    li = [(0, 0)]
+    for i in range(N):
+        li.append(tuple(LIST()))
+    dp = [[0 for _ in range(W+1)] for _ in range(len(li))]
+    #print_grid(dp, sep="_")
+    for i in range(1, N+1):
+        for j in range(W+1):
+            tmp = 0
+            tmp = max(dp[i-1][j], tmp)
+            if j-li[i][0] >= 0:
+                tmp = max(tmp, dp[i-1][j-li[i][0]]+li[i][1])
+            dp[i][j] = tmp
+    #print_grid(dp, sep="_")
+    ans = 0
+    for i in dp[-1]:
+        ans = max(ans, i)
     print(ans)
+
+
 
 
 

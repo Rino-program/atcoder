@@ -86,8 +86,27 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
-
+    li: list[tuple[int, ...]] = [(0, 0)]
+    dp = [[0 for _ in range(N+1)] for _ in range(N+1)]
+    for i in range(N):
+        li.append(tuple(MAP()))
+    debug(li)
+    for i in range(N-2, -1, -1):
+        for L in range(1, N-i+1):
+            R = L + i
+            score1 = 0
+            if L > 1 and L <= li[L-1][0] <= R: score1 = li[L-1][1]
+            score2 = 0
+            if R < N and L <= li[R+1][0] <= R: score2 = li[R+1][1]
+            if L == 1:
+                dp[L][R] = dp[L][R+1] + score2
+            elif R == N:
+                dp[L][R] = dp[L-1][R] + score1
+            else:
+                dp[L][R] = max(dp[L][R+1] + score2, dp[L-1][R] + score1)
+    ans = 0
+    for i in range(1, N + 1): ans = max(ans, dp[i][i])
+    pr(ans)
 
 
 
