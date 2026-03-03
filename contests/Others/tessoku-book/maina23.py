@@ -85,8 +85,15 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    dp = [[-INF for i in range(1<<N)] for i in range(M+1)]
+    dp[0][0] = 0
+    print_grid(dp, sep="_")
+    for i in range(M):
+        A = "0b" + "".join(input().split()[::-1])
+        debug(int(A, 2))
+        for j in range(1<<N):
+            pass
 
 
 
