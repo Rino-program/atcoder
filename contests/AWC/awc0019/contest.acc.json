@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0019",
+    "title": "AtCoder Weekday Contest 0019 Beta",
+    "url": "https://atcoder.jp/contests/awc0019"
+  },
+  "tasks": [
+    {
+      "id": "awc0019_a",
+      "label": "A",
+      "title": "Number of Successful Applicants",
+      "url": "https://atcoder.jp/contests/awc0019/tasks/awc0019_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0019_b",
+      "label": "B",
+      "title": "Cheerful Support Message",
+      "url": "https://atcoder.jp/contests/awc0019/tasks/awc0019_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0019_c",
+      "label": "C",
+      "title": "Consecutive Card Distribution",
+      "url": "https://atcoder.jp/contests/awc0019/tasks/awc0019_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0019_d",
+      "label": "D",
+      "title": "Conservation Plan for the Botanical Garden",
+      "url": "https://atcoder.jp/contests/awc0019/tasks/awc0019_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0019_e",
+      "label": "E",
+      "title": "Loading Cargo",
+      "url": "https://atcoder.jp/contests/awc0019/tasks/awc0019_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

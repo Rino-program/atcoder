@@ -83,9 +83,46 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def main() -> None:
-    # ここに解答を書く
+def solve():
     N = INT()
+    XY = [tuple(MAP()) for _ in range(N)]
+
+    # 距離行列
+    dist = [[0]*N for _ in range(N)]
+    for i in range(N):
+        xi, yi = XY[i]
+        for j in range(N):
+            xj, yj = XY[j]
+            dist[i][j] = math.hypot(xi-xj, yi-yj)
+    #print_grid(dist, sep="_")
+
+    FULL = 1 << N
+
+    dp = [[INF]*N for _ in range(FULL)]
+    dp[1][0] = 0   # start city = 0
+
+    for mask in range(FULL):
+        for u in range(N):
+            if dp[mask][u] == INF:
+                continue
+
+            for v in range(N):
+                if mask & (1<<v):
+                    continue
+
+                nxt = mask | (1<<v)
+
+                dp[nxt][v] = min(
+                    dp[nxt][v],
+                    dp[mask][u] + dist[u][v]
+                )
+
+    ans = INF
+    final_mask = FULL-1
+
+    for v in range(N):
+        ans = min(ans, dp[final_mask][v] + dist[v][0])
+
     print(ans)
 
 
@@ -109,4 +146,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    solve()

@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260304_1",
+    "title": "AtCoder Daily Training ALL 2026/03/04 16:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260304_1"
+  },
+  "tasks": [
+    {
+      "id": "abc436_a",
+      "label": "A",
+      "title": "o-padding",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc436_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc355_a",
+      "label": "B",
+      "title": "Who Ate the Cake?",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc355_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc423_b",
+      "label": "C",
+      "title": "Locked Rooms",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc423_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc229_b",
+      "label": "D",
+      "title": "Hard Calculation",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc229_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc439_c",
+      "label": "E",
+      "title": "2026",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc439_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc276_c",
+      "label": "F",
+      "title": "Previous Permutation",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc276_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc264_d",
+      "label": "G",
+      "title": "\"redocta\".swap(i,i+1)",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc264_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc234_e",
+      "label": "H",
+      "title": "Arithmetic Number",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc234_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc290_f",
+      "label": "I",
+      "title": "Maximum Diameter",
+      "url": "https://atcoder.jp/contests/adt_all_20260304_1/tasks/abc290_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

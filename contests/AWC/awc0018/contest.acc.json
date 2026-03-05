@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0018",
+    "title": "AtCoder Weekday Contest 0018 Beta",
+    "url": "https://atcoder.jp/contests/awc0018"
+  },
+  "tasks": [
+    {
+      "id": "awc0018_a",
+      "label": "A",
+      "title": "Round-Trip Patrol",
+      "url": "https://atcoder.jp/contests/awc0018/tasks/awc0018_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0018_b",
+      "label": "B",
+      "title": "Classroom Assignment",
+      "url": "https://atcoder.jp/contests/awc0018/tasks/awc0018_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0018_c",
+      "label": "C",
+      "title": "Bulk Character Conversion",
+      "url": "https://atcoder.jp/contests/awc0018/tasks/awc0018_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0018_d",
+      "label": "D",
+      "title": "Smart Shopper",
+      "url": "https://atcoder.jp/contests/awc0018/tasks/awc0018_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0018_e",
+      "label": "E",
+      "title": "Peak Collection",
+      "url": "https://atcoder.jp/contests/awc0018/tasks/awc0018_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

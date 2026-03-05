@@ -83,10 +83,31 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def lis(arr: list[int], strict: bool = True) -> int:
+    """概要:
+        配列の最長増加部分列（LIS）の長さを求める。
+    入力:
+        arr (list[int]): 対象配列。
+        strict (bool): True なら狭義増加、False なら広義増加。
+    出力:
+        int: LIS の長さ。
+    補足:
+        計算量は O(n log n)。復元は行わず長さのみ返す。
+    """
+    dp = []
+    for x in arr:
+        i = bisect_left(dp, x) if strict else bisect_right(dp, x)
+        if i == len(dp):
+            dp.append(x)
+        else:
+            dp[i] = x
+    return len(dp)
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    print(lis(A))
 
 
 

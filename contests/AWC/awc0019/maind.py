@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -73,7 +74,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -83,37 +84,26 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def lis(arr: list[int], strict: bool = True) -> int:
-    """概要:
-        配列の最長増加部分列（LIS）の長さを求める。
-    入力:
-        arr (list[int]): 対象配列。
-        strict (bool): True なら狭義増加、False なら広義増加。
-    出力:
-        int: LIS の長さ。
-    補足:
-        計算量は O(n log n)。復元は行わず長さのみ返す。
-    """
-    dp = []
-    for x in arr:
-        i = bisect_left(dp, x) if strict else bisect_right(dp, x)
-        if i == len(dp):
-            dp.append(x)
+def main() -> None:
+    # ここに解答を書く
+    N, M, T = MAP()
+    ABC = LISTS(N)
+    ans = 0
+    ABC_new = []
+    for A, B, C in ABC:
+        if B < T:
+            ABC_new.append((A, B, C))
         else:
-            dp[i] = x
-    return len(dp)
-
-def main():
-    N = INT()
-    boxes = [LIST() for _ in range(N)]
-
-    # X昇順, Y降順
-    boxes.sort(key=lambda x: (x[0], -x[1]))
-
-    Y = [y for x, y in boxes]
-
-    print(lis(Y))
-
+            ans += A
+    ABC = deepcopy(ABC_new)
+    dp = [[0 for i in range(M+1)] for i in range(len(ABC)+1)]
+    for i in range(1, len(ABC)+1):
+        for j in range(M+1):
+            dp[i][j] = dp[i-1][j]
+            if j-ABC[i-1][2] >= 0:
+                dp[i][j] = max(dp[i][j], dp[i-1][j-ABC[i-1][2]]+ABC[i-1][0])
+    #print_grid(dp, sep="_")
+    print(dp[-1][-1]+ans)
 
 
 
