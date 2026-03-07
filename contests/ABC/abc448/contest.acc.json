@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc448",
+    "title": "AtCoder Beginner Contest 448",
+    "url": "https://atcoder.jp/contests/abc448"
+  },
+  "tasks": [
+    {
+      "id": "abc448_a",
+      "label": "A",
+      "title": "chmin",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc448_b",
+      "label": "B",
+      "title": "Pepper Addiction",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc448_c",
+      "label": "C",
+      "title": "Except and Min",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc448_d",
+      "label": "D",
+      "title": "Integer-duplicated Path",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc448_e",
+      "label": "E",
+      "title": "Simple Division",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc448_f",
+      "label": "F",
+      "title": "Authentic Traveling Salesman Problem",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc448_g",
+      "label": "G",
+      "title": "Conquest",
+      "url": "https://atcoder.jp/contests/abc448/tasks/abc448_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}

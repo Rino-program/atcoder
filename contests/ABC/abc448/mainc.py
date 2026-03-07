@@ -92,8 +92,21 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, Q = MAP()
+    A = LIST()
+    An = []
+    for i, v in enumerate(A):
+        An.append((v, i+1))
+    An = sorted(An)
+    debug(An)
+    for i in range(Q):
+        K = INT()
+        B = set(LIST())
+        for v, j in An:
+            if j not in B:
+                pr(v)
+                break
+
 
 
 

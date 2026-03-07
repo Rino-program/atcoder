@@ -92,8 +92,14 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, X = MAP()
+    A = LIST()
+    for i in A:
+        if i < X:
+            X = i
+            pr(1)
+        else:
+            pr(0)
 
 
 

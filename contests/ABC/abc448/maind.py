@@ -24,13 +24,13 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
-def TUPLE() -> tuple[int, ...]:
+def TUPLE() -> tuple[int, int]:
     return tuple(MAP())
 
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
 
-def TUPLES(n: int) -> list[tuple[int, ...]]:
+def TUPLES(n: int) -> list[tuple[int, int]]:
     return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
@@ -90,10 +90,52 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def build_graph(n: int, edges, directed: bool = False) -> list[list[int]]:
+    """概要:
+        辺集合から重みなしグラフの隣接リストを構築する。
+    入力:
+        n (int): 頂点数（0-indexed を想定）。
+        edges (list[tuple[int, int]]): 辺 (a, b) の配列。
+        directed (bool): True なら有向、False なら無向。
+    出力:
+        list[list[int]]: 隣接リスト。
+    補足:
+        無向時は両方向に辺を追加する。
+    """
+    g = [[] for _ in range(n)]
+    for a, b in edges:
+        g[a-1]. append(b-1)
+        if not directed:
+            g[b-1].append(a-1)
+    return g
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    UV = LISTS(N-1)
+    g = build_graph(N, UV)
+    flag = [False] * N
+    d = deque()
+    for i in g[0]: d.append((i, {0}, {A[0]}, False))
+    while d:
+        i, rireki, seisu, f = d.popleft()
+        if A[i] in seisu:
+            f = True
+        else:
+            seisu.add(A[i])
+        if f:
+            flag[i] = True
+        rireki.add(i)
+        if g[i]:
+            for j in g[i]:
+                if j in rireki: continue
+                d.append((j, rireki.copy(), seisu.copy(), f))
+    for i in flag:
+        if i:
+            Yes()
+        else:
+            No()
 
 
 

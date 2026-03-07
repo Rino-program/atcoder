@@ -92,7 +92,13 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, M = MAP()
+    C = LIST()
+    AB = LISTS(N)
+    ans = 0
+    for A, B in AB:
+        ans += min(max(0, C[A-1]), B)
+        C[A-1] -= B
     print(ans)
 
 
