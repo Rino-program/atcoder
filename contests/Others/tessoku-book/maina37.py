@@ -85,8 +85,10 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M, B = MAP()
+    A = LIST()
+    C = LIST()
+    print(sum(A)*M+B*(N*M)+sum(C)*N)
 
 
 

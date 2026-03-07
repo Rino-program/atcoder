@@ -86,7 +86,7 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    print(N//3+N//5+N//7-N//15-N//35-N//21+N//(3*7*5))
 
 
 

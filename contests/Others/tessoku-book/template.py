@@ -191,6 +191,25 @@ def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     g, x, y = ext_gcd(b, a % b)
     return g, y, x - (a // b) * y
 
+def pow_fast(x: int, n: int) -> int:
+    """概要:
+        x^n を高速に計算する（繰り返し二乗法）。
+    入力:
+        x (int): 底。
+        n (int): 非負整数の指数。
+    出力:
+        int: x^n。
+    補足:
+        二分累乗法（繰り返し二乗法）を用い、計算量は O(log n)。
+    """
+    res = 1
+    while n > 0:
+        if n & 1:
+            res = res * x
+        x = x * x
+        n >>= 1
+    return res
+
 def pow_mod(x: int, n: int, mod: int = MOD) -> int:
     """概要:
         x^n を mod で割った余りを高速に計算する。

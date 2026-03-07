@@ -85,8 +85,16 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, H, W = MAP()
+    ans = 0
+    for i in range(N):
+        A, B = MAP()
+        g = (A-1) ^ (B-1)
+        ans ^= g
+    if ans != 0:
+        print("First")
+    else:
+        print("Second")
 
 
 

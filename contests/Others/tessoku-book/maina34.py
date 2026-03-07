@@ -83,10 +83,36 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def mex(s: set) -> int:
+    m = 0
+    while m in s:
+        m += 1
+    return m
+
+def calc_grundy(max_val: int, X: int, Y: int) -> list[int]:
+    G = [0] * 5
+    for k in range(5):
+        reachable = set()
+        if k >= X:
+            reachable.add(G[k-X])
+        if k >= Y:
+            reachable.add(G[k-Y])
+        G[k] = mex(reachable)
+    return G
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, X, Y = MAP()
+    A = LIST()
+    max_A = max(A)
+    G = calc_grundy(max_A, X, Y)
+    ans = 0
+    for i in A:
+        ans ^= G[i%5]
+    if ans != 0:
+        print("First")
+    else:
+        print("Second")
 
 
 

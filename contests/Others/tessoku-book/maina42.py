@@ -85,7 +85,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    AB = LISTS(N)
+    ans = 1
+    for i, v1 in enumerate(AB):
+        tmp = 0
+        m = [-INF, INF]
+        for j, v2 in enumerate(AB):
+            if i == j: continue
+            if abs(v2[0]-v1[0]) <= K and abs(v2[1] - v1[1]) <= K:
+                tmp += 1
+        ans = max(ans, tmp)
     print(ans)
 
 

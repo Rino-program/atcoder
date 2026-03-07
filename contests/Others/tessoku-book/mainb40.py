@@ -86,6 +86,14 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A = LIST()
+    A = [i%100 for i in A]
+    Ac = Counter(A)
+    ans = 0
+    for i in range(1, 50):
+        ans += Ac[i] * Ac[100-i]
+    ans += Ac[0] * (Ac[0]-1)//2
+    ans += Ac[50] * (Ac[50]-1)//2
     print(ans)
 
 

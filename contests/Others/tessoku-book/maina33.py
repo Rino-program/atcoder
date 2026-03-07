@@ -86,7 +86,10 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = [0] + LIST()
+    XOR_Sum = A[1]
+    for i in range(2, N+1): XOR_Sum ^= A[i]
+    print("First" if XOR_Sum != 0 else "Second")
 
 
 

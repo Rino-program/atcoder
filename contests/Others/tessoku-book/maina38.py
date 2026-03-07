@@ -85,8 +85,13 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    D, N = MAP()
+    LRH = LISTS(N)
+    li = [24] * D
+    for L, R, H in LRH:
+        for i in range(L-1, R):
+            li[i] = min(li[i], H)
+    print(sum(li))
 
 
 

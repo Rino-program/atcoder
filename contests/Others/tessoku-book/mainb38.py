@@ -86,7 +86,22 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    S = STR()
+    L = [1]*N
+    # 前から
+    for i in range(1, N):
+        if "A" == S[i-1]:
+            L[i] = L[i-1] + 1
+        else:
+            L[i] = 1
+    R = [1]*N
+    # 後ろから
+    for i in range(N-2, -1, -1):
+        if S[i] == 'B':
+            R[i] = R[i+1] + 1
+        else:
+            R[i] = 1
+    print(sum(max(l, r) for l, r in zip(L, R)))
 
 
 

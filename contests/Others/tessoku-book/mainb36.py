@@ -85,8 +85,10 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    S = STR()
+    num = S.count("1")
+    yn((num-K)%2==0)
 
 
 

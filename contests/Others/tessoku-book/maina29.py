@@ -44,7 +44,7 @@ def STRSL(n: int) -> list[list[str]]:
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353
-# MOD = 10**9 + 7
+MOD = 10**9 + 7
 
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
@@ -83,10 +83,31 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def pow_mod(x: int, n: int, mod: int = MOD) -> int:
+    """概要:
+        x^n を mod で割った余りを高速に計算する。
+    入力:
+        x (int): 底。
+        n (int): 非負整数の指数。
+        mod (int): 法。
+    出力:
+        int: x^n mod mod。
+    補足:
+        二分累乗法を用い、計算量は O(log n)。
+    """
+    res = 1
+    x %= mod
+    while n > 0:
+        if n & 1:
+            res = res * x % mod
+        x = x * x % mod
+        n >>= 1
+    return res
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    a, b = MAP()
+    print(pow_mod(a, b))
 
 
 

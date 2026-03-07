@@ -86,7 +86,19 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    dp = [[0 for _ in range(N)]for _ in range(N)]
+    for i, v in enumerate(A):
+        dp[N-1][i] = v
+    for i in range(N-2, -1, -1):
+        if i % 2 == 1:
+            for j in range(i+1):
+                dp[i][j] = min(dp[i+1][j], dp[i+1][j+1])
+        else:
+            for j in range(i+1):
+                dp[i][j] = max(dp[i+1][j], dp[i+1][j+1])
+    #print_grid(dp, sep="_")
+    print(dp[0][0])
 
 
 

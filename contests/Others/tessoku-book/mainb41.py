@@ -85,8 +85,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    X, Y = MAP()
+    ans = []
+    while X != 1 or Y != 1:
+        ans.append((X, Y))
+        if X > Y:
+            X -= Y
+        else:
+            Y -= X
+    ans = ans[::-1]
+    print(len(ans))
+    if ans: print("\n".join(map(lambda x: f"{x[0]} {x[1]}", ans)))
 
 
 

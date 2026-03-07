@@ -86,7 +86,28 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    total = 0
+    d = 1  # 現在見ている桁の重み（1, 10, 100, ...）
+    
+    while d <= N:
+        higher = N // (d * 10)  # 上位桁の数
+        cur    = (N // d) % 10  # 現在の桁の数字
+        lower  = N % d          # 下位桁の数
+        
+        for k in range(10):  # 数字 0〜9 のそれぞれについて
+            # この桁に k が何回登場するか
+            if k < cur:
+                count = (higher + 1) * d
+            elif k == cur:
+                count = higher * d + lower + 1
+            else:  # k > cur
+                count = higher * d
+            
+            total += k * count  # 登場回数 × 数字の値
+        
+        d *= 10  # 次の桁へ
+    
+    print(total)
 
 
 

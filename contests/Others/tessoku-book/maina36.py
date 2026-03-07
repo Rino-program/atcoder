@@ -85,8 +85,9 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    K -= N*2-2
+    yn(K%2==0 and K >= 0)
 
 
 

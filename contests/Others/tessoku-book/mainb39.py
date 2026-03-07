@@ -85,9 +85,15 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, D = MAP()
+    XY = sorted(LISTS(N), reverse=True)
+    heap = []
+    ans = 0
+    for i in range(1, D+1):
+        while XY and i >= XY[-1][0]:
+            heapq.heappush(heap, -(XY.pop()[1]))
+        if heap: ans += -(heapq.heappop(heap))
     print(ans)
-
 
 
 

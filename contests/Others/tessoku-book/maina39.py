@@ -85,7 +85,21 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
+    # ヒープの方がいいかな..?
     N = INT()
+    LR = LISTS(N)
+    LR.sort(key=lambda x:(x[1], x[0]))
+    d = deque()
+    for i in LR:
+        d.append(i)
+    now = 0
+    ans = 0
+    for i in range(1, 86400+1):
+        while d and d[0][0] < now:
+            d.popleft()
+        if d:
+            now = d.popleft()[1]
+            ans += 1
     print(ans)
 
 

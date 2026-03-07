@@ -85,8 +85,19 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = map(int, input().split())
+    A = list(map(int, input().split()))  # K個の取れる石の数
+
+    dp = [False] * (N + 1)
+    # dp[0] = False のまま（石0個 = 取れない = 負け）
+
+    for i in range(1, N + 1):
+        for a in A:
+            if i >= a and not dp[i - a]:
+                dp[i] = True
+                break  # 1つでも勝ち手が見つかれば確定、ループ打ち切り
+
+    print("First" if dp[N] else "Second")
 
 
 

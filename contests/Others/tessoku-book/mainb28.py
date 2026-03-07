@@ -44,7 +44,7 @@ def STRSL(n: int) -> list[list[str]]:
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353
-# MOD = 10**9 + 7
+MOD = 10**9 + 7
 
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
@@ -84,9 +84,14 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # ==============================================
 
 def main() -> None:
-    # ここに解答を書く
-    N = INT()
-    print(ans)
+    n = INT()
+    if n == 0:
+        print(0); return
+    a, b = 0, 1
+    for _ in range(n - 1):
+        # この 1 行が Python では非常に高速に動作します
+        a, b = b, (a + b) % MOD
+    print(b)
 
 
 
