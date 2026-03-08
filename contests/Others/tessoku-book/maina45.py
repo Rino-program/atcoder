@@ -85,8 +85,20 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, C = input().split()
+    N = int(N)
+    s = 0
+    for i in STR():
+        if i == "W":
+            s += 0
+        elif i == "B":
+            s += 1
+        else:
+            s += 2
+    if C == ["W", "B", "R"][s % 3]:
+        Yes()
+    else:
+        No()
 
 
 

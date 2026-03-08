@@ -86,7 +86,19 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LISTS(N)
+    Q = INT()
+    idx = [i for i in range(N)]
+    ans = []
+    for _ in range(Q):
+        q = LIST()
+        if q[0] == 1:
+            x, y = q[1], q[2]
+            idx[x-1], idx[y-1] = idx[y-1], idx[x-1]
+        else:
+            x = q[1]
+            ans.append(A[idx[x-1]][q[2]-1])
+    print(*ans, sep='\n')
 
 
 

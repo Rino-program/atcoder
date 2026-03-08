@@ -83,10 +83,31 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def digit_sum(x: int) -> int:
+    s = 0
+    while x:
+        s += x % 10
+        x //= 10
+    return s
+
 def main() -> None:
-    # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    LOG = 30
+    nxt = [0] * (N + 1)
+    for v in range(1, N + 1):
+        nxt[v] = v - digit_sum(v)
+    doubling = [nxt[:]]
+    for _ in range(1, LOG):
+        prev = doubling[-1]
+        doubling.append([prev[prev[v]] for v in range(N + 1)])
+    out = []
+    for i in range(1, N + 1):
+        v = i
+        for j in range(LOG):
+            if (K >> j) & 1:
+                v = doubling[j][v]
+        out.append(v)
+    print(*out, sep='\n')
 
 
 

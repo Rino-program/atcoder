@@ -85,8 +85,12 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    A = LIST()
+    ans = [M] * N
+    for i in A:
+        ans[i-1] -= 1
+    print(*ans, sep='\n')
 
 
 

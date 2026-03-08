@@ -115,29 +115,61 @@ def main() -> None:
     A = LIST()
     UV = LISTS(N-1)
     g = build_graph(N, UV)
+    seisu = defaultdict(int)
+    seisu[A[0]] = 1
+    rirekilist = []
+    rirekilist.append(0)
     flag = [False] * N
-    d = deque()
-    for i in g[0]: d.append((i, {0}, {A[0]}, False))
-    while d:
-        i, rireki, seisu, f = d.popleft()
-        if A[i] in seisu:
-            f = True
-        else:
-            seisu.add(A[i])
-        if f:
-            flag[i] = True
-        rireki.add(i)
-        if g[i]:
-            for j in g[i]:
-                if j in rireki: continue
-                d.append((j, rireki.copy(), seisu.copy(), f))
+    dup_count = 0  # 重複している値の種類数
+    next_idx = [0] * N  # 各ノードで次に探索すべき隣接ノードのインデックス
+    now = 0
+    end = 0
+    now = g[now][0]
+    Allrireki = [False] * N
+    Allrireki[0] = True
+    visited_count = 1  # 訪問済みノード数
+    just_backtracked = False  # 戻ってきた直後かどうかのフラグ
+    while visited_count < N:
+        # 戻ってきた直後でなければ、ノードを処理
+        if not just_backtracked:
+            Allrireki[now] = True
+            visited_count += 1
+            rirekilist.append(now)
+            if seisu[A[now]] == 1: # 1から2になる = 重複発生
+                dup_count += 1
+            seisu[A[now]] += 1
+            if dup_count > 0:
+                flag[now] = True
+        just_backtracked = False
+        # 次に探索すべき隣接ノードを探す
+        idx = next_idx[now]
+        found = False
+        while idx < len(g[now]):
+            i = g[now][idx]
+            if not Allrireki[i]:  # i が未訪問の場合
+                next_idx[now] = idx + 1  # 次回はその次から探索
+                now = i
+                found = True
+                break
+            idx += 1
+        
+        if not found:
+            end = 1  # すべての隣接頂点が既に訪問済みの場合
+        if end: # 戻る
+            if len(rirekilist) <= 1: # 戻る先がない場合
+                break
+            seisu[A[now]] -= 1 # 現在のノードの値をカウントから減らす
+            if seisu[A[now]] == 1: # 2から1になる = 重複解消
+                dup_count -= 1
+            rirekilist.pop() # 現在のノードをリストから削除
+            now = rirekilist[-1] # 親ノードを now に設定（削除しない）
+            end = 0
+            just_backtracked = True  # 戻ってきたことを記録
     for i in flag:
         if i:
             Yes()
         else:
             No()
-
-
 
 
 

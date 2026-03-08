@@ -88,14 +88,14 @@ def main() -> None:
     N, K = MAP()
     AB = LISTS(N)
     ans = 1
-    for i, v1 in enumerate(AB):
-        tmp = 0
-        m = [-INF, INF]
-        for j, v2 in enumerate(AB):
-            if i == j: continue
-            if abs(v2[0]-v1[0]) <= K and abs(v2[1] - v1[1]) <= K:
-                tmp += 1
-        ans = max(ans, tmp)
+    # 1 <= i <= 100-K, 1 <= j <= 100-K
+    for i in range(1, 100-K+1):
+        for j in range(1, 100-K+1):
+            cnt = 0
+            for a, b in AB:
+                if i <= a <= i+K and j <= b <= j+K:
+                    cnt += 1
+            ans = max(ans, cnt)
     print(ans)
 
 

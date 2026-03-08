@@ -85,8 +85,14 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    Q = INT()
+    d = dict()
+    for _ in range(Q):
+        query = input().split()
+        if query[0] == "1":
+            d[query[1]] = query[2]
+        else:
+            pr(d[query[1]])
 
 
 

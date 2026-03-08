@@ -83,10 +83,42 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def prev_greater(A: list[int]) -> list[int]:
+    """概要:
+        各要素に対して「直近の自分より大きい要素のインデックス」を返す。
+    入力:
+        A (list[int]): 対象配列（0-indexed）。
+    出力:
+        list[int]: res[i] = A[i] より大きい直近左側の要素のインデックス。
+        存在しない場合は -1。
+    補足:
+        単調減少スタックを使い O(N)。
+        「d日目の起算日」「Next Greater Element の左版」などに利用できる。
+    使用例:
+        A = [3, 1, 4, 1, 5]
+        print(prev_greater(A))  # [-1, 0, -1, 2, -1]
+    """
+    n = len(A)
+    res = [-1] * n
+    stack = []
+    for i in range(n):
+        while stack and A[stack[-1]] <= A[i]:
+            stack.pop()
+        if stack:
+            res[i] = stack[-1]
+        stack.append(i)
+    return res
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    ans = prev_greater(A)
+    for i in ans:
+        if i == -1:
+            print(-1)
+        else:
+            print(i + 1)
 
 
 

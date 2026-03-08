@@ -85,7 +85,15 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, L = MAP()
+    AB = STRS(N)
+    ans = 0
+    for i in AB:
+        i = i.split()
+        if i[1] == "E":
+            ans = max(ans, L - int(i[0]))
+        else:
+            ans = max(ans, int(i[0]))
     print(ans)
 
 

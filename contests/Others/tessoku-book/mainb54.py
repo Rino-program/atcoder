@@ -83,9 +83,100 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def pow_mod(x: int, n: int, mod: int = MOD) -> int:
+    """概要:
+        x^n を mod で割った余りを高速に計算する。
+    入力:
+        x (int): 底。
+        n (int): 非負整数の指数。
+        mod (int): 法。
+    出力:
+        int: x^n mod mod。
+    補足:
+        二分累乗法を用い、計算量は O(log n)。
+    """
+    res = 1
+    x %= mod
+    while n > 0:
+        if n & 1:
+            res = res * x % mod
+        x = x * x % mod
+        n >>= 1
+    return res
+
+class Combination:
+    """概要:
+        階乗・逆階乗を前計算して組み合わせ関連値を高速に返すクラス。
+
+    メソッド:
+        nCr(n, r): 組み合わせ数 C(n, r) を返す。
+        nPr(n, r): 順列数 P(n, r) を返す。
+        nHr(n, r): 重複組み合わせ数 H(n, r) を返す。
+        catalan(n): n 番目のカタラン数を返す。
+
+    計算量:
+        初期化 O(n)、各クエリ O(1)。
+
+    使用例:
+        comb = Combination(200000, mod=MOD)  # MOD付き
+        print(comb.nCr(10, 3))  # 120
+    """
+    def __init__(self, n: int, mod = None):
+        self.mod = mod
+        self.fact = [1] * (n + 1)
+        self.inv_fact = [1] * (n + 1)
+
+        if mod is None:
+            # MODなし版
+            for i in range(1, n + 1):
+                self.fact[i] = self.fact[i - 1] * i
+        else:
+            # MOD付き版
+            for i in range(1, n + 1):
+                self.fact[i] = self.fact[i - 1] * i % mod
+
+            self.inv_fact[n] = pow_mod(self.fact[n], mod - 2, mod)
+            for i in range(n - 1, -1, -1):
+                self.inv_fact[i] = self.inv_fact[i + 1] * (i + 1) % mod
+
+    def nCr(self, n: int, r: int) -> int:
+        """組み合わせ nCr"""
+        if r < 0 or r > n: return 0
+        if self.mod is None:
+            # MODなし版
+            return self.fact[n] // (self.fact[r] * self.fact[n - r])
+        else:
+            # MOD付き版
+            return self.fact[n] * self.inv_fact[r] % self.mod * self.inv_fact[n - r] % self.mod
+
+    def nPr(self, n: int, r: int) -> int:
+        """順列 nPr"""
+        if r < 0 or r > n: return 0
+        if self.mod is None:
+            return self.fact[n] // self.fact[n - r]
+        else:
+            return self.fact[n] * self.inv_fact[n - r] % self.mod
+
+    def nHr(self, n: int, r: int) -> int:
+        """重複組み合わせ nHr = C(n+r-1, r)"""
+        return self.nCr(n + r - 1, r)
+
+    def catalan(self, n: int) -> int:
+        """カタラン数 C_n"""
+        if self.mod is None:
+            return self.nCr(2 * n, n) // (n + 1)
+        else:
+            return self.nCr(2 * n, n) * pow_mod(n + 1, self.mod - 2, self.mod) % self.mod
+
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A: list[int] = LISTSI(N)
+    Ac = Counter(A)
+    ans = 0
+    for v in Ac.values():
+        ans += v * (v - 1) // 2
     print(ans)
 
 

@@ -83,10 +83,69 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class BIT2:
+    """概要:
+        BITを2本使って「区間加算・区間和」を処理するクラス。
+
+    メソッド:
+        add_range(l, r, x): 区間 [l, r) へ x を加算する。
+        range_sum(l, r): 区間 [l, r) の総和を返す。
+
+    補足:
+        内部的に一次関数係数を2本のBITで管理し、各操作 O(logN)。
+
+    使用例:
+        bit2 = BIT2(n)
+        bit2.add_range(l, r, x)  # [l, r) に +x
+        total = bit2.range_sum(l, r)
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.bit1 = [0] * (n + 1)
+        self.bit2 = [0] * (n + 1)
+
+    def _add(self, bit: list[int], i: int, x: int) -> None:
+        while i <= self.n:
+            bit[i] += x
+            i += i & -i
+
+    def _sum(self, bit: list[int], i: int) -> int:
+        s = 0
+        while i > 0:
+            s += bit[i]
+            i -= i & -i
+        return s
+
+    def _prefix_sum(self, r: int) -> int:
+        """[0, r) の和"""
+        return self._sum(self.bit1, r) * r + self._sum(self.bit2, r)
+
+    def add_range(self, l: int, r: int, x: int) -> None:
+        """[l, r) に x を加算"""
+        l += 1
+        r += 1
+        self._add(self.bit1, l, x)
+        self._add(self.bit1, r, -x)
+        self._add(self.bit2, l, -x * (l - 1))
+        self._add(self.bit2, r, x * (r - 1))
+
+    def range_sum(self, l: int, r: int) -> int:
+        """[l, r) の和"""
+        return self._prefix_sum(r) - self._prefix_sum(l)
+
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, Q = MAP()
+    bit = BIT2(N)
+    ans = []
+    for _ in range(Q):
+        t, x, y = MAP() # t=1: x に y を加算, t=2: [x, y) の和を求める
+        if t == 1:
+            bit.add_range(x - 1, x, y - bit.range_sum(x - 1, x))
+        else:
+            ans.append(bit.range_sum(x - 1, y - 1))
+    print(*ans, sep="\n")
 
 
 

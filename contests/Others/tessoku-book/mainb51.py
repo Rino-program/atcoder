@@ -85,9 +85,18 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
-
+    li = list()
+    idx = []
+    ans = []
+    for i, v in enumerate(S := STR()):
+        if v == "(":
+            li.append(v)
+            idx.append(i+1)
+        else:
+            li.pop()
+            ans.append((idx.pop(), i+1))
+    for i, j in ans:
+        print(f"{i} {j}")
 
 
 

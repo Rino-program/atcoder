@@ -258,6 +258,7 @@ def mod_inverse(a: int, mod: int = MOD) -> int:
 class Combination:
     """概要:
         階乗・逆階乗を前計算して組み合わせ関連値を高速に返すクラス。
+        標準でONになるMODに注意。
 
     メソッド:
         nCr(n, r): 組み合わせ数 C(n, r) を返す。
@@ -1082,7 +1083,8 @@ class BIT:
             k //= 2
         return x
 
-
+from collections.abc import Callable
+import operator
 class SegTree:
     """概要:
         モノイド演算を扱う汎用 Segment Tree。
@@ -1155,8 +1157,8 @@ class SegTree:
 
     update = set  # エイリアス
 
-
 class LazySegTree:
+    from collections.abc import Callable
     """概要:
         作用付きモノイドを扱う汎用遅延セグメント木（ACL風インターフェース）。
 
@@ -1391,6 +1393,7 @@ class BIT2D:
 
 
 class SortedMultiset:
+    from itertools import chain
     """概要:
         平方分割で実装した順序付き重複集合クラス。
 
@@ -1760,6 +1763,7 @@ def levenshtein_distance(s: str, t: str) -> int:
 # 二分探索
 # ============================================================
 
+from collections.abc import Callable
 def binary_search_min(ng: int, ok: int, check: Callable[[int], bool]) -> int:
     """概要:
         単調性を利用して `check(x)=True` となる最小 x を整数二分探索で求める。
@@ -1780,6 +1784,7 @@ def binary_search_min(ng: int, ok: int, check: Callable[[int], bool]) -> int:
             ng = mid
     return ok
 
+from collections.abc import Callable
 def binary_search_max(ok: int, ng: int, check: Callable[[int], bool]) -> int:
     """概要:
         単調性を利用して `check(x)=True` となる最大 x を整数二分探索で求める。
@@ -1800,6 +1805,7 @@ def binary_search_max(ok: int, ng: int, check: Callable[[int], bool]) -> int:
             ng = mid
     return ok
 
+from collections.abc import Callable
 def binary_search_float(ok: float, ng: float, check: Callable[[float], bool], iterations: int = 100) -> float:
     """概要:
         実数領域で二分探索を反復回数固定で行う。
@@ -1897,6 +1903,232 @@ def inversion_count(arr: list[int]) -> int:
         bit.add(x, 1)
     return inv
 
+# ============================================================
+# ダブリング
+# ============================================================
+
+def build_doubling(
+    n: int,
+    nxt: list[int],
+    log: int = 30,
+    weight: list[int] | None = None,
+    op = None,
+    e = None,
+) -> tuple[list[list[int]], list[list[int]] | None]:
+    """概要:
+        関数的グラフに対してダブリングテーブルを構築する。
+        オプションで「各ステップに付随する値（重み）」の累積テーブルも同時構築できる。
+
+    入力:
+        n      (int)            : 頂点数（0-indexed）。
+        nxt    (list[int])      : nxt[v] = v から 1 ステップ先（0-indexed）。
+        log    (int)            : テーブル段数。2^log >= クエリ最大ステップ数 を満たすこと。
+        weight (list[int]|None) : weight[v] = v を出発した際に加算される値。None なら無効。
+        op     (callable|None)  : 重みの結合演算（例: operator.add, max）。None なら加算。
+        e      (any|None)       : 重みの単位元（例: 0, -INF）。None なら 0。
+
+    出力:
+        tuple:
+            [0] doubling[k][v]     : v から 2^k ステップ後の頂点。
+            [1] acc[k][v]          : v から 2^k ステップで累積した重み。weight=None なら None。
+
+    計算量:
+        O(N * log)
+
+    使用例（頂点のみ）:
+        nxt = [A[i] - 1 for i in range(N)]
+        db, _ = build_doubling(N, nxt)
+        v = doubling_query(db, X-1, Y)
+
+    使用例（頂点 + 累積コスト）:
+        nxt = [to_list[v] for v in range(N)]
+        w   = [cost_list[v] for v in range(N)]
+        db, ac = build_doubling(N, nxt, weight=w, op=operator.add, e=0)
+        v, total_cost = doubling_query_with_weight(db, ac, operator.add, 0, X-1, Y)
+    """
+    if op is None:
+        import operator
+        op = operator.add
+    if e is None:
+        e = 0
+
+    doubling = [[0] * n for _ in range(log)]
+    doubling[0] = list(nxt)
+
+    if weight is not None:
+        acc = [[e] * n for _ in range(log)]
+        acc[0] = list(weight)
+    else:
+        acc = None
+
+    for k in range(1, log):
+        for v in range(n):
+            mid = doubling[k-1][v]
+            doubling[k][v] = doubling[k-1][mid]
+            if acc is not None:
+                acc[k][v] = op(acc[k-1][v], acc[k-1][mid])
+
+    return doubling, acc
+
+
+def doubling_query(
+    doubling: list[list[int]],
+    v: int,
+    y: int,
+) -> int:
+    """概要:
+        ダブリングテーブルを用いて v から y ステップ後の頂点を返す。
+
+    入力:
+        doubling : build_doubling の戻り値 [0]。
+        v        : 始点（0-indexed）。
+        y        : ステップ数（0 以上）。
+
+    出力:
+        int: y ステップ後の頂点（0-indexed）。
+
+    計算量:
+        O(log y)
+    """
+    log = len(doubling)
+    for k in range(log):
+        if (y >> k) & 1:
+            v = doubling[k][v]
+    return v
+
+
+def doubling_query_with_weight(
+    doubling: list[list[int]],
+    acc: list[list[int]],
+    op,
+    e,
+    v: int,
+    y: int,
+) -> tuple[int, ...]:
+    """概要:
+        ダブリングテーブルを用いて v から y ステップ後の頂点と累積重みを返す。
+
+    入力:
+        doubling : build_doubling の戻り値 [0]。
+        acc      : build_doubling の戻り値 [1]（weight 指定時のみ有効）。
+        op       : 重みの結合演算（build_doubling と同一のものを渡す）。
+        e        : 重みの単位元（build_doubling と同一のものを渡す）。
+        v        : 始点（0-indexed）。
+        y        : ステップ数（0 以上）。
+
+    出力:
+        tuple[int, any]: (y ステップ後の頂点, 累積重み)。
+
+    計算量:
+        O(log y)
+    """
+    log = len(doubling)
+    total = e
+    for k in range(log):
+        if (y >> k) & 1:
+            total = op(total, acc[k][v])
+            v = doubling[k][v]
+    return v, total
+
+# ============================================================
+# 単調スタック
+# ============================================================
+
+def prev_greater(A: list[int]) -> list[int]:
+    """概要:
+        各要素に対して「直近の自分より大きい要素のインデックス」を返す。
+    入力:
+        A (list[int]): 対象配列（0-indexed）。
+    出力:
+        list[int]: res[i] = A[i] より大きい直近左側の要素のインデックス。
+        存在しない場合は -1。
+    補足:
+        単調減少スタックを使い O(N)。
+        「d日目の起算日」「Next Greater Element の左版」などに利用できる。
+    使用例:
+        A = [3, 1, 4, 1, 5]
+        print(prev_greater(A))  # [-1, 0, -1, 2, -1]
+    """
+    n = len(A)
+    res = [-1] * n
+    stack = []
+    for i in range(n):
+        while stack and A[stack[-1]] <= A[i]:
+            stack.pop()
+        if stack:
+            res[i] = stack[-1]
+        stack.append(i)
+    return res
+
+def next_greater(A: list[int]) -> list[int]:
+    """概要:
+        各要素に対して「直近の自分より大きい要素のインデックス」を右側から返す。
+    入力:
+        A (list[int]): 対象配列（0-indexed）。
+    出力:
+        list[int]: res[i] = A[i] より大きい直近右側の要素のインデックス。
+        存在しない場合は -1。
+    補足:
+        単調減少スタックを右から走査して O(N)。
+    使用例:
+        A = [3, 1, 4, 1, 5]
+        print(next_greater(A))  # [2, 2, 4, 4, -1]
+    """
+    n = len(A)
+    res = [-1] * n
+    stack = []
+    for i in range(n - 1, -1, -1):
+        while stack and A[stack[-1]] <= A[i]:
+            stack.pop()
+        if stack:
+            res[i] = stack[-1]
+        stack.append(i)
+    return res
+
+def prev_smaller(A: list[int]) -> list[int]:
+    """概要:
+        各要素に対して「直近の自分より小さい要素のインデックス」を返す。
+    入力:
+        A (list[int]): 対象配列（0-indexed）。
+    出力:
+        list[int]: res[i] = A[i] より小さい直近左側の要素のインデックス。
+        存在しない場合は -1。
+    補足:
+        単調増加スタックを使い O(N)。
+        「ヒストグラム最大長方形」などの前処理に利用できる。
+    """
+    n = len(A)
+    res = [-1] * n
+    stack = []
+    for i in range(n):
+        while stack and A[stack[-1]] >= A[i]:
+            stack.pop()
+        if stack:
+            res[i] = stack[-1]
+        stack.append(i)
+    return res
+
+def next_smaller(A: list[int]) -> list[int]:
+    """概要:
+        各要素に対して「直近の自分より小さい要素のインデックス」を右側から返す。
+    入力:
+        A (list[int]): 対象配列（0-indexed）。
+    出力:
+        list[int]: res[i] = A[i] より小さい直近右側の要素のインデックス。
+        存在しない場合は -1。
+    補足:
+        単調増加スタックを右から走査して O(N)。
+    """
+    n = len(A)
+    res = [-1] * n
+    stack = []
+    for i in range(n - 1, -1, -1):
+        while stack and A[stack[-1]] >= A[i]:
+            stack.pop()
+        if stack:
+            res[i] = stack[-1]
+        stack.append(i)
+    return res
 
 # ============================================================
 # ユーティリティ
@@ -2065,6 +2297,22 @@ def submasks(mask: int):
         if s == 0:
             break
         s = (s - 1) & mask
+
+def digit_sum(x: int) -> int:
+    """概要:
+        整数 x の十進数各桁の和を返す。
+    入力:
+        x (int): 非負整数。
+    出力:
+        int: 各桁の数字の和。
+    補足:
+        計算量は O(桁数)。
+    """
+    s = 0
+    while x:
+        s += x % 10
+        x //= 10
+    return s
 
 # ============================================================
 # 記録して出力

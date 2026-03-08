@@ -85,8 +85,33 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, Q = MAP()
+    A = defaultdict(int)
+    f = 0
+    for _ in range(Q):
+        i = LIST()
+        if i[0] == 1:
+            _, x, y = i
+            if f:
+                A[N-x] = y
+            else:
+                A[x-1] = y
+        elif i[0] == 2:
+            f ^= 1
+        else:
+            _, x = i
+            if f:
+                #debug(A, N-x)
+                if N-x in A:
+                    print(A[N-x])
+                else:
+                    print(N-x+1)
+            else:
+                #debug(A, x-1)
+                if x-1 in A:
+                    print(A[x-1])
+                else:
+                    print(x)
 
 
 

@@ -85,8 +85,16 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    Q = INT()
+    heap = []
+    for _ in range(Q):
+        query = LIST()
+        if query[0] == 1:
+            heapq.heappush(heap, query[1])
+        elif query[0] == 2:
+            pr(heap[0])
+        else:
+            heapq.heappop(heap)
 
 
 

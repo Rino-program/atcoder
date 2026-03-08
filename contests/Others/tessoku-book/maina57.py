@@ -83,10 +83,145 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+# ============================================================
+# ダブリング
+# ============================================================
+
+def build_doubling(
+    n: int,
+    nxt: list[int],
+    log: int = 30,
+    weight: list[int] | None = None,
+    op = None,
+    e = None,
+) -> tuple[list[list[int]], list[list[int]] | None]:
+    """概要:
+        関数的グラフに対してダブリングテーブルを構築する。
+        オプションで「各ステップに付随する値（重み）」の累積テーブルも同時構築できる。
+
+    入力:
+        n      (int)            : 頂点数（0-indexed）。
+        nxt    (list[int])      : nxt[v] = v から 1 ステップ先（0-indexed）。
+        log    (int)            : テーブル段数。2^log >= クエリ最大ステップ数 を満たすこと。
+        weight (list[int]|None) : weight[v] = v を出発した際に加算される値。None なら無効。
+        op     (callable|None)  : 重みの結合演算（例: operator.add, max）。None なら加算。
+        e      (any|None)       : 重みの単位元（例: 0, -INF）。None なら 0。
+
+    出力:
+        tuple:
+            [0] doubling[k][v]     : v から 2^k ステップ後の頂点。
+            [1] acc[k][v]          : v から 2^k ステップで累積した重み。weight=None なら None。
+
+    計算量:
+        O(N * log)
+
+    使用例（頂点のみ）:
+        nxt = [A[i] - 1 for i in range(N)]
+        db, _ = build_doubling(N, nxt)
+        v = doubling_query(db, X-1, Y)
+
+    使用例（頂点 + 累積コスト）:
+        nxt = [to_list[v] for v in range(N)]
+        w   = [cost_list[v] for v in range(N)]
+        db, ac = build_doubling(N, nxt, weight=w, op=operator.add, e=0)
+        v, total_cost = doubling_query_with_weight(db, ac, operator.add, 0, X-1, Y)
+    """
+    if op is None:
+        import operator
+        op = operator.add
+    if e is None:
+        e = 0
+
+    doubling = [[0] * n for _ in range(log)]
+    doubling[0] = list(nxt)
+
+    if weight is not None:
+        acc = [[e] * n for _ in range(log)]
+        acc[0] = list(weight)
+    else:
+        acc = None
+
+    for k in range(1, log):
+        for v in range(n):
+            mid = doubling[k-1][v]
+            doubling[k][v] = doubling[k-1][mid]
+            if acc is not None:
+                acc[k][v] = op(acc[k-1][v], acc[k-1][mid])
+
+    return doubling, acc
+
+
+def doubling_query(
+    doubling: list[list[int]],
+    v: int,
+    y: int,
+) -> int:
+    """概要:
+        ダブリングテーブルを用いて v から y ステップ後の頂点を返す。
+
+    入力:
+        doubling : build_doubling の戻り値 [0]。
+        v        : 始点（0-indexed）。
+        y        : ステップ数（0 以上）。
+
+    出力:
+        int: y ステップ後の頂点（0-indexed）。
+
+    計算量:
+        O(log y)
+    """
+    log = len(doubling)
+    for k in range(log):
+        if (y >> k) & 1:
+            v = doubling[k][v]
+    return v
+
+
+def doubling_query_with_weight(
+    doubling: list[list[int]],
+    acc: list[list[int]],
+    op,
+    e,
+    v: int,
+    y: int,
+) -> tuple[int, ...]:
+    """概要:
+        ダブリングテーブルを用いて v から y ステップ後の頂点と累積重みを返す。
+
+    入力:
+        doubling : build_doubling の戻り値 [0]。
+        acc      : build_doubling の戻り値 [1]（weight 指定時のみ有効）。
+        op       : 重みの結合演算（build_doubling と同一のものを渡す）。
+        e        : 重みの単位元（build_doubling と同一のものを渡す）。
+        v        : 始点（0-indexed）。
+        y        : ステップ数（0 以上）。
+
+    出力:
+        tuple[int, any]: (y ステップ後の頂点, 累積重み)。
+
+    計算量:
+        O(log y)
+    """
+    log = len(doubling)
+    total = e
+    for k in range(log):
+        if (y >> k) & 1:
+            total = op(total, acc[k][v])
+            v = doubling[k][v]
+    return v, total
+
 def main() -> None:
-    # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, Q = MAP()
+    A = LIST()
+    nxt = [A[i] - 1 for i in range(N)]
+    db, _ = build_doubling(N, nxt)
+    resultes = []
+    for _ in range(Q):
+        x, y = MAP()
+        x -= 1
+        res = doubling_query(db, x, y)
+        resultes.append(res + 1)
+    print("\n".join(map(str, resultes)))
 
 
 

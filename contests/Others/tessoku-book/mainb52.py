@@ -85,8 +85,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, X = MAP()
+    A = list(STR())
+    for i in range(X, N):
+        if A[i] == "#":
+            break
+        A[i] = "@"
+    for i in range(X - 1, -1, -1):
+        if A[i] == "#":
+            break
+        A[i] = "@"
+    print("".join(A))
 
 
 

@@ -84,8 +84,19 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # ==============================================
 
 def main() -> None:
-    # ここに解答を書く
-    N = INT()
+    N = int(input())
+    cards = []
+    for _ in range(N):
+        a, b = map(int, input().split())
+        cards.append((a, b))
+    
+    ans = 0
+    
+    # 4パターン全て試す
+    for sa, sb in [(1,1),(1,-1),(-1,1),(-1,-1)]:
+        s = sum(sa*a + sb*b for a, b in cards if sa*a + sb*b > 0)
+        ans = max(ans, s)
+    
     print(ans)
 
 

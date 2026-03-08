@@ -85,8 +85,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    Q = INT()
+    d = deque()
+    for _ in range(Q):
+        query = input().split()
+        query[0] = int(query[0])
+        if query[0] == 1:
+            d.append(query[1])
+        elif query[0] == 3:
+            d.popleft()
+        else:
+            pr(d[0])
 
 
 
