@@ -623,6 +623,42 @@ def bfs(g: list[list[int]], s: int) -> list[int]:
                 q.append(to)
     return dist
 
+def bfs_path(g: list[list[int]], s: int, t: int) -> list[int] | None:
+    """概要:
+        重みなしグラフで s から t への最短経路を BFS で求めて返す。
+    入力:
+        g (list[list[int]]): 隣接リスト。
+        s (int): 始点。
+        t (int): 終点。
+    出力:
+        list[int] | None: s から t への頂点列。到達不能なら None。
+    補足:
+        計算量は O(V+E)。経路が複数ある場合は最短の1つを返す。
+    """
+    n = len(g)
+    parent = [-1] * n
+    visited = [False] * n
+    visited[s] = True
+    q = deque([s])
+    while q:
+        v = q.popleft()
+        if v == t:
+            break
+        for to in g[v]:
+            if not visited[to]:
+                visited[to] = True
+                parent[to] = v
+                q.append(to)
+    if not visited[t]:
+        return None
+    path = []
+    v = t
+    while v != -1:
+        path.append(v)
+        v = parent[v]
+    path.reverse()
+    return path
+
 def multi_source_bfs(g: list[list[int]], sources: list[int]) -> list[int]:
     """概要:
         複数始点から同時に BFS を行い最短距離を求める。
@@ -695,6 +731,47 @@ def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
                 dist[to] = dist[v] + w
                 heapq.heappush(pq, (dist[to], to))
     return dist
+
+def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, list[int] | None]:
+    """概要:
+        非負重みグラフで s から t への最短距離と経路を求める。
+    入力:
+        g (list[list[tuple[int, int]]]): 重み付き隣接リスト（要素は (to, cost)）。
+        s (int): 始点。
+        t (int): 終点。
+    出力:
+        tuple[int, list[int] | None]:
+            (最短距離, s から t への頂点列)。
+            到達不能なら (INF, None)。
+    補足:
+        計算量は O((V+E)logV)。負辺は非対応。
+        経路が複数ある場合は最短の1つを返す。
+    """
+    n = len(g)
+    dist = [INF] * n
+    parent = [-1] * n
+    dist[s] = 0
+    pq = [(0, s)]
+    while pq:
+        d, v = heapq.heappop(pq)
+        if d > dist[v]:
+            continue
+        for to, w in g[v]:
+            if dist[v] + w < dist[to]:
+                dist[to] = dist[v] + w
+                parent[to] = v
+                heapq.heappush(pq, (dist[to], to))
+
+    if dist[t] == INF:
+        return INF, None
+
+    path = []
+    v = t
+    while v != -1:
+        path.append(v)
+        v = parent[v]
+    path.reverse()
+    return dist[t], path
 
 def zero_one_bfs(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     """概要:
@@ -962,6 +1039,27 @@ def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
             size[parent[v]] += size[v]
     return size
 
+def subtree_height(g: list[list[int]], root: int = 0) -> list[int]:
+    """概要:
+        根付き木の各頂点について部分木の高さ（階級）を求める。
+    入力:
+        g (list[list[int]]): 木の隣接リスト。
+        root (int): 根頂点。
+    出力:
+        list[int]: height[v] = v を根とする部分木の高さ。
+                   葉は 0、それ以外は直属の子の高さの最大値 + 1。
+    補足:
+        深い頂点から親へ max(子の高さ) + 1 を伝播する。
+    """
+    n = len(g)
+    height = [0] * n
+    parent = tree_parent(g, root)
+    depth = tree_depth(g, root)
+    order = sorted(range(n), key=lambda x: -depth[x])
+    for v in order:
+        if parent[v] != -1:
+            height[parent[v]] = max(height[parent[v]], height[v] + 1)
+    return height
 
 class LCA:
     """概要:

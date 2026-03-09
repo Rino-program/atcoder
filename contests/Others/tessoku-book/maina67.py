@@ -83,10 +83,94 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class DSU:
+    """概要:
+        Union-Find（Disjoint Set Union）を提供するクラス。
+
+    メソッド:
+        leader(x): x の属する連結成分の代表元を返す。
+        merge(a, b): a と b の成分を併合する。
+        same(a, b): 同一成分か判定する。
+        size(x): x の成分サイズを返す。
+        group_count(): 現在の成分数を返す。
+        groups(): 全成分を頂点リストで返す。
+
+    補足:
+        経路圧縮とサイズ併合でほぼ償却 O(α(N))。
+
+    使用例:
+        uf = DSU(n)
+        uf.merge(0, 1)
+        print(uf.same(0, 1))  # True
+    """
+    def __init__(self, n: int):
+        self.parent = list(range(n))
+        self.rank = [1] * n
+        self.n = n
+        self._group_count = n
+
+    def leader(self, x: int) -> int:
+        """根を取得"""
+        if self.parent[x] != x:
+            self.parent[x] = self.leader(self.parent[x])
+        return self.parent[x]
+
+    def merge(self, a: int, b: int) -> bool:
+        """併合（成功でTrue）"""
+        a, b = self.leader(a), self.leader(b)
+        if a == b: return False
+        if self.rank[a] < self.rank[b]: a, b = b, a
+        self.parent[b] = a
+        self.rank[a] += self.rank[b]
+        self._group_count -= 1
+        return True
+
+    def same(self, a: int, b: int) -> bool:
+        """同じグループか"""
+        return self.leader(a) == self.leader(b)
+
+    def size(self, x: int) -> int:
+        """xが属するグループのサイズ"""
+        return self.rank[self.leader(x)]
+
+    def group_count(self) -> int:
+        """グループ数"""
+        return self._group_count
+
+    def groups(self) -> list[list[int]]:
+        """全グループを取得"""
+        result = defaultdict(list)
+        for i in range(self.n):
+            result[self.leader(i)].append(i)
+        return list(result.values())
+
+def kruskal(n: int, edges: list[tuple[int, int, int]]) -> tuple[int, list[tuple[int, int, int]], bool]:
+    """概要:
+        Kruskal 法で最小全域木（または最小全域森）を構築する。
+    入力:
+        n (int): 頂点数。
+        edges (list[tuple[int, int, int]]): 辺 (u, v, w) の配列。
+    出力:
+        tuple[int, list[tuple[int, int, int]], bool]:
+            (総コスト, 採用辺リスト, グラフが連結でMST完成か)。
+    補足:
+        辺を重み昇順に処理し、DSUで閉路を回避する。
+    """
+    uf = DSU(n)
+    cost = 0
+    used = []
+    for u, v, w in sorted(edges, key=lambda x: x[2], reverse=True):
+        if uf.merge(u, v):
+            cost += w
+            used.append((u, v, w))
+    return cost, used, len(used) == n - 1
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    edges = list(map(lambda x: (x[0]-1, x[1]-1, x[2]), [list(MAP()) for _ in range(M)]))
+    cost, used, is_mst = kruskal(N, edges)
+    print(cost)
 
 
 

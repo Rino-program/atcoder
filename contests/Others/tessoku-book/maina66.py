@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+import re
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -83,14 +84,105 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class DSU:
+    """概要:
+        Union-Find（Disjoint Set Union）を提供するクラス。
+
+    メソッド:
+        leader(x): x の属する連結成分の代表元を返す。
+        merge(a, b): a と b の成分を併合する。
+        same(a, b): 同一成分か判定する。
+        size(x): x の成分サイズを返す。
+        group_count(): 現在の成分数を返す。
+        groups(): 全成分を頂点リストで返す。
+
+    補足:
+        経路圧縮とサイズ併合でほぼ償却 O(α(N))。
+
+    使用例:
+        uf = DSU(n)
+        uf.merge(0, 1)
+        print(uf.same(0, 1))  # True
+    """
+    def __init__(self, n: int):
+        self.parent = list(range(n))
+        self.rank = [1] * n
+        self.n = n
+        self._group_count = n
+
+    def leader(self, x: int) -> int:
+        """根を取得"""
+        if self.parent[x] != x:
+            self.parent[x] = self.leader(self.parent[x])
+        return self.parent[x]
+
+    def merge(self, a: int, b: int) -> bool:
+        """併合（成功でTrue）"""
+        a, b = self.leader(a), self.leader(b)
+        if a == b: return False
+        if self.rank[a] < self.rank[b]: a, b = b, a
+        self.parent[b] = a
+        self.rank[a] += self.rank[b]
+        self._group_count -= 1
+        return True
+
+    def same(self, a: int, b: int) -> bool:
+        """同じグループか"""
+        return self.leader(a) == self.leader(b)
+
+    def size(self, x: int) -> int:
+        """xが属するグループのサイズ"""
+        return self.rank[self.leader(x)]
+
+    def group_count(self) -> int:
+        """グループ数"""
+        return self._group_count
+
+    def groups(self) -> list[list[int]]:
+        """全グループを取得"""
+        result = defaultdict(list)
+        for i in range(self.n):
+            result[self.leader(i)].append(i)
+        return list(result.values())
+
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    uf = DSU(N)
+    edges = []
+    for _ in range(M):
+        a, b = MAP()
+        edges.append((a-1, b-1))
+    Q = INT()
+    query = LISTS(Q)
+    removed = set()
+    for i in range(Q):
+        query[i][1] -= 1
+        if query[i][0] == 1:
+            removed.add(query[i][1])
+        else:
+            query[i][2] -= 1
+
+    for i, (a, b) in enumerate(edges):
+        if i not in removed:
+            uf.merge(a, b)
+
+    ans = []
+    for i in reversed(query):
+        if i[0] == 1:
+            uf.merge(edges[i[1]][0], edges[i[1]][1])
+        else:
+            ans.append(uf.same(i[1], i[2]))
 
 
-
-
+    for a in reversed(ans):
+        yn(a)
 
 
 

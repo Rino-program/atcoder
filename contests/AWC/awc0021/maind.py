@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -23,8 +24,14 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
     return [INT() for _ in range(n)]
@@ -73,7 +80,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -97,61 +104,82 @@ def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], directed: bo
     """
     g = [[] for _ in range(n)]
     for a, b, c in edges:
-        g[a].append((b, c))
+        g[a-1].append((b-1, c))
         if not directed:
-            g[b].append((a, c))
+            g[b-1].append((a-1, c))
     return g
 
-def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, list[int] | None]:
+"""def multi_source_dijkstra(n, edges, sources):
+    n: 頂点数
+    edges: グラフの隣接リスト (node: [(neighbor, weight), ...])
+    sources: 始点のリスト [start1, start2, ...]
+    # 距離の初期化（無限大）
+    distances = [float('inf')] * n
+    
+    # 優先度付きキュー (distance, node)
+    pq = []
+    
+    # すべての始点をキューに投入し、距離を0に設定
+    for start_node in sources:
+        distances[start_node] = 0
+        heapq.heappush(pq, (0, start_node))
+        
+    while pq:
+        current_dist, u = heapq.heappop(pq)
+        
+        # キューから取り出した距離が既に最新でない場合はスキップ
+        if current_dist > distances[u]:
+            continue
+            
+        # 隣接ノードを探索
+        for v, weight in edges[u]:
+            distance = current_dist + weight
+            
+            # より短い距離が見つかったら更新
+            if distance < distances[v]:
+                distances[v] = distance
+                heapq.heappush(pq, (distance, v))
+                
+    return distances
+"""
+
+def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     """概要:
-        非負重みグラフで s から t への最短距離と経路を求める。
+        非負重みグラフで始点 s からの最短距離を求める。
     入力:
-        g (list[list[tuple[int, int]]]): 重み付き隣接リスト（要素は (to, cost)）。
+        g (list[list[tuple[int, int]]]): 重み付き隣接リスト。
         s (int): 始点。
-        t (int): 終点。
     出力:
-        tuple[int, list[int] | None]:
-            (最短距離, s から t への頂点列)。
-            到達不能なら (INF, None)。
+        list[int]: 各頂点への最短距離（未到達は INF）。
     補足:
         計算量は O((V+E)logV)。負辺は非対応。
-        経路が複数ある場合は最短の1つを返す。
     """
-    n = len(g)
-    dist = [INF] * n
-    parent = [-1] * n
+    dist = [INF] * len(g)
     dist[s] = 0
     pq = [(0, s)]
     while pq:
         d, v = heapq.heappop(pq)
-        if d > dist[v]:
-            continue
+        if d > dist[v]: continue
         for to, w in g[v]:
             if dist[v] + w < dist[to]:
                 dist[to] = dist[v] + w
-                parent[to] = v
                 heapq.heappush(pq, (dist[to], to))
-
-    if dist[t] == INF:
-        return INF, None
-
-    path = []
-    v = t
-    while v != -1:
-        path.append(v)
-        v = parent[v]
-    path.reverse()
-    return dist[t], path
+    return dist
 
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    ABC = LISTS(M)
-    g = build_weighted_graph(N, [(a-1, b-1, c) for a, b, c in ABC], directed=False)
-    ans = dijkstra_path(g, 0, N - 1)[1]
-    for i in range(len(ans)):
-        ans[i] += 1
-    print(*ans, sep=' ')
+    N, M, K = MAP()
+    UVT = TUPLES(M)
+    g = build_weighted_graph(N, UVT)
+    P = [0] + list(map(lambda x:x-1, LIST())) + [N-1]
+    ans = 0
+    for i, v in enumerate(P[:len(P)-1]):
+        d = dijkstra(g, v)
+        if d[P[i+1]] == INF:
+            print(-1)
+            return
+        ans += d[P[i+1]]
+    print(ans)
 
 
 

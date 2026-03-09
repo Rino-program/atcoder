@@ -83,10 +83,97 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def bfs(g: list[list[int]], s: int) -> list[int]:
+    """概要:
+        重みなしグラフで始点 s からの最短距離を BFS で求める。
+    入力:
+        g (list[list[int]]): 隣接リスト。
+        s (int): 始点。
+    出力:
+        list[int]: 各頂点への距離。未到達は -1。
+    補足:
+        計算量は O(V+E)。
+    """
+    dist = [-1] * len(g)
+    dist[s] = 0
+    q = deque([s])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if dist[to] == -1:
+                dist[to] = dist[v] + 1
+                q.append(to)
+    return dist
+
+def tree_depth(g: list[list[int]], root: int = 0) -> list[int]:
+    """概要:
+        根 root からの深さ（距離）を返す。
+    入力:
+        g (list[list[int]]): 木の隣接リスト。
+        root (int): 根頂点。
+    出力:
+        list[int]: 各頂点の深さ配列。
+    補足:
+        実装は `bfs` を利用している。
+    """
+    return bfs(g, root)
+
+def tree_parent(g: list[list[int]], root: int = 0) -> list[int]:
+    """概要:
+        根付き木における各頂点の親配列を構築する。
+    入力:
+        g (list[list[int]]): 木の隣接リスト。
+        root (int): 根頂点。
+    出力:
+        list[int]: parent[v]（根は -1）。
+    補足:
+        BFS で訪問順に親を設定する。
+    """
+    n = len(g)
+    parent = [-1] * n
+    visited = [False] * n
+    visited[root] = True
+    q = deque([root])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if not visited[to]:
+                visited[to] = True
+                parent[to] = v
+                q.append(to)
+    return parent
+
+def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
+    """概要:
+        根付き木の各頂点について部分木サイズを求める。
+    入力:
+        g (list[list[int]]): 木の隣接リスト。
+        root (int): 根頂点。
+    出力:
+        list[int]: size[v] = v を根とする部分木サイズ。
+    補足:
+        深い頂点から親へサイズを集約する。
+    """
+    n = len(g)
+    size = [1] * n
+    parent = tree_parent(g, root)
+    depth = tree_depth(g, root)
+    order = sorted(range(n), key=lambda x: -depth[x])
+    for v in order:
+        if parent[v] != -1:
+            size[parent[v]] += size[v]
+    return size
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, T = MAP()
+    g = [[] for _ in range(N)]
+    for _ in range(N-1):
+        A, B = MAP()
+        g[A-1].append(B-1)
+        g[B-1].append(A-1)
+    g = subtree_size(g, root=T-1)
+    print(" ".join(map(str, map(lambda x:x-1, g))))
 
 
 

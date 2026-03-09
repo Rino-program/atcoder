@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -23,8 +24,14 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
     return [INT() for _ in range(n)]
@@ -73,7 +80,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -83,75 +90,21 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], directed: bool = False) -> list[list[tuple[int, int]]]:
-    """概要:
-        辺集合から重み付きグラフの隣接リストを構築する。
-    入力:
-        n (int): 頂点数。
-        edges (list[tuple[int, int, int]]): 辺 (a, b, cost) の配列。
-        directed (bool): True なら有向、False なら無向。
-    出力:
-        list[list[tuple[int, int]]]: 隣接リスト（要素は (to, cost)）。
-    補足:
-        無向時は両方向に辺を追加する。
-    """
-    g = [[] for _ in range(n)]
-    for a, b, c in edges:
-        g[a].append((b, c))
-        if not directed:
-            g[b].append((a, c))
-    return g
-
-def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, list[int] | None]:
-    """概要:
-        非負重みグラフで s から t への最短距離と経路を求める。
-    入力:
-        g (list[list[tuple[int, int]]]): 重み付き隣接リスト（要素は (to, cost)）。
-        s (int): 始点。
-        t (int): 終点。
-    出力:
-        tuple[int, list[int] | None]:
-            (最短距離, s から t への頂点列)。
-            到達不能なら (INF, None)。
-    補足:
-        計算量は O((V+E)logV)。負辺は非対応。
-        経路が複数ある場合は最短の1つを返す。
-    """
-    n = len(g)
-    dist = [INF] * n
-    parent = [-1] * n
-    dist[s] = 0
-    pq = [(0, s)]
-    while pq:
-        d, v = heapq.heappop(pq)
-        if d > dist[v]:
-            continue
-        for to, w in g[v]:
-            if dist[v] + w < dist[to]:
-                dist[to] = dist[v] + w
-                parent[to] = v
-                heapq.heappush(pq, (dist[to], to))
-
-    if dist[t] == INF:
-        return INF, None
-
-    path = []
-    v = t
-    while v != -1:
-        path.append(v)
-        v = parent[v]
-    path.reverse()
-    return dist[t], path
-
 def main() -> None:
     # ここに解答を書く
     N, M = MAP()
-    ABC = LISTS(M)
-    g = build_weighted_graph(N, [(a-1, b-1, c) for a, b, c in ABC], directed=False)
-    ans = dijkstra_path(g, 0, N - 1)[1]
-    for i in range(len(ans)):
-        ans[i] += 1
-    print(*ans, sep=' ')
+    P = LIST()
+    ans = []
+    for i in range(N):
+        ipt = sorted(LIST()[1:])
+        tmp = 0
+        m = 0
+        for j in ipt:
+            if P[j-1] > m:
+                m = P[j-1]
+                tmp = j
+        ans.append(tmp)
+    print(*ans, sep="\n")
 
 
 
