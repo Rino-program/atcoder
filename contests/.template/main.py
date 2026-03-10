@@ -1,5 +1,5 @@
 # coding: utf-8
-# AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
@@ -45,7 +45,7 @@ def STRS(n: int) -> list[str]:
 def CHARS() -> list[str]:
     return list(STR())
 
-def STRSL(n: int) -> list[list[str]]:
+def CHARSL(n: int) -> list[list[str]]:
     return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====

@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0022",
+    "title": "AtCoder Weekday Contest 0022 Beta",
+    "url": "https://atcoder.jp/contests/awc0022"
+  },
+  "tasks": [
+    {
+      "id": "awc0022_a",
+      "label": "A",
+      "title": "Battery Level and Charger Arrival",
+      "url": "https://atcoder.jp/contests/awc0022/tasks/awc0022_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0022_b",
+      "label": "B",
+      "title": "Target Score for the Test",
+      "url": "https://atcoder.jp/contests/awc0022/tasks/awc0022_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0022_c",
+      "label": "C",
+      "title": "Road Pothole Survey",
+      "url": "https://atcoder.jp/contests/awc0022/tasks/awc0022_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0022_d",
+      "label": "D",
+      "title": "Simultaneous Control of Light Bulb Panels",
+      "url": "https://atcoder.jp/contests/awc0022/tasks/awc0022_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0022_e",
+      "label": "E",
+      "title": "Delivery Driver's Route",
+      "url": "https://atcoder.jp/contests/awc0022/tasks/awc0022_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

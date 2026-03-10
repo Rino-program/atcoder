@@ -85,11 +85,35 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
-
-
-
+    N, M = MAP()
+    A = LIST()
+    init = 0
+    for i in range(N):
+        if A[i] == 1:
+            init |= 1 << N - 1 - i
+    goal = (1 << N) - 1
+    ops = []
+    for _ in range(M):
+        x, y, z = MAP()
+        mask = (1 << (N-x)) | (1 << (N-y)) | (1 << (N-z))
+        ops.append(mask)
+    if init == goal:
+        print(0)
+        return
+    dist = [-1] * (1 << N)
+    dist[init] = 0
+    q = deque([init])
+    while q:
+        now = q.popleft()
+        for mask in ops:
+            nstate = now ^ mask
+            if dist[nstate] == -1:
+                dist[nstate] = dist[now] + 1
+                if nstate == goal:
+                    print(dist[nstate])
+                    return
+                q.append(nstate)
+    print(-1)
 
 
 

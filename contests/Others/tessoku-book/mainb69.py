@@ -38,7 +38,7 @@ def STRS(n: int) -> list[str]:
 def CHARS() -> list[str]:
     return list(STR())
 
-def STRSL(n: int) -> list[list[str]]:
+def CHARSL(n: int) -> list[list[str]]:
     return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====
@@ -83,10 +83,136 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class MaxFlow:
+    """概要:
+        Dinic 法による最大流を提供するクラス。
+
+    メソッド:
+        add_edge(u, v, cap): u→v に容量 cap の辺を追加する。
+        max_flow(s, t): s→t の最大流量を返す。
+
+    補足:
+        計算量は O(V²E)。頂点数・辺数が数百程度なら十分高速。
+        逆辺を自動管理するため、無向辺は add_edge を双方向で呼ぶか
+        cap を同じ値で両方向に追加すること。
+
+    使用例:
+        mf = MaxFlow(n)
+        mf.add_edge(0, 1, 10)
+        mf.add_edge(1, 2, 5)
+        print(mf.max_flow(0, 2))  # 5
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.graph = [[] for _ in range(n)]
+
+    def add_edge(self, u: int, v: int, cap: int) -> None:
+        """u→v に容量 cap の有向辺を追加（逆辺も自動追加）"""
+        self.graph[u].append([v, cap, len(self.graph[v])])
+        self.graph[v].append([u, 0, len(self.graph[u]) - 1])
+
+    def _bfs(self, s: int) -> list[int]:
+        """BFS でレベルグラフを構築"""
+        level = [-1] * self.n
+        level[s] = 0
+        q = deque([s])
+        while q:
+            v = q.popleft()
+            for to, cap, _ in self.graph[v]:
+                if cap > 0 and level[to] == -1:
+                    level[to] = level[v] + 1
+                    q.append(to)
+        return level
+
+    def _dfs(self, v: int, t: int, f: int, level: list[int], it: list[int]) -> int:
+        """DFS でブロッキングフローを流す"""
+        if v == t:
+            return f
+        while it[v] < len(self.graph[v]):
+            e = self.graph[v][it[v]]
+            to, cap, rev = e
+            if cap > 0 and level[v] < level[to]:
+                d = self._dfs(to, t, min(f, cap), level, it)
+                if d > 0:
+                    e[1] -= d
+                    self.graph[to][rev][1] += d
+                    return d
+            it[v] += 1
+        return 0
+
+    def max_flow(self, s: int, t: int) -> int:
+        """s→t の最大流量を返す"""
+        flow = 0
+        while True:
+            level = self._bfs(s)
+            if level[t] == -1:
+                return flow
+            it = [0] * self.n
+            while True:
+                f = self._dfs(s, t, INF, level, it)
+                if f == 0:
+                    break
+                flow += f
+
+class LowerBoundFlow:
+    """概要:
+        下限付きフロー（実行可能性判定 / 最小流）を扱うクラス。
+
+    メソッド:
+        add_edge(u, v, lo, hi): 下限 lo, 上限 hi の辺を追加する。
+        is_feasible(): 実行可能かどうかを判定する。
+        min_flow(s, t): 追加の最小流量（実行可能かつ最小）を求める。
+
+    補足:
+        循環フロー (T→S) が必要な場合は add_circulation() を先に呼ぶ。
+
+    使用例:
+        lbf = LowerBoundFlow(n)
+        lbf.add_circulation(T, S)   # 必要な場合のみ
+        lbf.add_edge(u, v, lo, hi)
+        print(lbf.is_feasible())
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.SS = n      # 超始点
+        self.TT = n + 1  # 超終点
+        self.mf = MaxFlow(n + 2)
+        self.required = 0
+
+    def add_circulation(self, t: int, s: int) -> None:
+        """T → S の循環辺（∞容量）を追加"""
+        self.mf.add_edge(t, s, INF)
+
+    def add_edge(self, u: int, v: int, lo: int, hi: int) -> None:
+        """下限 lo、上限 hi の辺を追加"""
+        self.mf.add_edge(u, v, hi - lo)
+        if lo > 0:
+            self.mf.add_edge(self.SS, v, lo)
+            self.mf.add_edge(u, self.TT, lo)
+            self.required += lo
+
+    def is_feasible(self) -> bool:
+        """実行可能かどうかを返す"""
+        return self.mf.max_flow(self.SS, self.TT) == self.required
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    C = CHARSL(N)
+    for i in range(N):
+        C[i] = list(map(int, C[i]))
+    total = 2 + N + 24
+    lbf = LowerBoundFlow(total)
+    lbf.add_circulation(1, 0)
+    for i in range(N):
+        lbf.add_edge(0, 2 + i, 0, 10)
+    for i in range(N):
+        for j in range(24):
+            if C[i][j] == 1:
+                lbf.add_edge(2 + i, 2 + N + j, 0, 1)
+    for j in range(24):
+        lbf.add_edge(2 + N + j, 1, M, N)
+    yn(lbf.is_feasible())
 
 
 

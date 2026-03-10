@@ -1,5 +1,6 @@
 # coding: utf-8
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+from re import M
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -83,10 +84,93 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class MaxFlow:
+    """概要:
+        Dinic 法による最大流を提供するクラス。
+
+    メソッド:
+        add_edge(u, v, cap): u→v に容量 cap の辺を追加する。
+        max_flow(s, t): s→t の最大流量を返す。
+
+    補足:
+        計算量は O(V²E)。頂点数・辺数が数百程度なら十分高速。
+        逆辺を自動管理するため、無向辺は add_edge を双方向で呼ぶか
+        cap を同じ値で両方向に追加すること。
+
+    使用例:
+        mf = MaxFlow(n)
+        mf.add_edge(0, 1, 10)
+        mf.add_edge(1, 2, 5)
+        print(mf.max_flow(0, 2))  # 5
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.graph = [[] for _ in range(n)]
+
+    def add_edge(self, u: int, v: int, cap: int) -> None:
+        """u→v に容量 cap の有向辺を追加（逆辺も自動追加）"""
+        self.graph[u].append([v, cap, len(self.graph[v])])
+        self.graph[v].append([u, 0, len(self.graph[u]) - 1])
+
+    def _bfs(self, s: int) -> list[int]:
+        """BFS でレベルグラフを構築"""
+        level = [-1] * self.n
+        level[s] = 0
+        q = deque([s])
+        while q:
+            v = q.popleft()
+            for to, cap, _ in self.graph[v]:
+                if cap > 0 and level[to] == -1:
+                    level[to] = level[v] + 1
+                    q.append(to)
+        return level
+
+    def _dfs(self, v: int, t: int, f: int, level: list[int], it: list[int]) -> int:
+        """DFS でブロッキングフローを流す"""
+        if v == t:
+            return f
+        while it[v] < len(self.graph[v]):
+            e = self.graph[v][it[v]]
+            to, cap, rev = e
+            if cap > 0 and level[v] < level[to]:
+                d = self._dfs(to, t, min(f, cap), level, it)
+                if d > 0:
+                    e[1] -= d
+                    self.graph[to][rev][1] += d
+                    return d
+            it[v] += 1
+        return 0
+
+    def max_flow(self, s: int, t: int) -> int:
+        """s→t の最大流量を返す"""
+        flow = 0
+        while True:
+            level = self._bfs(s)
+            if level[t] == -1:
+                return flow
+            it = [0] * self.n
+            while True:
+                f = self._dfs(s, t, INF, level, it)
+                if f == 0:
+                    break
+                flow += f
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    P = LIST()
+    mf = MaxFlow(N+2)
+    ans = 0
+    for i in range(N):
+        if P[i] > 0:
+            mf.add_edge(N, i, P[i])
+            ans += P[i]
+        elif P[i] < 0:
+            mf.add_edge(i, N+1, -P[i])
+    for _ in range(M):
+        u, v = MAP()
+        mf.add_edge(u-1, v-1, INF)
+    print(ans - mf.max_flow(N, N+1))
 
 
 
