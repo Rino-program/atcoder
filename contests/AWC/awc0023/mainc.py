@@ -1,5 +1,6 @@
 # coding: utf-8
-# AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -23,8 +24,14 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
     return [INT() for _ in range(n)]
@@ -38,7 +45,7 @@ def STRS(n: int) -> list[str]:
 def CHARS() -> list[str]:
     return list(STR())
 
-def STRSL(n: int) -> list[list[str]]:
+def CHARSL(n: int) -> list[list[str]]:
     return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====
@@ -73,7 +80,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -83,51 +90,31 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def build_graph(n: int, edges: list[tuple[int, int]], directed: bool = False) -> list[list[int]]:
+def prefix_sum(arr: list[int]) -> list[int]:
     """概要:
-        辺集合から重みなしグラフの隣接リストを構築する。
+        1次元配列の累積和配列を構築する。
     入力:
-        n (int): 頂点数（0-indexed を想定）。
-        edges (list[tuple[int, int]]): 辺 (a, b) の配列。
-        directed (bool): True なら有向、False なら無向。
+        arr (list[int]): 元配列。
     出力:
-        list[list[int]]: 隣接リスト。
+        list[int]: 先頭に 0 を持つ累積和配列 ps。
     補足:
-        無向時は両方向に辺を追加する。
+        区間和は ps[r] - ps[l]（半開区間 [l, r)）。
     """
-    g = [[] for _ in range(n)]
-    for a, b in edges:
-        g[a-1]. append(b-1)
-        if not directed:
-            g[b-1].append(a-1)
-    return g
+    ps = [0]
+    for x in arr:
+        ps.append(ps[-1] + x)
+    return ps
 
 def main() -> None:
     # ここに解答を書く
     N, M = MAP()
-    d = deque()
-    ABCD = LISTS(M)
-    CD = {f"{ABCD[i][0]}_{ABCD[i][1]}": (ABCD[i][2], ABCD[i][3]) for i in range(M)}
-    AB = [(a, b) for a, b, _, _ in ABCD]
-    g = build_graph(N, AB)
-    debug(g)
-    for i in g[0]:
-        d.append((i, CD[f"{1}_{i+1}"][0], CD[f"{1}_{i+1}"][1]))
-    debug(d)
-    ans = [0, 0]
-    while d:
-        i, C, T = d.popleft()
-        debug(i, C, T)
-        if i == N-1:
-            # 終了処理
-            if ans[0] > C and ans[1] < T:
-                ans = [C, T]
-        else:
-            for j in g[i]:
-                if i > j:
-                    i, j = j, i
-                d.append((j, C + CD[f"{i+1}_{j+1}"][0], T + CD[f"{i+1}_{j+1}"][1]))
-    pr(ans[0], ans[1])
+    T = LIST()
+    SLR = LISTS(M)
+    T = prefix_sum(T)
+    ans = []
+    for S, L, R in SLR:
+        ans.append(T[R] - T[L-1] + S)
+    print(*ans, sep='\n')
 
 
 

@@ -1,0 +1,161 @@
+# coding: utf-8
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
+import sys
+from collections import deque, defaultdict, Counter
+from bisect import bisect_left, bisect_right
+import heapq
+import math
+from copy import deepcopy
+import string
+
+sys.setrecursionlimit(10 ** 6)
+
+# ===== 入出力ヘルパ =====
+def input() -> str:
+    return sys.stdin.readline().rstrip()
+
+def INT() -> int:
+    return int(input())
+
+def MAP():
+    return map(int, input().split())
+
+def LIST() -> list[int]:
+    return list(MAP())
+
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
+def LISTS(n: int) -> list[list[int]]:
+    return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
+
+def LISTSI(n: int) -> list[int]:
+    return [INT() for _ in range(n)]
+
+def STR() -> str:
+    return input()
+
+def STRS(n: int) -> list[str]:
+    return [STR() for _ in range(n)]
+
+def CHARS() -> list[str]:
+    return list(STR())
+
+def CHARSL(n: int) -> list[list[str]]:
+    return [list(STR()) for _ in range(n)]
+
+# ===== 定数 =====
+INF = 10 ** 18
+MOD = 998244353
+# MOD = 10**9 + 7
+
+# ===== 方向ベクトル =====
+DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
+DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
+
+# ===== 文字列のリスト =====
+LOWER = list(string.ascii_lowercase) # 小文字 a-z の文字列リスト
+UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
+DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
+
+# ===== よく使う出力関数 =====
+pr = print # ただのさぼり。
+def Yes(): print("Yes")
+def No(): print("No")
+def yes(): print("yes")
+def no(): print("no")
+def YES(): print("YES")
+def NO(): print("NO")
+def yn(cond: bool) -> None:
+    """条件に応じてYes/No出力"""
+    print("Yes" if cond else "No")
+
+# ===== デバッグ =====
+def debug(*args, **kwargs) -> None:
+    """デバッグ出力（標準エラー）"""
+    print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+
+def print_grid(grid: list[list], sep: str = '') -> None:
+    """グリッド表示"""
+    for row in grid:
+        print(sep.join(map(str, row)))
+
+
+# ==============================================
+# =================== main =====================
+# ==============================================
+
+def main() -> None:
+    # ここに解答を書く
+    N, S, T = MAP()
+    PCW = LISTS(N)
+    AW = [(PCW[i][0] - PCW[i][1], PCW[i][2]) for i in range(N)]
+    AW = [i for i in AW if i[0] > 0] # コストよりもポイントが高いものだけ残す
+    dp = [[-100000] * (S + 1) for _ in range(len(AW) + 1)] # dp[i][j] = i番目まで見て、コストjのときの最大ポイント
+    dp[0][0] = 0
+    dp2 = [[-2 for _ in range(S + 1)] for _ in range(len(AW) + 1)] # 選んだ個数
+    dp2[0][0] = 0
+    ans = INF
+    for i in range(1, len(AW)+1):
+        for j in range(S+1):
+            # 選択肢1: アイテムiを取らない
+            val_no  = dp[i-1][j]
+            cnt_no  = dp2[i-1][j]
+
+            # 選択肢2: アイテムiを取る
+            val_yes = -100000
+            cnt_yes = -2
+            if j - AW[i-1][1] >= 0 and dp[i-1][j-AW[i-1][1]] != -100000:
+                val_yes = dp[i-1][j-AW[i-1][1]] + AW[i-1][0]
+                cnt_yes = dp2[i-1][j-AW[i-1][1]] + 1
+
+            # dpとdp2を"一緒に"決定する ← ここが修正のポイント
+            if val_yes > val_no:
+                dp[i][j]  = val_yes
+                dp2[i][j] = cnt_yes
+            elif val_no > val_yes:
+                dp[i][j]  = val_no
+                dp2[i][j] = cnt_no
+            else:  # 利益が同じ → 個数が少ない方を選ぶ
+                dp[i][j]  = val_no
+                dp2[i][j] = min(cnt_no, cnt_yes)
+
+            if dp[i][j] >= T:
+                ans = min(ans, dp2[i][j])
+    """for i in range(len(AW)+1):
+        for j in range(S+1):
+            print(dp[i][j] if dp[i][j] != -100000 else "o", end='_')
+        print()
+    for i in range(len(AW)+1):
+        for j in range(S+1):
+            print(dp2[i][j] if dp2[i][j] != -2 else "o", end='_')
+        print()"""
+    pr(ans if ans != INF else -1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    main()

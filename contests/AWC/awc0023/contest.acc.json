@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0023",
+    "title": "AtCoder Weekday Contest 0023 Beta",
+    "url": "https://atcoder.jp/contests/awc0023"
+  },
+  "tasks": [
+    {
+      "id": "awc0023_a",
+      "label": "A",
+      "title": "Chef's Break",
+      "url": "https://atcoder.jp/contests/awc0023/tasks/awc0023_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0023_b",
+      "label": "B",
+      "title": "Bus Tour",
+      "url": "https://atcoder.jp/contests/awc0023/tasks/awc0023_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0023_c",
+      "label": "C",
+      "title": "Factory Tour",
+      "url": "https://atcoder.jp/contests/awc0023/tasks/awc0023_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0023_d",
+      "label": "D",
+      "title": "Package Delivery",
+      "url": "https://atcoder.jp/contests/awc0023/tasks/awc0023_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0023_e",
+      "label": "E",
+      "title": "Elevator Transport",
+      "url": "https://atcoder.jp/contests/awc0023/tasks/awc0023_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
