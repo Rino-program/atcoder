@@ -86,7 +86,18 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    g = [[] for _ in range(N)]
+    for i in range(1, N+1):
+        if N-1 <= i:
+            g[i-1].append(1)
+        else:
+            g[i-1].append(i+2)
+        if N == i:
+            g[i-1].append(2)
+        else:
+            g[i-1].append(i+1)
+    print(N)
+    print_grid(g, ' ')
 
 
 

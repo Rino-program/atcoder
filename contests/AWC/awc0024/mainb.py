@@ -1,5 +1,6 @@
 # coding: utf-8
-# AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -23,8 +24,14 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
     return [INT() for _ in range(n)]
@@ -38,7 +45,7 @@ def STRS(n: int) -> list[str]:
 def CHARS() -> list[str]:
     return list(STR())
 
-def STRSL(n: int) -> list[list[str]]:
+def CHARSL(n: int) -> list[list[str]]:
     return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====
@@ -73,7 +80,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -83,29 +90,17 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def TUPLE() -> tuple[int, ...]:
-    return tuple(MAP())
-
-def TUPLES(n: int) -> list[tuple[int, ...]]:
-    return [TUPLE() for _ in range(n)]
-
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    TD = TUPLES(N)
-    TD.sort(key=lambda x: x[1])
-    heap = []
-    now = 0
-    for t, d in TD:
-        if now + t <= d:
-            heapq.heappush(heap, -t)
-            now += t
-        elif heap and -heap[0] > t:
-            largest_t = -heapq.heappop(heap)
-            now -= largest_t
-            now += t
-            heapq.heappush(heap, -t)
-    print(len(heap))
+    N, M, K = MAP()
+    li = [1] * K + [0] * (N - K)
+    for _ in range(M):
+        a, b = MAP()
+        a -= 1
+        b -= 1
+        if li[a] == 1 or li[b] == 1:
+            li[a], li[b] = 1, 1
+    print(sum(li))
 
 
 

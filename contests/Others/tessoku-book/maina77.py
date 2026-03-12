@@ -83,9 +83,46 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+from collections.abc import Callable
+def binary_search_max(ok: int, ng: int, check: Callable[[int], bool]) -> int:
+    """概要:
+        単調性を利用して `check(x)=True` となる最大 x を整数二分探索で求める。
+    入力:
+        ok (int): 条件を満たす側の初期値。
+        ng (int): 条件を満たさない側の初期値。
+        check (Callable[[int], bool]): 判定関数（単調）。
+    出力:
+        int: 条件を満たす最大の値。
+    補足:
+        境界の妥当性（ok 側True, ng 側False）を事前に満たすこと。
+    """
+    while abs(ok - ng) > 1:
+        mid = (ok + ng) // 2
+        if check(mid):
+            ok = mid
+        else:
+            ng = mid
+    return ok
+
+def check(mid: int, points: list[int], K: int, L: int) -> bool:
+    count = 0
+    prev = 0
+    for i in range(1, len(points)-1):
+        if points[i] - prev >= mid:
+            count += 1
+            prev = points[i]
+            if count >= K:
+                break
+    return count >= K and (L - prev) >= mid
+
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, L = MAP()
+    K = INT()
+    A = LIST()
+    points = [0] + A + [L]
+    ans = binary_search_max(0, L+1, lambda x: check(x, points, K, L))
     print(ans)
 
 

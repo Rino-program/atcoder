@@ -86,6 +86,11 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A = LIST()
+    ans = 0
+    for i in range(N-1):
+        for j in range(i+1, N):
+            ans = max(ans, A[i] + A[j])
     print(ans)
 
 

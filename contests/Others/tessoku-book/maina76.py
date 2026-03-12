@@ -44,7 +44,7 @@ def STRSL(n: int) -> list[list[str]]:
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353
-# MOD = 10**9 + 7
+MOD = 10**9 + 7
 
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
@@ -83,10 +83,76 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class BIT:
+    """概要:
+        1次元 Binary Indexed Tree（Fenwick Tree）を提供するクラス。
+
+    メソッド:
+        add(i, x): a[i] に x を加算する。
+        sum(i): 区間 [0, i] の和を返す。
+        range_sum(l, r): 区間 [l, r) の和を返す。
+        lower_bound(w): 累積和が w 以上になる最小インデックスを返す。
+
+    補足:
+        すべて 0-indexed インターフェース。各操作は O(logN)。
+
+    使用例:
+        bit = BIT(n)
+        bit.add(i, x)        # a[i] += x
+        bit.sum(i)           # a[0] + ...  + a[i]
+        bit.range_sum(l, r)  # a[l] + ... + a[r-1]
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.data = [0] * (n + 1)
+
+    def add(self, i: int, x: int) -> None:
+        i += 1
+        while i <= self.n:
+            self.data[i] += x
+            i += i & -i
+
+    def sum(self, i: int) -> int:
+        """a[0] + ... + a[i]"""
+        s = 0
+        i += 1
+        while i > 0:
+            s += self.data[i]
+            i -= i & -i
+        return s
+
+    def range_sum(self, l: int, r: int) -> int:
+        """a[l] + ... + a[r-1]"""
+        if l >= r: return 0
+        return self.sum(r - 1) - (self.sum(l - 1) if l > 0 else 0)
+
+    def lower_bound(self, w: int) -> int:
+        """累積和が w 以上になる最小のインデックス"""
+        if w <= 0: return 0
+        x, k = 0, 1
+        while k * 2 <= self.n: k *= 2
+        while k > 0:
+            if x + k <= self.n and self.data[x + k] < w:
+                w -= self.data[x + k]
+                x += k
+            k //= 2
+        return x
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, W, L, R = MAP()
+    X = LIST()
+    pts = [0] + X + [W]
+    bit = BIT(N + 2)
+    bit.add(0, 1)
+    for i in range(1, N + 2):
+        xi = pts[i]
+        l = bisect_left(pts, xi - R)
+        r = bisect_right(pts, xi - L)
+        dp = bit.range_sum(l, r)
+        if dp > 0:
+            bit.add(i, dp)
+    print(bit.range_sum(N + 1, N + 2) % MOD)
 
 
 

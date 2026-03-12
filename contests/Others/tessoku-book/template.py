@@ -563,12 +563,13 @@ class WeightedDSU:
 # グラフアルゴリズム
 # ============================================================
 
-def build_graph(n: int, edges: list[tuple[int, int]], directed: bool = False) -> list[list[int]]:
+def build_graph(n: int, edges: list[tuple[int, int]], idx: bool = True, directed: bool = False) -> list[list[int]]:
     """概要:
         辺集合から重みなしグラフの隣接リストを構築する。
     入力:
         n (int): 頂点数（0-indexed を想定）。
         edges (list[tuple[int, int]]): 辺 (a, b) の配列。
+        idx (bool): True なら頂点番号を0-indexedに調整する。
         directed (bool): True なら有向、False なら無向。
     出力:
         list[list[int]]: 隣接リスト。
@@ -577,17 +578,21 @@ def build_graph(n: int, edges: list[tuple[int, int]], directed: bool = False) ->
     """
     g = [[] for _ in range(n)]
     for a, b in edges:
+        if idx:
+            a -= 1
+            b -= 1
         g[a]. append(b)
         if not directed:
             g[b].append(a)
     return g
 
-def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], directed: bool = False) -> list[list[tuple[int, int]]]:
+def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: int = True, directed: bool = False) -> list[list[tuple[int, int]]]:
     """概要:
         辺集合から重み付きグラフの隣接リストを構築する。
     入力:
         n (int): 頂点数。
         edges (list[tuple[int, int, int]]): 辺 (a, b, cost) の配列。
+        idx (bool): True なら頂点番号を0-indexedに調整する。
         directed (bool): True なら有向、False なら無向。
     出力:
         list[list[tuple[int, int]]]: 隣接リスト（要素は (to, cost)）。
@@ -596,6 +601,9 @@ def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], directed: bo
     """
     g = [[] for _ in range(n)]
     for a, b, c in edges:
+        if idx:
+            a -= 1
+            b -= 1
         g[a].append((b, c))
         if not directed:
             g[b].append((a, c))
@@ -730,6 +738,79 @@ def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
             if dist[v] + w < dist[to]:
                 dist[to] = dist[v] + w
                 heapq.heappush(pq, (dist[to], to))
+    return dist
+
+def dijkstra_multi(
+    g: list[list[tuple]],
+    s: int,
+    n_criteria: int = 2,
+    better: "Callable[[tuple, tuple], bool]" = None,
+) -> list[tuple]:
+    """概要:
+        複数基準（主: 距離最小, 副: 任意）を持つダイクストラ法。
+
+    入力:
+        g (list[list[tuple]]): 隣接リスト。各要素は (to, *values) の形式。
+            values[0] が主コスト（最小化）、残りは副基準。
+        s (int): 始点。
+        n_criteria (int): 基準数（デフォルト2: 距離+1つの副基準）。
+        better (Callable): (新状態tuple, 旧状態tuple) -> bool。
+            None の場合は「主: 最小, 副: 最大」をデフォルト適用。
+
+    出力:
+        list[tuple]: dist[v] = (主コスト, 副基準1, ...) の最良値タプル。
+                     未到達は (INF, 0, 0, ...) 相当。
+
+    補足:
+        ヒープのキーは (primary, -secondary, ..., vertex) の形。
+        better 関数を自分で定義すれば任意の多基準に対応可能。
+
+    使用例（距離最小・木の数最大の2基準）:
+        # g[v] = [(to, cost, tree_count), ...]
+        dist = dijkstra_multi(g, 0)
+        print(dist[N-1])  # (最短距離, 最大木の数)
+    """
+    INF_VAL = 10 ** 18
+    n = len(g)
+    init = tuple([INF_VAL] + [0] * (n_criteria - 1))
+    dist = [init] * n
+    start = tuple([0] * n_criteria)
+    dist[s] = start
+
+    def default_better(new_state: tuple, old_state: tuple) -> bool:
+        """主: 小さいほど良い, 副: 大きいほど良い"""
+        if new_state[0] < old_state[0]:
+            return True
+        if new_state[0] == old_state[0]:
+            return new_state[1:] > old_state[1:]
+        return False
+
+    _better = better if better else default_better
+
+    # ヒープキー: (primary, -secondary, vertex)
+    def to_heap_key(state: tuple, v: int) -> tuple:
+        return (state[0],) + tuple(-x for x in state[1:]) + (v,)
+
+    pq = [to_heap_key(start, s)]
+
+    while pq:
+        entry = heapq.heappop(pq)
+        v = entry[-1]
+        cur_primary = entry[0]
+        cur_rest = tuple(-x for x in entry[1:-1])
+        cur_state = (cur_primary,) + cur_rest
+
+        if not _better(cur_state, dist[v]) and cur_state != dist[v]:
+            continue
+
+        for edge in g[v]:
+            to = edge[0]
+            values = edge[1:]
+            new_state = tuple(cur_state[i] + values[i] for i in range(n_criteria))
+            if _better(new_state, dist[to]):
+                dist[to] = new_state
+                heapq.heappush(pq, to_heap_key(new_state, to))
+
     return dist
 
 def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, list[int] | None]:

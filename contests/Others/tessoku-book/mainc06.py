@@ -85,8 +85,12 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N = bin(INT()-1)[2:][::-1]
+    ans = ["4"] * 10
+    for i, v in enumerate(N):
+        if v == "1":
+            ans[i] = "7"
+    print("".join(ans[::-1]))
 
 
 

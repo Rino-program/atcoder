@@ -83,10 +83,29 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def divisors(n: int) -> list[int]:
+    """概要:
+        整数 n の正の約数を全列挙して昇順で返す。
+    入力:
+        n (int): 約数を求める対象の正整数。
+    出力:
+        list[int]: n の約数を昇順に並べたリスト。
+    補足:
+        計算量は O(√n)。
+    """
+    divs = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divs.append(i)
+            if i != n // i:
+                divs.append(n // i)
+    return sorted(divs)
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    ans = divisors(N)
+    print(*ans, sep='\n')
 
 
 

@@ -83,10 +83,31 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def diff(a: str, b: str) -> int:
+    return sum(x != y for x, y in zip(a, b))
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    tickets: list[tuple[str, int]] = []
+    for _ in range(N):
+        s, t = STR().split()
+        tickets.append((s, int(t)))
+    def check(x: str) -> bool:
+        for s, t in tickets:
+            d = diff(s, x)
+            if (t == 1 and d != 0) or (t == 2 and d != 1) or (t == 3 and d <= 1):
+                return False
+        return True
+    ans = []
+    for n in range(10000):
+        x = str(n).zfill(4)
+        if check(x):
+            ans.append(x)
+    if len(ans) == 1:
+        print(ans[0])
+    else:
+        print("Can't Solve")
 
 
 

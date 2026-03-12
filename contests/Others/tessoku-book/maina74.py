@@ -83,9 +83,124 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def compress(arr: list[int]) -> tuple[dict[int, int], list[int]]:
+    """概要:
+        配列値を連番インデックスへ写像する座標圧縮を行う。
+    入力:
+        arr (list[int]): 圧縮対象配列。
+    出力:
+        tuple[dict[int, int], list[int]]: (値→index辞書, 昇順ユニーク値リスト)。
+    補足:
+        元値への逆引きは第2戻り値を使う。
+    """
+    xs = sorted(set(arr))
+    mp = {x: i for i, x in enumerate(xs)}
+    return mp, xs
+
+def compress_list(arr: list[int]) -> list[int]:
+    """概要:
+        配列を座標圧縮した後のインデックス配列を返す。
+    入力:
+        arr (list[int]): 圧縮対象配列。
+    出力:
+        list[int]: arr の各要素を圧縮インデックスへ変換した配列。
+    補足:
+        `compress` を内部利用する。
+    """
+    mp, _ = compress(arr)
+    return [mp[x] for x in arr]
+
+class BIT:
+    """概要:
+        1次元 Binary Indexed Tree（Fenwick Tree）を提供するクラス。
+
+    メソッド:
+        add(i, x): a[i] に x を加算する。
+        sum(i): 区間 [0, i] の和を返す。
+        range_sum(l, r): 区間 [l, r) の和を返す。
+        lower_bound(w): 累積和が w 以上になる最小インデックスを返す。
+
+    補足:
+        すべて 0-indexed インターフェース。各操作は O(logN)。
+
+    使用例:
+        bit = BIT(n)
+        bit.add(i, x)        # a[i] += x
+        bit.sum(i)           # a[0] + ...  + a[i]
+        bit.range_sum(l, r)  # a[l] + ... + a[r-1]
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.data = [0] * (n + 1)
+
+    def add(self, i: int, x: int) -> None:
+        i += 1
+        while i <= self.n:
+            self.data[i] += x
+            i += i & -i
+
+    def sum(self, i: int) -> int:
+        """a[0] + ... + a[i]"""
+        s = 0
+        i += 1
+        while i > 0:
+            s += self.data[i]
+            i -= i & -i
+        return s
+
+    def range_sum(self, l: int, r: int) -> int:
+        """a[l] + ... + a[r-1]"""
+        if l >= r: return 0
+        return self.sum(r - 1) - (self.sum(l - 1) if l > 0 else 0)
+
+    def lower_bound(self, w: int) -> int:
+        """累積和が w 以上になる最小のインデックス"""
+        if w <= 0: return 0
+        x, k = 0, 1
+        while k * 2 <= self.n: k *= 2
+        while k > 0:
+            if x + k <= self.n and self.data[x + k] < w:
+                w -= self.data[x + k]
+                x += k
+            k //= 2
+        return x
+
+def inversion_count(arr: list[int]) -> int:
+    """概要:
+        配列の転倒数（i<j かつ arr[i]>arr[j] の組数）を求める。
+    入力:
+        arr (list[int]): 対象配列。
+    出力:
+        int: 転倒数。
+    補足:
+        座標圧縮 + BIT で O(n log n)。重複値にも対応。
+    """
+    if not arr:
+        return 0
+    c = compress_list(arr)
+    n = len(c)
+    bit = BIT(max(c) + 1)
+    inv = 0
+    for i, x in enumerate(c):
+        leq = bit.sum(x)
+        inv += i - leq
+        bit.add(x, 1)
+    return inv
+
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    P = LISTS(N)
+    row = [0] * (N+1)
+    col = [0] * (N+1)
+    for i in range(N):
+        for j in range(N):
+            v = P[i][j]
+            row[v] += i + 1
+            col[v] += j + 1
+    row_seq = [row[k] for k in range(1, N+1)]
+    col_seq = [col[k] for k in range(1, N+1)]
+    ans = inversion_count(row_seq) + inversion_count(col_seq)
     print(ans)
 
 

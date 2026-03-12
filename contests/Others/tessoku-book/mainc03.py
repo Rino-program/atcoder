@@ -85,8 +85,16 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    D = INT()
+    X = INT()
+    A = LISTSI(D-1)
+    kabuka = [X]
+    for i in A:
+        kabuka.append(kabuka[-1] + i)
+    Q = INT()
+    for _ in range(Q):
+        S, T = MAP()
+        print(T if kabuka[S-1] < kabuka[T-1] else S if kabuka[S-1] > kabuka[T-1] else "Same")
 
 
 

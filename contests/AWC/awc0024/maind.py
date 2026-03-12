@@ -1,5 +1,6 @@
 # coding: utf-8
-# AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
@@ -12,7 +13,7 @@ sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -23,8 +24,14 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
     return [INT() for _ in range(n)]
@@ -38,7 +45,7 @@ def STRS(n: int) -> list[str]:
 def CHARS() -> list[str]:
     return list(STR())
 
-def STRSL(n: int) -> list[list[str]]:
+def CHARSL(n: int) -> list[list[str]]:
     return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====
@@ -73,7 +80,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -83,29 +90,51 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def TUPLE() -> tuple[int, ...]:
-    return tuple(MAP())
+class Imos1D:
+    """概要:
+        1次元いもす法（差分配列）を扱うクラス。
 
-def TUPLES(n: int) -> list[tuple[int, ...]]:
-    return [TUPLE() for _ in range(n)]
+    メソッド:
+        add(l, r, x): 区間 [l, r) に x を加算予約する。
+        build(): 全予約を反映した最終配列を返す。
+
+    補足:
+        複数区間更新をまとめて行い、最後に一度だけ累積して確定する。
+
+    使用例:
+        imos = Imos1D(10)
+        imos.add(2, 5, 1)   # [2, 5) に +1
+        imos.add(3, 7, 2)   # [3, 7) に +2
+        result = imos.build()
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.diff = [0] * (n + 1)
+
+    def add(self, l: int, r: int, x: int = 1) -> None:
+        """[l, r) に x を加算"""
+        self.diff[l] += x
+        self.diff[r] -= x
+
+    def build(self) -> list[int]:
+        """累積和を計算して結果を返す"""
+        result = [0] * self.n
+        current = 0
+        for i in range(self.n):
+            current += self.diff[i]
+            result[i] = current
+        return result
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    TD = TUPLES(N)
-    TD.sort(key=lambda x: x[1])
-    heap = []
-    now = 0
-    for t, d in TD:
-        if now + t <= d:
-            heapq.heappush(heap, -t)
-            now += t
-        elif heap and -heap[0] > t:
-            largest_t = -heapq.heappop(heap)
-            now -= largest_t
-            now += t
-            heapq.heappush(heap, -t)
-    print(len(heap))
+    N, W, K = MAP()
+    imos = Imos1D(N)
+    for _ in range(K):
+        L = INT()
+        L -= 1
+        imos.add(L, L+W)
+    result = imos.build()
+    pr(*result, sep=" ")
 
 
 
