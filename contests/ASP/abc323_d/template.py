@@ -164,7 +164,7 @@ def gcd(a: int, b: int) -> int:
     出力:
         int: gcd(a, b)。
     補足:
-        ユークリッドの互除法を使用する。計算量は O(log(min(a, b)))。
+        ユークリッドの互除法を使用する。
     """
     while b:
         a, b = b, a % b
@@ -178,7 +178,7 @@ def lcm(a: int, b: int) -> int:
     出力:
         int: lcm(a, b)。
     補足:
-        gcd を使って a // gcd(a, b) * b で計算する。計算量は O(log(min(a, b)))。
+        gcd を使って a // gcd(a, b) * b で計算する。
     """
     return a // gcd(a, b) * b
 
@@ -190,7 +190,7 @@ def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     出力:
         tuple[int, int, int]: (g, x, y)。g = gcd(a, b)、ax + by = g。
     補足:
-        逆元計算や一次不定方程式で利用できる。計算量は O(log(min(a, b)))。
+        逆元計算や一次不定方程式で利用できる。
     """
     if b == 0:
         return a, 1, 0
@@ -247,7 +247,6 @@ def mod_inverse(a: int, mod: int = MOD) -> int:
         int: a^{-1} mod mod。
     補足:
         mod が素数で a と mod が互いに素である前提（フェルマーの小定理）。
-        計算量は O(log mod)。
     """
     return pow_mod(a, mod - 2, mod)
 
@@ -317,7 +316,7 @@ def prefix_sum(arr: list[int]) -> list[int]:
     出力:
         list[int]: 先頭に 0 を持つ累積和配列 ps。
     補足:
-        区間和は ps[r] - ps[l]（半開区間 [l, r)）。計算量は O(n)。
+        区間和は ps[r] - ps[l]（半開区間 [l, r)）。
     """
     ps = [0]
     for x in arr:
@@ -332,7 +331,7 @@ def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     出力:
         list[list[int]]: (H+1)×(W+1) の2次元累積和。
     補足:
-        構築計算量は O(HW)。矩形和は inclusion-exclusion で O(1) 取得できる。
+        矩形和は inclusion-exclusion で O(1) 取得できる。
     """
     H, W = len(grid), len(grid[0])
     ps = [[0] * (W + 1) for _ in range(H + 1)]
@@ -350,7 +349,7 @@ def range_sum_2d(ps: list[list[int]], y1: int, x1: int, y2: int, x2: int) -> int
     出力:
         int: 指定矩形の総和。
     補足:
-        `prefix_sum_2d` の戻り値を前提とする。計算量は O(1)。
+        `prefix_sum_2d` の戻り値を前提とする。
     """
     return ps[y2][x2] - ps[y1][x2] - ps[y2][x1] + ps[y1][x1]
 
@@ -366,9 +365,6 @@ class Imos1D:
     メソッド:
         add(l, r, x): 区間 [l, r) に x を加算予約する。
         build(): 全予約を反映した最終配列を返す。
-
-    計算量:
-        add は O(1)、build は O(n)。
 
     補足:
         複数区間更新をまとめて行い、最後に一度だけ累積して確定する。
@@ -405,9 +401,6 @@ class Imos2D:
     メソッド:
         add(y1, x1, y2, x2, x): 矩形 [y1,y2)×[x1,x2) に x を加算予約する。
         build(): 全予約を反映した最終グリッドを返す。
-
-    計算量:
-        add は O(1)、build は O(HW)。
 
     補足:
         多数の矩形更新をまとめて処理したいときに有効。
@@ -457,9 +450,6 @@ class DSU:
         size(x): x の成分サイズを返す。
         group_count(): 現在の成分数を返す。
         groups(): 全成分を頂点リストで返す。
-
-    計算量:
-        leader/merge/same/size は償却 O(α(N))、group_count は O(1)、groups は O(Nα(N))。
 
     補足:
         経路圧縮とサイズ併合でほぼ償却 O(α(N))。
@@ -520,9 +510,6 @@ class WeightedDSU:
         diff(x, y): weight[x] - weight[y] を返す。
         same(x, y): 同一成分か判定する。
         leader(x), get_weight(x): 内部補助として重み情報を取得する。
-
-    計算量:
-        leader/get_weight/merge/diff/same は償却 O(α(N))。
 
     補足:
         差分制約の整合管理に使える。
@@ -587,7 +574,7 @@ def build_graph(n: int, edges: list[tuple[int, int]], idx: bool = True, directed
     出力:
         list[list[int]]: 隣接リスト。
     補足:
-        無向時は両方向に辺を追加する。計算量は O(n + m)（m は辺数）。
+        無向時は両方向に辺を追加する。
     """
     g = [[] for _ in range(n)]
     for a, b in edges:
@@ -610,7 +597,7 @@ def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: int = T
     出力:
         list[list[tuple[int, int]]]: 隣接リスト（要素は (to, cost)）。
     補足:
-        無向時は両方向に辺を追加する。計算量は O(n + m)（m は辺数）。
+        無向時は両方向に辺を追加する。
     """
     g = [[] for _ in range(n)]
     for a, b, c in edges:
@@ -689,7 +676,7 @@ def multi_source_bfs(g: list[list[int]], sources: list[int]) -> list[int]:
     出力:
         list[int]: 各頂点への最短距離。未到達は -1。
     補足:
-        始点を距離0で同時投入することで最近始点への距離になる。計算量は O(V+E)。
+        始点を距離0で同時投入することで最近始点への距離になる。
     """
     dist = [-1] * len(g)
     q = deque()
@@ -715,7 +702,7 @@ def bfs_grid(grid: list[list[str]], sy: int, sx: int, wall: str = '#') -> list[l
     出力:
         list[list[int]]: 距離グリッド。未到達は -1。
     補足:
-        `DIR4`（上下左右）を使用する。計算量は O(HW)。
+        `DIR4`（上下左右）を使用する。
     """
     H, W = len(grid), len(grid[0])
     dist = [[-1] * W for _ in range(H)]
@@ -757,7 +744,7 @@ def dijkstra_multi(
     g: list[list[tuple]],
     s: int,
     n_criteria: int = 2,
-    better: Callable[[tuple, tuple], bool] | None = None,
+    better: "Callable[[tuple, tuple], bool]" = None,
 ) -> list[tuple]:
     """概要:
         複数基準（主: 距離最小, 副: 任意）を持つダイクストラ法。
@@ -777,7 +764,6 @@ def dijkstra_multi(
     補足:
         ヒープのキーは (primary, -secondary, ..., vertex) の形。
         better 関数を自分で定義すれば任意の多基準に対応可能。
-        計算量は O((V+E)logV * n_criteria)。
 
     使用例（距離最小・木の数最大の2基準）:
         # g[v] = [(to, cost, tree_count), ...]
@@ -948,7 +934,7 @@ def topological_sort(g: list[list[int]]) -> list[int] | None:
     出力:
         list[int] | None: トポロジカル順序。閉路があれば None。
     補足:
-        Kahn 法（入次数管理）を使用する。計算量は O(V+E)。
+        Kahn 法（入次数管理）を使用する。
     """
     n = len(g)
     indeg = [0] * n
@@ -974,7 +960,7 @@ def detect_cycle(g: list[list[int]]) -> list[int] | None:
     出力:
         list[int] | None: 閉路を構成する頂点列。なければ None。
     補足:
-        色管理（未訪問/訪問中/訪問済）で後退辺を検出する。計算量は O(V+E)。
+        色管理（未訪問/訪問中/訪問済）で後退辺を検出する。
     """
     n = len(g)
     color = [0] * n  # 0:未訪問, 1: 訪問中, 2:訪問済
@@ -1011,7 +997,7 @@ def bipartite_coloring(g: list[list[int]]) -> tuple[bool, list[int]]:
     出力:
         tuple[bool, list[int]]: (二部グラフか, 色配列)。
     補足:
-        非連結グラフにも対応し、各連結成分を BFS で処理する。計算量は O(V+E)。
+        非連結グラフにも対応し、各連結成分を BFS で処理する。
     """
     n = len(g)
     color = [-1] * n
@@ -1040,7 +1026,7 @@ def kruskal(n: int, edges: list[tuple[int, int, int]]) -> tuple[int, list[tuple[
         tuple[int, list[tuple[int, int, int]], bool]:
             (総コスト, 採用辺リスト, グラフが連結でMST完成か)。
     補足:
-        辺を重み昇順に処理し、DSUで閉路を回避する。計算量は O(ElogE)。
+        辺を重み昇順に処理し、DSUで閉路を回避する。
     """
     uf = DSU(n)
     cost = 0
@@ -1058,9 +1044,6 @@ class MaxFlow:
     メソッド:
         add_edge(u, v, cap): u→v に容量 cap の辺を追加する。
         max_flow(s, t): s→t の最大流量を返す。
-
-    計算量:
-        add_edge は O(1)、_bfs は O(E)、_dfs は 1回あたり O(E)、max_flow は O(V^2E)。
 
     補足:
         計算量は O(V²E)。頂点数・辺数が数百程度なら十分高速。
@@ -1133,9 +1116,6 @@ class LowerBoundFlow:
         add_edge(u, v, lo, hi): 下限 lo, 上限 hi の辺を追加する。
         is_feasible(): 実行可能かどうかを判定する。
         min_flow(s, t): 追加の最小流量（実行可能かつ最小）を求める。
-
-    計算量:
-        add_circulation/add_edge は O(1)、is_feasible は内部最大流1回で O(V^2E)。
 
     補足:
         循環フロー (T→S) が必要な場合は add_circulation() を先に呼ぶ。
@@ -1220,7 +1200,7 @@ def tree_diameter(g: list[list[int]]) -> tuple[int, int, int]:
     出力:
         tuple[int, int, int]: (直径長, 端点u, 端点v)。
     補足:
-        BFS を2回行う定番手法を用いる。計算量は O(V)。
+        BFS を2回行う定番手法を用いる。
     """
     def bfs_farthest(s: int) -> tuple[int, int]:
         dist = bfs(g, s)
@@ -1240,7 +1220,7 @@ def tree_depth(g: list[list[int]], root: int = 0) -> list[int]:
     出力:
         list[int]: 各頂点の深さ配列。
     補足:
-        実装は `bfs` を利用している。計算量は O(V)。
+        実装は `bfs` を利用している。
     """
     return bfs(g, root)
 
@@ -1253,7 +1233,7 @@ def tree_parent(g: list[list[int]], root: int = 0) -> list[int]:
     出力:
         list[int]: parent[v]（根は -1）。
     補足:
-        BFS で訪問順に親を設定する。計算量は O(V)。
+        BFS で訪問順に親を設定する。
     """
     n = len(g)
     parent = [-1] * n
@@ -1278,7 +1258,7 @@ def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
     出力:
         list[int]: size[v] = v を根とする部分木サイズ。
     補足:
-        深い頂点から親へサイズを集約する。計算量は O(VlogV)。
+        深い頂点から親へサイズを集約する。
     """
     n = len(g)
     size = [1] * n
@@ -1300,7 +1280,7 @@ def subtree_height(g: list[list[int]], root: int = 0) -> list[int]:
         list[int]: height[v] = v を根とする部分木の高さ。
                    葉は 0、それ以外は直属の子の高さの最大値 + 1。
     補足:
-        深い頂点から親へ max(子の高さ) + 1 を伝播する。計算量は O(VlogV)。
+        深い頂点から親へ max(子の高さ) + 1 を伝播する。
     """
     n = len(g)
     height = [0] * n
@@ -1319,9 +1299,6 @@ class LCA:
     メソッド:
         query(u, v): u と v の LCA を返す。
         dist(u, v): u-v 間の辺数距離を返す。
-
-    計算量:
-        初期化は O(NlogN)、query と dist は O(logN)。
 
     補足:
         初期化時に BFS と親テーブル構築を行い、クエリは O(logN)。
@@ -1446,12 +1423,7 @@ class SegTree:
         set(i, v) / update(i, v): 1点更新を行う。
         get(i): 1点取得を行う。
         query(l, r): 区間 [l, r) の集約値を返す。
-        max_right(l, f): [l, r) の集約が条件 f を満たす最大の r を返す。
-        min_left(r, f): [l, r) の集約が条件 f を満たす最小の l を返す。
         all_query(): 全区間の集約値を返す。
-
-    計算量:
-        build は O(n)、set/update/get/query/max_right/min_left は O(logN)、all_query は O(1)。
 
     補足:
         `op` は結合的、`e` は単位元を与える。
@@ -1467,7 +1439,6 @@ class SegTree:
         st = SegTree(n, op=gcd, e=0)
     """
     def __init__(self, n: int, op: Callable = operator.add, e: int = 0):
-        self.n = n
         self.op = op
         self.e = e
         self.size = 1
@@ -1509,60 +1480,6 @@ class SegTree:
             r >>= 1
         return self.op(sml, smr)
 
-    def max_right(self, l: int, f: Callable[[int], bool]) -> int:
-        """最大の r を返す（f(query(l, r)) が True）"""
-        if l == self.n:
-            return self.n
-        assert 0 <= l <= self.n
-        assert f(self.e)
-
-        l += self.size
-        sm = self.e
-        while True:
-            while l % 2 == 0:
-                l >>= 1
-            nxt = self.op(sm, self.data[l])
-            if not f(nxt):
-                while l < self.size:
-                    l <<= 1
-                    nxt = self.op(sm, self.data[l])
-                    if f(nxt):
-                        sm = nxt
-                        l += 1
-                return l - self.size
-            sm = nxt
-            l += 1
-            if (l & -l) == l:
-                break
-        return self.n
-
-    def min_left(self, r: int, f: Callable[[int], bool]) -> int:
-        """最小の l を返す（f(query(l, r)) が True）"""
-        if r == 0:
-            return 0
-        assert 0 <= r <= self.n
-        assert f(self.e)
-
-        r += self.size
-        sm = self.e
-        while True:
-            r -= 1
-            while r > 1 and r % 2:
-                r >>= 1
-            nxt = self.op(self.data[r], sm)
-            if not f(nxt):
-                while r < self.size:
-                    r = (r << 1) | 1
-                    nxt = self.op(self.data[r], sm)
-                    if f(nxt):
-                        sm = nxt
-                        r -= 1
-                return r + 1 - self.size
-            sm = nxt
-            if (r & -r) == r:
-                break
-        return 0
-
     def all_query(self) -> int:
         """全区間の演算結果"""
         return self.data[1]
@@ -1580,9 +1497,6 @@ class LazySegTree:
         get(p): 1点値を取得する（必要な遅延伝播込み）。
         query(l, r): 区間 [l, r) の集約値を返す。
         apply(l, r, f): 区間 [l, r) に作用 f を適用する。
-
-    計算量:
-        build は O(n)、set/get/query/apply は O(logN)。
 
     補足:
         `op/e` は値側モノイド、`mapping/composition/identity` は作用側定義。
@@ -1930,9 +1844,6 @@ class RollingHash:
         get(l, r): 部分文字列 s[l:r] のハッシュ値ペアを返す。
         lcp(i, j): 位置 i, j からの最長共通接頭辞長を返す。
 
-    計算量:
-        初期化は O(n)、get は O(1)、lcp は O(logN)。
-
     補足:
         2つの法を使って衝突確率を低減している。
 
@@ -2013,7 +1924,7 @@ def run_length_encode(s: str | list) -> list[tuple]:
     出力:
         list[tuple]: [(値, 連続数), ...]。
     補足:
-        空入力は空配列を返す。計算量は O(n)。
+        空入力は空配列を返す。
     """
     if not s: return []
     result = []
@@ -2040,9 +1951,6 @@ class Trie:
         search(s): 文字列 s が完全一致で登録済みか判定する。
         starts_with(prefix): 接頭辞 prefix を持つ語が存在するか判定する。
         count_prefix(prefix): 接頭辞 prefix を持つ登録語数を返す。
-
-    計算量:
-        insert/search/starts_with/count_prefix は文字列長を L として O(L)。
     """
     class Node:
         """概要:
@@ -2107,7 +2015,7 @@ def kmp_table(pattern: str) -> list[int]:
     出力:
         list[int]: pi[i] = pattern[:i+1] の最長 proper prefix/suffix 長。
     補足:
-        `kmp_search` の前処理として利用する。計算量は O(|pattern|)。
+        `kmp_search` の前処理として利用する。
     """
     n = len(pattern)
     pi = [0] * n
@@ -2196,7 +2104,6 @@ def binary_search_min(ng: int, ok: int, check: Callable[[int], bool]) -> int:
         int: 条件を満たす最小の値。
     補足:
         境界の妥当性（ng 側False, ok 側True）を事前に満たすこと。
-        計算量は O(log|ok-ng|) 回の判定関数呼び出し。
     """
     while abs(ok - ng) > 1:
         mid = (ok + ng) // 2
@@ -2218,7 +2125,6 @@ def binary_search_max(ok: int, ng: int, check: Callable[[int], bool]) -> int:
         int: 条件を満たす最大の値。
     補足:
         境界の妥当性（ok 側True, ng 側False）を事前に満たすこと。
-        計算量は O(log|ok-ng|) 回の判定関数呼び出し。
     """
     while abs(ok - ng) > 1:
         mid = (ok + ng) // 2
@@ -2240,7 +2146,7 @@ def binary_search_float(ok: float, ng: float, check: Callable[[float], bool], it
     出力:
         float: 探索結果（近似解）。
     補足:
-        精度は反復回数で調整する。計算量は O(iterations)。
+        精度は反復回数で調整する。
     """
     for _ in range(iterations):
         mid = (ok + ng) / 2
@@ -2284,7 +2190,7 @@ def compress(arr: list[int]) -> tuple[dict[int, int], list[int]]:
     出力:
         tuple[dict[int, int], list[int]]: (値→index辞書, 昇順ユニーク値リスト)。
     補足:
-        元値への逆引きは第2戻り値を使う。計算量は O(nlogn)。
+        元値への逆引きは第2戻り値を使う。
     """
     xs = sorted(set(arr))
     mp = {x: i for i, x in enumerate(xs)}
@@ -2298,7 +2204,7 @@ def compress_list(arr: list[int]) -> list[int]:
     出力:
         list[int]: arr の各要素を圧縮インデックスへ変換した配列。
     補足:
-        `compress` を内部利用する。計算量は O(nlogn)。
+        `compress` を内部利用する。
     """
     mp, _ = compress(arr)
     return [mp[x] for x in arr]
@@ -2587,7 +2493,7 @@ def rank_data(arr: list, reverse: bool = False, competition: bool = True) -> lis
     出力:
         list[int]: 各要素の順位（1-indexed）。
     補足:
-        デフォルトは小さい順・重複同順位（競技順位）。計算量は O(nlogn)。
+        デフォルトは小さい順・重複同順位（競技順位）。
     """
     n = len(arr)
     if n == 0: return []
@@ -2627,7 +2533,7 @@ def ceil_div(a: int, b: int) -> int:
     出力:
         int: ceil(a / b)。
     補足:
-        想定は a, b > 0。計算量は O(1)。
+        想定は a, b > 0。
     """
     return (a + b - 1) // b
 
@@ -2663,8 +2569,6 @@ def rotate_90(grid: list[list]) -> list[list]:
         grid (list[list]): 元グリッド。
     出力:
         list[list]: 回転後グリッド。
-    補足:
-        計算量は O(HW)。
     """
     H, W = len(grid), len(grid[0])
     return [[grid[H - 1 - j][i] for j in range(H)] for i in range(W)]
@@ -2676,8 +2580,6 @@ def transpose(grid: list[list]) -> list[list]:
         grid (list[list]): 元グリッド。
     出力:
         list[list]: 転置後グリッド。
-    補足:
-        計算量は O(HW)。
     """
     return [list(row) for row in zip(*grid)]
 
@@ -2690,7 +2592,7 @@ def bit_full_search(n: int):
     出力:
         Iterator[int]: 0 から (1<<n)-1 のビットマスク。
     補足:
-        `for bit in bit_full_search(n):` で利用する。全列挙の計算量は O(2^n)。
+        `for bit in bit_full_search(n):` で利用する。
     """
     for bit in range(1 << n):
         yield bit
@@ -2704,8 +2606,6 @@ def bit_indices(bit: int, n: int) -> list[int]:
         n (int): 判定するビット長。
     出力:
         list[int]: 立っている位置（0-indexed）の配列。
-    補足:
-        計算量は O(n)。
     """
     return [i for i in range(n) if (bit >> i) & 1]
 
@@ -2718,7 +2618,7 @@ def submasks(mask: int):
     出力:
         Iterator[int]: mask, ..., 0 の順で全部分マスク。
     補足:
-        `s = (s - 1) & mask` の定番テクニックを使用する。計算量は O(2^k)（k は立っているビット数）。
+        `s = (s - 1) & mask` の定番テクニックを使用する。
     """
     s = mask
     while True:
@@ -2758,11 +2658,6 @@ class Output:
         yes(cond, yes='Yes', no='No'): 条件に応じた文字列を追加する。
         flush(...): まとめて出力しバッファをクリアする。
         get(sep='\n'): 現在バッファを文字列として取得する。
-
-    計算量:
-        add は引数個数を k として O(k)、extend は要素数を m として O(m)、
-        grid は要素総数を HW として O(HW)、yes は O(1)、
-        flush/get はバッファ総文字数を S として O(S)、__len__ は O(1)。
 
     補足:
         大量出力時の `print` 連打を避けたいときに有効。
@@ -2827,6 +2722,7 @@ def yn(cond: bool) -> None:
 
 def main() -> None:
     # ここに解答を書く
+    #out = Output()
     N = INT()
     print(ans)
 

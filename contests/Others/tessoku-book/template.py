@@ -2722,7 +2722,6 @@ def yn(cond: bool) -> None:
 
 def main() -> None:
     # ここに解答を書く
-    #out = Output()
     N = INT()
     print(ans)
 

@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0025",
+    "title": "AtCoder Weekday Contest 0025 Beta",
+    "url": "https://atcoder.jp/contests/awc0025"
+  },
+  "tasks": [
+    {
+      "id": "awc0025_a",
+      "label": "A",
+      "title": "Passing Score",
+      "url": "https://atcoder.jp/contests/awc0025/tasks/awc0025_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0025_b",
+      "label": "B",
+      "title": "Warehouse Inspection Robot",
+      "url": "https://atcoder.jp/contests/awc0025/tasks/awc0025_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0025_c",
+      "label": "C",
+      "title": "Air Conditioning Installation in Classrooms",
+      "url": "https://atcoder.jp/contests/awc0025/tasks/awc0025_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0025_d",
+      "label": "D",
+      "title": "Constellation Observation Tour",
+      "url": "https://atcoder.jp/contests/awc0025/tasks/awc0025_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0025_e",
+      "label": "E",
+      "title": "Organizing the Bookshelf",
+      "url": "https://atcoder.jp/contests/awc0025/tasks/awc0025_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
