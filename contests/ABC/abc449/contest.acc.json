@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc449",
+    "title": "AtCoder Beginner Contest 449",
+    "url": "https://atcoder.jp/contests/abc449"
+  },
+  "tasks": [
+    {
+      "id": "abc449_a",
+      "label": "A",
+      "title": "π",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc449_b",
+      "label": "B",
+      "title": "Deconstruct Chocolate",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc449_c",
+      "label": "C",
+      "title": "Comfortable Distance",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc449_d",
+      "label": "D",
+      "title": "Make Target 2",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc449_e",
+      "label": "E",
+      "title": "A += v",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc449_f",
+      "label": "F",
+      "title": "Grid Clipping",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc449_g",
+      "label": "G",
+      "title": "Many Repunit Sum 2 ",
+      "url": "https://atcoder.jp/contests/abc449/tasks/abc449_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
