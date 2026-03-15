@@ -2554,64 +2554,6 @@ def next_smaller(A: list[int]) -> list[int]:
     return res
 
 # ============================================================
-# スライドウィンドウ最大・最小（単調デック）
-# ============================================================
-
-def sliding_window_max(arr: list[int], k: int) -> list[int]:
-    """概要:
-        長さ k のスライディングウィンドウ内の最大値を全て求める。
-    入力:
-        arr (list[int]): 対象配列（0-indexed）。
-        k (int): ウィンドウサイズ。
-    出力:
-        list[int]: 長さ len(arr)-k+1 の最大値列。
-    補足:
-        単調減少デックを使用し計算量は O(N)。
-    使用例:
-        arr = [1, 3, 0, 2, 4]
-        print(sliding_window_max(arr, 3))  # [3, 3, 4]
-    """
-    n = len(arr)
-    dq = deque()
-    result = []
-    for i in range(n):
-        while dq and arr[dq[-1]] <= arr[i]:
-            dq.pop()
-        dq.append(i)
-        if i >= k - 1:
-            while dq[0] < i - k + 1:
-                dq.popleft()
-            result.append(arr[dq[0]])
-    return result
-
-def sliding_window_min(arr: list[int], k: int) -> list[int]:
-    """概要:
-        長さ k のスライディングウィンドウ内の最小値を全て求める。
-    入力:
-        arr (list[int]): 対象配列（0-indexed）。
-        k (int): ウィンドウサイズ。
-    出力:
-        list[int]: 長さ len(arr)-k+1 の最小値列。
-    補足:
-        単調増加デックを使用し計算量は O(N)。
-    使用例:
-        arr = [1, 3, 0, 2, 4]
-        print(sliding_window_min(arr, 3))  # [0, 0, 0]
-    """
-    n = len(arr)
-    dq = deque()
-    result = []
-    for i in range(n):
-        while dq and arr[dq[-1]] >= arr[i]:
-            dq.pop()
-        dq.append(i)
-        if i >= k - 1:
-            while dq[0] < i - k + 1:
-                dq.popleft()
-            result.append(arr[dq[0]])
-    return result
-
-# ============================================================
 # ユーティリティ
 # ============================================================
 

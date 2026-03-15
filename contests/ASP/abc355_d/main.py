@@ -93,25 +93,15 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    S = STR()
-    C = LIST()
-    s = [int(c) for c in S]
-    P0 = [0] * N
-    P1 = [0] * N
-    for i in range(N):
-        if s[i] != (i&1):
-            P0[i] = C[i]
-        if s[i] != ((i+1)&1):
-            P1[i] = C[i]
-    sum_p0 = [0] * (N+1)
-    sum_p1 = [0] * (N+1)
-    for i in range(N):
-        sum_p0[i+1] = sum_p0[i] + P0[i]
-        sum_p1[i+1] = sum_p1[i] + P1[i]
-    ans = INF
-    for i in range(N-1):
-        ans = min(ans, sum_p0[i+1] + sum_p1[N] - sum_p1[i+1])
-        ans = min(ans, sum_p1[i+1] + sum_p0[N] - sum_p0[i+1])
+    LR = sorted(TUPLES(N))
+    heap = []
+    ans = 0
+    for l, r in LR:
+        while heap and heap[0] < l:
+            heapq.heappop(heap)
+        heapq.heappush(heap, r)
+        if len(heap) > 1:
+            ans += len(heap) - 1
     print(ans)
 
 

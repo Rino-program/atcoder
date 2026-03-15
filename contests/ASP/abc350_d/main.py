@@ -90,28 +90,95 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class DSU:
+    """概要:
+        Union-Find（Disjoint Set Union）を提供するクラス。
+
+    メソッド:
+        leader(x): x の属する連結成分の代表元を返す。
+        merge(a, b): a と b の成分を併合する。
+        same(a, b): 同一成分か判定する。
+        size(x): x の成分サイズを返す。
+        group_count(): 現在の成分数を返す。
+        groups(): 全成分を頂点リストで返す。
+
+    計算量:
+        leader/merge/same/size は償却 O(α(N))、group_count は O(1)、groups は O(Nα(N))。
+
+    補足:
+        経路圧縮とサイズ併合でほぼ償却 O(α(N))。
+
+    使用例:
+        uf = DSU(n)
+        uf.merge(0, 1)
+        print(uf.same(0, 1))  # True
+    """
+    def __init__(self, n: int):
+        self.parent = list(range(n))
+        self.rank = [1] * n
+        self.n = n
+        self._group_count = n
+
+    def leader(self, x: int) -> int:
+        """根を取得"""
+        if self.parent[x] != x:
+            self.parent[x] = self.leader(self.parent[x])
+        return self.parent[x]
+
+    def merge(self, a: int, b: int) -> bool:
+        """併合（成功でTrue）"""
+        a, b = self.leader(a), self.leader(b)
+        if a == b: return False
+        if self.rank[a] < self.rank[b]: a, b = b, a
+        self.parent[b] = a
+        self.rank[a] += self.rank[b]
+        self._group_count -= 1
+        return True
+
+    def same(self, a: int, b: int) -> bool:
+        """同じグループか"""
+        return self.leader(a) == self.leader(b)
+
+    def size(self, x: int) -> int:
+        """xが属するグループのサイズ"""
+        return self.rank[self.leader(x)]
+
+    def group_count(self) -> int:
+        """グループ数"""
+        return self._group_count
+
+    def groups(self) -> list[list[int]]:
+        """全グループを取得"""
+        result = defaultdict(list)
+        for i in range(self.n):
+            result[self.leader(i)].append(i)
+        return list(result.values())
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    S = STR()
-    C = LIST()
-    s = [int(c) for c in S]
-    P0 = [0] * N
-    P1 = [0] * N
+    N, M = MAP()
+    uf = DSU(N)
+    edge_count = defaultdict(int)
+    for _ in range(M):
+        a, b = MAP()
+        a, b = a - 1, b - 1
+        ra, rb = uf.leader(a), uf.leader(b)
+        if ra != rb:
+            uf.merge(a, b)
+            new = uf.leader(a)
+            edge_count[new] = edge_count[ra] + edge_count[rb] + 1
+        else:
+            edge_count[ra] += 1
+    ans = 0
+    visited = set()
     for i in range(N):
-        if s[i] != (i&1):
-            P0[i] = C[i]
-        if s[i] != ((i+1)&1):
-            P1[i] = C[i]
-    sum_p0 = [0] * (N+1)
-    sum_p1 = [0] * (N+1)
-    for i in range(N):
-        sum_p0[i+1] = sum_p0[i] + P0[i]
-        sum_p1[i+1] = sum_p1[i] + P1[i]
-    ans = INF
-    for i in range(N-1):
-        ans = min(ans, sum_p0[i+1] + sum_p1[N] - sum_p1[i+1])
-        ans = min(ans, sum_p1[i+1] + sum_p0[N] - sum_p0[i+1])
+        r = uf.leader(i)
+        if r in visited:
+            continue
+        visited.add(r)
+        size = uf.size(r)
+        edges = edge_count[r]
+        ans += size * (size - 1) // 2 - edges
     print(ans)
 
 

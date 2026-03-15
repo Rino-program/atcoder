@@ -92,26 +92,32 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    S = STR()
-    C = LIST()
-    s = [int(c) for c in S]
-    P0 = [0] * N
-    P1 = [0] * N
-    for i in range(N):
-        if s[i] != (i&1):
-            P0[i] = C[i]
-        if s[i] != ((i+1)&1):
-            P1[i] = C[i]
-    sum_p0 = [0] * (N+1)
-    sum_p1 = [0] * (N+1)
-    for i in range(N):
-        sum_p0[i+1] = sum_p0[i] + P0[i]
-        sum_p1[i+1] = sum_p1[i] + P1[i]
-    ans = INF
-    for i in range(N-1):
-        ans = min(ans, sum_p0[i+1] + sum_p1[N] - sum_p1[i+1])
-        ans = min(ans, sum_p1[i+1] + sum_p0[N] - sum_p0[i+1])
+    N, M, K = MAP()
+    tests = []
+    for _ in range(M):
+        line = STR().split()
+        R = line[-1]
+        line = list(map(int, line[:len(line)-1]))
+        C = line[0]
+        keys = line[1:C+1]
+        mask = 0
+        for i in keys:
+            mask |= 1 << (i-1)
+        tests.append((mask, R))
+    ans = 0
+    for bit in range(1 << N):
+        ok = True
+        for mask, R in tests:
+            correct_count = bin(bit & mask).count('1')
+            tmp = correct_count >= K
+            if tmp and R == 'x':
+                ok = False
+                break
+            if not tmp and R == 'o':
+                ok = False
+                break
+        if ok:
+            ans += 1
     print(ans)
 
 
