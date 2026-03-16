@@ -3,12 +3,10 @@
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
-from itertools import permutations, combinations, accumulate, product, chain
 from bisect import bisect_left, bisect_right
-from copy import deepcopy
-import operator
 import heapq
 import math
+from copy import deepcopy
 import string
 
 sys.setrecursionlimit(10 ** 6)
@@ -95,6 +93,21 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    XY = sorted(TUPLES(N))
+    ans = 0
+    for i in range(N-2):
+        for j in range(i+1, N-1):
+            for k in range(j+1, N):
+                x1, y1 = XY[i]
+                x2, y2 = XY[j]
+                x3, y3 = XY[k]
+                df = False
+                """x1, x2, x3 = sorted([x1, x2, x3])
+                y1, y2, y3 = sorted([y1, y2, y3])"""
+                if (x2-x1)*(y3-y1) - (y2-y1)*(x3-x1) != 0:
+                    ans += 1
+                    df = True
+                #if not df:debug(i, j, k, df)
     print(ans)
 
 

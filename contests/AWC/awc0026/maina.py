@@ -94,8 +94,13 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    A = LIST()
+    ans = []
+    for i, a in enumerate(A, 1):
+        if i % K == 0:
+            ans.append(a)
+    print(*ans, sep='\n')
 
 
 

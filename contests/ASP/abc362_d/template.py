@@ -2610,46 +2610,6 @@ def sliding_window_min(arr: list[int], k: int) -> list[int]:
             result.append(arr[dq[0]])
     return result
 
-def count_subarrays_range_le(arr: list[int], limit: int) -> int:
-    """概要:
-        変動幅（max - min）が limit 以下の部分配列の個数を返す。
-    入力:
-        arr (list[int]): 対象配列（0-indexed）。
-        limit (int): 変動幅の上限。負の場合は 0 を返す。
-    出力:
-        int: max(arr[l:r+1]) - min(arr[l:r+1]) <= limit を満たす (l, r) の個数。
-    補足:
-        単調デックを2本使ったスライディングウィンドウで O(N)。
-        「変動幅がちょうど K の区間数」は
-        count_subarrays_range_le(arr, K) - count_subarrays_range_le(arr, K-1) で求まる。
-    使用例:
-        A = [1, 3, 2, 4]
-        print(count_subarrays_range_le(A, 2))  # 8
-        print(count_subarrays_range_le(A, 2) - count_subarrays_range_le(A, 1))  # 変動幅ちょうど2の個数
-    """
-    if limit < 0:
-        return 0
-    n = len(arr)
-    max_dq = deque()  # 単調減少（最大値管理）
-    min_dq = deque()  # 単調増加（最小値管理）
-    l = 0
-    ans = 0
-    for r in range(n):
-        while max_dq and arr[max_dq[-1]] <= arr[r]:
-            max_dq.pop()
-        max_dq.append(r)
-        while min_dq and arr[min_dq[-1]] >= arr[r]:
-            min_dq.pop()
-        min_dq.append(r)
-        while arr[max_dq[0]] - arr[min_dq[0]] > limit:
-            l += 1
-            if max_dq[0] < l:
-                max_dq.popleft()
-            if min_dq[0] < l:
-                min_dq.popleft()
-        ans += r - l + 1
-    return ans
-
 # ============================================================
 # ユーティリティ
 # ============================================================

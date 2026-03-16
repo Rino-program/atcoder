@@ -3,12 +3,10 @@
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
-from itertools import permutations, combinations, accumulate, product, chain
 from bisect import bisect_left, bisect_right
-from copy import deepcopy
-import operator
 import heapq
 import math
+from copy import deepcopy
 import string
 
 sys.setrecursionlimit(10 ** 6)

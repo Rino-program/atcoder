@@ -94,7 +94,20 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, M = MAP()
+    A = sorted(LIST())
+    B = sorted(LIST())
+    now = 0
+    ans = 0
+    for i in B:
+        while now < N and i > A[now]:
+            now += 1
+        if now < N:
+            ans += A[now]
+        else:
+            pr(-1)
+            return
+        now += 1
     print(ans)
 
 

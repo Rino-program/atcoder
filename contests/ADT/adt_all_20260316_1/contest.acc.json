@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260316_1",
+    "title": "AtCoder Daily Training ALL 2026/03/16 16:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260316_1"
+  },
+  "tasks": [
+    {
+      "id": "abc244_a",
+      "label": "A",
+      "title": "Last Letter",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc244_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc288_a",
+      "label": "B",
+      "title": "Many A+B Problems",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc288_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc414_b",
+      "label": "C",
+      "title": "String Too Long ",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc414_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc386_b",
+      "label": "D",
+      "title": "Calculator",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc386_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc302_c",
+      "label": "E",
+      "title": "Almost Equal",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc302_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc224_c",
+      "label": "F",
+      "title": "Triangle?",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc224_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc229_d",
+      "label": "G",
+      "title": "Longest X",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc229_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc369_e",
+      "label": "H",
+      "title": "Sightseeing Tour ",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc369_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc396_f",
+      "label": "I",
+      "title": "Rotated Inversions",
+      "url": "https://atcoder.jp/contests/adt_all_20260316_1/tasks/abc396_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

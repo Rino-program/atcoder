@@ -1,6 +1,7 @@
 # coding: utf-8
 # AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
+from encodings.punycode import T
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
@@ -94,8 +95,22 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    A = LIST()
+    takahashi = 0
+    aoki = 0
+    for i in A:
+        if K - i >= 0:
+            K -= i
+            takahashi += i
+        else:
+            aoki += i
+    if takahashi > aoki:
+        print("Takahashi")
+    elif takahashi < aoki:
+        print("Aoki")
+    else:
+        print("Draw")
 
 
 

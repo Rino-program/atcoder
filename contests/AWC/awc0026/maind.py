@@ -94,7 +94,35 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    heap = []
+    LR = TUPLES(N)
+    LR.sort()
+    ans = 0
+    z = -1
+    # K = 1
+    # ------*****-------
+    # --------*****-----
+    # ------^^^^^^^-----
+    # ------s-s--e-e----
+    for l, r in LR:
+        while heap and heap[0] <= l:
+            tmp = heapq.heappop(heap)
+            if z != -1:
+                ans += tmp - z
+                z = tmp
+            if len(heap) < K:
+                z = -1
+        heapq.heappush(heap, r)
+        if z == -1 and len(heap) >= K:
+            z = l
+    while heap:
+        tmp = heapq.heappop(heap)
+        if z != -1:
+            ans += tmp - z
+            z = tmp
+        if len(heap) < K:
+            z = -1
     print(ans)
 
 

@@ -3,12 +3,10 @@
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
-from itertools import permutations, combinations, accumulate, product, chain
 from bisect import bisect_left, bisect_right
-from copy import deepcopy
-import operator
 import heapq
 import math
+from copy import deepcopy
 import string
 
 sys.setrecursionlimit(10 ** 6)
@@ -94,7 +92,25 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    S = STR()
+    K = INT()
+    nowX = 0
+    nowd = 0
+    L, R = 0, 0
+    ans = 0
+    while R < len(S):
+        if S[R] == 'X':
+            nowX += 1
+        else:
+            nowd += 1
+        R += 1
+        while nowd > K:
+            if S[L] == 'X':
+                nowX -= 1
+            else:
+                nowd -= 1
+            L += 1
+        ans = max(ans, nowX+nowd)
     print(ans)
 
 

@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0026",
+    "title": "AtCoder Weekday Contest 0026 Beta",
+    "url": "https://atcoder.jp/contests/awc0026"
+  },
+  "tasks": [
+    {
+      "id": "awc0026_a",
+      "label": "A",
+      "title": "Announcement of Winning Numbers",
+      "url": "https://atcoder.jp/contests/awc0026/tasks/awc0026_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0026_b",
+      "label": "B",
+      "title": "Distribution of Jewels",
+      "url": "https://atcoder.jp/contests/awc0026/tasks/awc0026_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0026_c",
+      "label": "C",
+      "title": "Field Trip Snacks",
+      "url": "https://atcoder.jp/contests/awc0026/tasks/awc0026_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0026_d",
+      "label": "D",
+      "title": "Repainted Wall",
+      "url": "https://atcoder.jp/contests/awc0026/tasks/awc0026_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0026_e",
+      "label": "E",
+      "title": "Just the Right Temperature Difference",
+      "url": "https://atcoder.jp/contests/awc0026/tasks/awc0026_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
