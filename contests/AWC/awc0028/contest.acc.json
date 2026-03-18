@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0028",
+    "title": "AtCoder Weekday Contest 0028 Beta",
+    "url": "https://atcoder.jp/contests/awc0028"
+  },
+  "tasks": [
+    {
+      "id": "awc0028_a",
+      "label": "A",
+      "title": "Applause for the Successful Candidates",
+      "url": "https://atcoder.jp/contests/awc0028/tasks/awc0028_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0028_b",
+      "label": "B",
+      "title": "Harvest Interval in the Orchard",
+      "url": "https://atcoder.jp/contests/awc0028/tasks/awc0028_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0028_c",
+      "label": "C",
+      "title": "Make-Up Exam",
+      "url": "https://atcoder.jp/contests/awc0028/tasks/awc0028_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0028_d",
+      "label": "D",
+      "title": "Course Enrollment Order",
+      "url": "https://atcoder.jp/contests/awc0028/tasks/awc0028_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0028_e",
+      "label": "E",
+      "title": "Counting Subsequences",
+      "url": "https://atcoder.jp/contests/awc0028/tasks/awc0028_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
