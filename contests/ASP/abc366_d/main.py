@@ -100,30 +100,81 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def prefix_sum_3d(A: list[list[list[int]]], N: int) -> list[list[list[int]]]:
+    """概要:
+        3次元配列の累積和テーブルを構築する。
+    入力:
+        A (list[list[list[int]]]): 1-indexed の数値グリッド A[1..N][1..N][1..N]。
+                                   インデックス 0 はダミー（0 で埋める）。
+        N (int): 各次元の大きさ（1-indexed）。
+    出力:
+        list[list[list[int]]]: (N+2)^3 サイズの3次元累積和テーブル（1-indexed）。
+    補足:
+        構築計算量は O(N^3)。
+        矩形和は range_sum_3d で O(1) 取得できる。
+    使用例:
+        P = prefix_sum_3d(A, N)
+        s = range_sum_3d(P, lx, ly, lz, rx, ry, rz)
+    """
+    P = [[[0] * (N + 2) for _ in range(N + 2)] for _ in range(N + 2)]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] = A[x][y][z]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] += P[x-1][y][z]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] += P[x][y-1][z]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] += P[x][y][z-1]
+    return P
+
+def range_sum_3d(
+    P: list[list[list[int]]],
+    lx: int, ly: int, lz: int,
+    rx: int, ry: int, rz: int,
+) -> int:
+    """概要:
+        3次元累積和から直方体 [lx,rx]×[ly,ry]×[lz,rz] の総和を返す（閉区間・1-indexed）。
+    入力:
+        P (list[list[list[int]]]): prefix_sum_3d の戻り値。
+        lx, ly, lz, rx, ry, rz (int): 閉区間の境界（1-indexed）。
+    出力:
+        int: 指定直方体の総和。
+    補足:
+        3次元包除原理（8項）を用いる。計算量は O(1)。
+    """
+    x0, y0, z0 = lx - 1, ly - 1, lz - 1
+    return (
+        P[rx][ry][rz]
+        - P[x0][ry][rz] - P[rx][y0][rz] - P[rx][ry][z0]
+        + P[x0][y0][rz] + P[x0][ry][z0] + P[rx][y0][z0]
+        - P[x0][y0][z0]
+    )
+
 def main() -> None:
     # ここに解答を書く
-    li = []
-    for a in range(2):
-        for b in range(2):
-            for c in range(2):
-                for d in range(2):
-                    for e in range(2):
-                        for f in range(2):
-                            for g in range(2):
-                                for h in range(2):
-                                    for i in range(2):
-                                        for j in range(2):
-                                            tmp = [a, b, c, d, e, f, g, h, i, j][::-1]
-                                            num = ""
-                                            for k, v in en(tmp):
-                                                if v == 1:
-                                                    num += str(k)
-                                            num = num[::-1]
-                                            if num != "" and int(num) != 0:
-                                                li.append(int(num))
-    li.sort()
-    debug(li[:18])
-    print(li[INT()-1])
+    N = INT()
+    A = [[[0] * (N + 1) for _ in range(N + 1)] for _ in range(N + 1)]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            row = LIST()
+            for z in range(1, N + 1):
+                A[x][y][z] = row[z - 1]
+    P = prefix_sum_3d(A, N)
+    Q = INT()
+    ans = []
+    for _ in range(Q):
+        lx, rx, ly, ry, lz, rz = MAP()
+        s = range_sum_3d(P, lx, ly, lz, rx, ry, rz)
+        ans.append(s)
+    print(*ans, sep='\n')
 
 
 

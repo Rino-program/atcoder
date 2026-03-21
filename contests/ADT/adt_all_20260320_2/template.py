@@ -56,15 +56,6 @@ INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
 
-# ===== 関数短縮 =====
-pr = print
-en = enumerate
-hepu = heapq.heappush
-hepo = heapq.heappop
-bil = bisect_left
-bir = bisect_right
-dedict = defaultdict
-
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]

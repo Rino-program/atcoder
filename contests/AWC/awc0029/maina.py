@@ -55,15 +55,6 @@ INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
 
-# ===== 変数 =====
-pr = print
-en = enumerate
-hepu = heapq.heappush
-hepo = heapq.heappop
-bil = bisect_left
-bir = bisect_right
-dedict = defaultdict
-
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
@@ -75,6 +66,7 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
+pr = print # ただのさぼり。
 def Yes(): print("Yes")
 def No(): print("No")
 def yes(): print("yes")
@@ -102,28 +94,15 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    li = []
-    for a in range(2):
-        for b in range(2):
-            for c in range(2):
-                for d in range(2):
-                    for e in range(2):
-                        for f in range(2):
-                            for g in range(2):
-                                for h in range(2):
-                                    for i in range(2):
-                                        for j in range(2):
-                                            tmp = [a, b, c, d, e, f, g, h, i, j][::-1]
-                                            num = ""
-                                            for k, v in en(tmp):
-                                                if v == 1:
-                                                    num += str(k)
-                                            num = num[::-1]
-                                            if num != "" and int(num) != 0:
-                                                li.append(int(num))
-    li.sort()
-    debug(li[:18])
-    print(li[INT()-1])
+    N, P, B, K = MAP()
+    C = LIST()
+    ans = 0
+    for c in C:
+        if c >= K:
+            ans += c * (P+B)
+        else:
+            ans += c * P
+    print(ans)
 
 
 

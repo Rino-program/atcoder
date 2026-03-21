@@ -55,15 +55,6 @@ INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
 
-# ===== 変数 =====
-pr = print
-en = enumerate
-hepu = heapq.heappush
-hepo = heapq.heappop
-bil = bisect_left
-bir = bisect_right
-dedict = defaultdict
-
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
@@ -75,6 +66,7 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
+pr = print # ただのさぼり。
 def Yes(): print("Yes")
 def No(): print("No")
 def yes(): print("yes")
@@ -100,30 +92,39 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def bfs(g: list[list[int]], s: int) -> list[int]:
+    """概要:
+        重みなしグラフで始点 s からの最短距離を BFS で求める。
+    入力:
+        g (list[list[int]]): 隣接リスト。
+        s (int): 始点。
+    出力:
+        list[int]: 各頂点への距離。未到達は -1。
+    補足:
+        計算量は O(V+E)。
+    """
+    dist = [-1] * len(g)
+    dist[s] = 0
+    q = deque([s])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if dist[to] == -1:
+                dist[to] = dist[v] + 1
+                q.append(to)
+    return dist
+
 def main() -> None:
     # ここに解答を書く
-    li = []
-    for a in range(2):
-        for b in range(2):
-            for c in range(2):
-                for d in range(2):
-                    for e in range(2):
-                        for f in range(2):
-                            for g in range(2):
-                                for h in range(2):
-                                    for i in range(2):
-                                        for j in range(2):
-                                            tmp = [a, b, c, d, e, f, g, h, i, j][::-1]
-                                            num = ""
-                                            for k, v in en(tmp):
-                                                if v == 1:
-                                                    num += str(k)
-                                            num = num[::-1]
-                                            if num != "" and int(num) != 0:
-                                                li.append(int(num))
-    li.sort()
-    debug(li[:18])
-    print(li[INT()-1])
+    N, M, K = MAP()
+    UVW = LISTS(M)
+    g = [[] for _ in range(N)]
+    for u, v, w in UVW:
+        if w >= K:
+            g[u-1].append(v-1)
+            g[v-1].append(u-1)
+    dist = bfs(g, 0)
+    print(dist[N-1])
 
 
 

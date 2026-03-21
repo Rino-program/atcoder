@@ -55,15 +55,6 @@ INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
 
-# ===== 変数 =====
-pr = print
-en = enumerate
-hepu = heapq.heappush
-hepo = heapq.heappop
-bil = bisect_left
-bir = bisect_right
-dedict = defaultdict
-
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
@@ -75,6 +66,7 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
+pr = print # ただのさぼり。
 def Yes(): print("Yes")
 def No(): print("No")
 def yes(): print("yes")
@@ -100,30 +92,68 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
+    """概要:
+        非負重みグラフで始点 s からの最短距離を求める。
+    入力:
+        g (list[list[tuple[int, int]]]): 重み付き隣接リスト。
+        s (int): 始点。
+    出力:
+        list[int]: 各頂点への最短距離（未到達は INF）。
+    補足:
+        計算量は O((V+E)logV)。負辺は非対応。
+    """
+    dist = [INF] * len(g)
+    dist[s] = 0
+    pq = [(0, s)]
+    while pq:
+        d, v = heapq.heappop(pq)
+        if d > dist[v]: continue
+        for to, w in g[v]:
+            if dist[v] + w < dist[to]:
+                dist[to] = dist[v] + w
+                heapq.heappush(pq, (dist[to], to))
+    return dist
+
+def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: int = True, directed: bool = False) -> list[list[tuple[int, int]]]:
+    """概要:
+        辺集合から重み付きグラフの隣接リストを構築する。
+    入力:
+        n (int): 頂点数。
+        edges (list[tuple[int, int, int]]): 辺 (a, b, cost) の配列。
+        idx (bool): True なら頂点番号を0-indexedに調整する。
+        directed (bool): True なら有向、False なら無向。
+    出力:
+        list[list[tuple[int, int]]]: 隣接リスト（要素は (to, cost)）。
+    補足:
+        無向時は両方向に辺を追加する。計算量は O(n + m)（m は辺数）。
+    """
+    g = [[] for _ in range(n)]
+    for a, b, c in edges:
+        if idx:
+            a -= 1
+            b -= 1
+        g[a].append((b, c))
+        if not directed:
+            g[b].append((a, c))
+    return g
+
 def main() -> None:
     # ここに解答を書く
-    li = []
-    for a in range(2):
-        for b in range(2):
-            for c in range(2):
-                for d in range(2):
-                    for e in range(2):
-                        for f in range(2):
-                            for g in range(2):
-                                for h in range(2):
-                                    for i in range(2):
-                                        for j in range(2):
-                                            tmp = [a, b, c, d, e, f, g, h, i, j][::-1]
-                                            num = ""
-                                            for k, v in en(tmp):
-                                                if v == 1:
-                                                    num += str(k)
-                                            num = num[::-1]
-                                            if num != "" and int(num) != 0:
-                                                li.append(int(num))
-    li.sort()
-    debug(li[:18])
-    print(li[INT()-1])
+    N, M = MAP()
+    UVW = TUPLES(M)
+    S, K = MAP()
+    T = LIST()
+    g = build_weighted_graph(N, UVW)
+    # bitDPで
+    dp = [[INF for _ in range(1 << N + 1)] for _ in range(N + 1)]
+    dp[0][0] = 0
+    for i in range(N+1):
+        d = dijkstra(g, i)
+        for j in range(1 << N + 1):
+            if dp[i][j] == INF:
+                continue
+            
 
 
 

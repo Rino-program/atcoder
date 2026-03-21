@@ -102,28 +102,8 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    li = []
-    for a in range(2):
-        for b in range(2):
-            for c in range(2):
-                for d in range(2):
-                    for e in range(2):
-                        for f in range(2):
-                            for g in range(2):
-                                for h in range(2):
-                                    for i in range(2):
-                                        for j in range(2):
-                                            tmp = [a, b, c, d, e, f, g, h, i, j][::-1]
-                                            num = ""
-                                            for k, v in en(tmp):
-                                                if v == 1:
-                                                    num += str(k)
-                                            num = num[::-1]
-                                            if num != "" and int(num) != 0:
-                                                li.append(int(num))
-    li.sort()
-    debug(li[:18])
-    print(li[INT()-1])
+    N = INT()
+    print(ans)
 
 
 

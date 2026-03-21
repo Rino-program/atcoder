@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20260320_2",
+    "title": "AtCoder Daily Training ALL 2026/03/20 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20260320_2"
+  },
+  "tasks": [
+    {
+      "id": "abc325_a",
+      "label": "A",
+      "title": "Takahashi san",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc325_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc280_a",
+      "label": "B",
+      "title": "Pawn on a Grid",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc280_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc417_b",
+      "label": "C",
+      "title": "Search and Delete",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc417_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc368_b",
+      "label": "D",
+      "title": "Decrease 2 max elements",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc368_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc222_c",
+      "label": "E",
+      "title": "Swiss-System Tournament",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc222_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc399_c",
+      "label": "F",
+      "title": "Make it Forest",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc399_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc256_d",
+      "label": "G",
+      "title": "Union of Interval",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc256_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "abc237_e",
+      "label": "H",
+      "title": "Skiing",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc237_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "abc420_f",
+      "label": "I",
+      "title": "kirinuki",
+      "url": "https://atcoder.jp/contests/adt_all_20260320_2/tasks/abc420_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    }
+  ]
+}

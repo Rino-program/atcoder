@@ -56,7 +56,7 @@ INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
 
-# ===== 関数短縮 =====
+# ===== 変数 =====
 pr = print
 en = enumerate
 hepu = heapq.heappush
@@ -363,6 +363,65 @@ def range_sum_2d(ps: list[list[int]], y1: int, x1: int, y2: int, x2: int) -> int
     """
     return ps[y2][x2] - ps[y1][x2] - ps[y2][x1] + ps[y1][x1]
 
+def prefix_sum_3d(A: list[list[list[int]]], N: int) -> list[list[list[int]]]:
+    """概要:
+        3次元配列の累積和テーブルを構築する。
+        ABC366Dより
+    入力:
+        A (list[list[list[int]]]): 1-indexed の数値グリッド A[1..N][1..N][1..N]。
+                                   インデックス 0 はダミー（0 で埋める）。
+        N (int): 各次元の大きさ（1-indexed）。
+    出力:
+        list[list[list[int]]]: (N+2)^3 サイズの3次元累積和テーブル（1-indexed）。
+    補足:
+        構築計算量は O(N^3)。
+        矩形和は range_sum_3d で O(1) 取得できる。
+    使用例:
+        P = prefix_sum_3d(A, N)
+        s = range_sum_3d(P, lx, ly, lz, rx, ry, rz)
+    """
+    P = [[[0] * (N + 2) for _ in range(N + 2)] for _ in range(N + 2)]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] = A[x][y][z]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] += P[x-1][y][z]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] += P[x][y-1][z]
+    for x in range(1, N + 1):
+        for y in range(1, N + 1):
+            for z in range(1, N + 1):
+                P[x][y][z] += P[x][y][z-1]
+    return P
+
+def range_sum_3d(
+    P: list[list[list[int]]],
+    lx: int, ly: int, lz: int,
+    rx: int, ry: int, rz: int,
+) -> int:
+    """概要:
+        3次元累積和から直方体 [lx,rx]×[ly,ry]×[lz,rz] の総和を返す（閉区間・1-indexed）。
+        ABC366Dより
+    入力:
+        P (list[list[list[int]]]): prefix_sum_3d の戻り値。
+        lx, ly, lz, rx, ry, rz (int): 閉区間の境界（1-indexed）。
+    出力:
+        int: 指定直方体の総和。
+    補足:
+        3次元包除原理（8項）を用いる。計算量は O(1)。
+    """
+    x0, y0, z0 = lx - 1, ly - 1, lz - 1
+    return (
+        P[rx][ry][rz]
+        - P[x0][ry][rz] - P[rx][y0][rz] - P[rx][ry][z0]
+        + P[x0][y0][rz] + P[x0][ry][z0] + P[rx][y0][z0]
+        - P[x0][y0][z0]
+    )
 
 # ============================================================
 # いもす法
