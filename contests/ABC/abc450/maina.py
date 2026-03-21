@@ -103,35 +103,7 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    MG = INT()
-    G = set()
-    for _ in range(MG):
-        a, b = MAP()
-        G.add((min(a-1, b-1), max(a-1, b-1)))
-    MH = INT()
-    H = set()
-    for _ in range(MH):
-        a, b = MAP()
-        H.add((min(a-1, b-1), max(a-1, b-1)))
-    A = [[0 for _ in range(N)] for _ in range(N)]
-    for i in range(N):
-        v = list(MAP())
-        for k, v in en(v):
-            j = i+1+k
-            A[i][j] = v
-            A[j][i] = v
-    ans = INF
-    for perm in permutations(range(N)):
-        score = 0
-        for i in range(N):
-            for j in range(i+1, N):
-                gc = (i, j) in G
-                pi, pj = min(perm[i], perm[j]), max(perm[i], perm[j])
-                hc = (pi, pj) in H
-                if gc != hc:
-                    score += A[pi][pj]
-        ans = min(ans, score)
-    print(ans)
+    print(*[i for i in range(N, 0, -1)], sep=",")
 
 
 
