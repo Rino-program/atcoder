@@ -100,19 +100,47 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def build_graph(n: int, edges: list[tuple[int, int]], idx: bool = True, directed: bool = False) -> list[list[int]]:
+    """概要:
+        辺集合から重みなしグラフの隣接リストを構築する。
+    入力:
+        n (int): 頂点数（0-indexed を想定）。
+        edges (list[tuple[int, int]]): 辺 (a, b) の配列。
+        idx (bool): True なら頂点番号を0-indexedに調整する。
+        directed (bool): True なら有向、False なら無向。
+    出力:
+        list[list[int]]: 隣接リスト。
+    補足:
+        無向時は両方向に辺を追加する。計算量は O(n + m)（m は辺数）。
+    """
+    g = [[] for _ in range(n)]
+    for a, b in edges:
+        if idx:
+            a -= 1
+            b -= 1
+        g[a]. append(b)
+        if not directed:
+            g[b].append(a)
+    return g
+
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    A = LIST()
-    A = [i % K for i in A]
-    A.sort()
-    d = deque(A)
-    ans = A[-1] - A[0]
-    for _ in range(N):
-        num = d.popleft()
-        d.append(num + K)
-        ans = min(ans, d[-1] - d[0])
-    pr(ans)
+    N, M = MAP()
+    UV = TUPLES(M)
+    g = build_graph(N, UV, directed=True)
+    d = deque()
+    for i in g[0]: d.append((i, 1))
+    while d:
+        now, num = d.popleft()
+        if now == 0:
+            pr(num)
+            return
+        elif num > 2*10**5:
+            pass
+        else:
+            for i in g[now]:
+                d.append((i, num + 1))
+    pr(-1)
 
 
 

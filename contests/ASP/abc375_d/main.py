@@ -102,17 +102,19 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    A = LIST()
-    A = [i % K for i in A]
-    A.sort()
-    d = deque(A)
-    ans = A[-1] - A[0]
-    for _ in range(N):
-        num = d.popleft()
-        d.append(num + K)
-        ans = min(ans, d[-1] - d[0])
-    pr(ans)
+    S = STR()
+    C = dict(Counter(S))
+    right = defaultdict(int)
+    for i, v in C.items():
+        right[i] = v
+    left = defaultdict(int)
+    ans = 0
+    for i in range(len(S)):
+        right[S[i]] -= 1
+        for j in UPPER:
+            ans += left[j] * right[j]
+        left[S[i]] += 1
+    print(ans)
 
 
 

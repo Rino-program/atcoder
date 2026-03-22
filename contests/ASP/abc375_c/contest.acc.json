@@ -1,0 +1,20 @@
+{
+  "contest": {
+    "title": "abc375",
+    "id": "abc375",
+    "url": "https://atcoder.jp/contests/abc375"
+  },
+  "tasks": [
+    {
+      "title": "abc375_c",
+      "id": "abc375_c",
+      "directory": {
+        "submit": "main.py",
+        "path": ".",
+        "testdir": "input"
+      },
+      "label": "abc375_c",
+      "url": "https://atcoder.jp/contests/abc375/tasks/abc375_c"
+    }
+  ]
+}

@@ -102,17 +102,32 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    A = LIST()
-    A = [i % K for i in A]
-    A.sort()
-    d = deque(A)
-    ans = A[-1] - A[0]
-    for _ in range(N):
-        num = d.popleft()
-        d.append(num + K)
-        ans = min(ans, d[-1] - d[0])
-    pr(ans)
+    H, W, K = map(int, input().split())
+    S = CHARSL(H)
+    ans = 0
+    for i in range(H):
+        for j in range(W):
+            if S[i][j] == "#": continue
+            d = deque()
+            mask = 1 << (i*W+j)
+            d.append((i, j, mask, 0))
+            while d:
+                x, y, mask, num = d.popleft()
+                if num == K:
+                    ans += 1
+                    continue
+                for dx, dy in DIR4:
+                    dx += x
+                    dy += y
+                    if dx < 0 or dy < 0:
+                        continue
+                    try:
+                        bit = 1 << (dx*W+dy)
+                        if S[dx][dy] == "." and not (mask & bit):
+                            d.append((dx, dy, mask|bit, num + 1))
+                    except:
+                        pass
+    print(ans)
 
 
 

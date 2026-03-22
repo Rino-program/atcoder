@@ -102,17 +102,14 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    A = LIST()
-    A = [i % K for i in A]
-    A.sort()
-    d = deque(A)
-    ans = A[-1] - A[0]
-    for _ in range(N):
-        num = d.popleft()
-        d.append(num + K)
-        ans = min(ans, d[-1] - d[0])
-    pr(ans)
+    N, M = MAP()
+    M2 = M - 9 * (N - 1) # 上限
+    p = list(range(1, M2+1))
+    ans = []
+    for B in combinations(p, N):
+        A = [B[i] + 9 * i for i in range(N)]
+        ans.append(A)
+    print(len(ans), *[" ".join(map(str, i)) for i in ans], sep="\n")
 
 
 

@@ -102,17 +102,34 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    A = LIST()
-    A = [i % K for i in A]
-    A.sort()
-    d = deque(A)
-    ans = A[-1] - A[0]
+    N, S, T = MAP()
+    segs = []
     for _ in range(N):
-        num = d.popleft()
-        d.append(num + K)
-        ans = min(ans, d[-1] - d[0])
-    pr(ans)
+        a, b, c, d = MAP()
+        segs.append((a, b, c, d))
+
+    # 各線分の印字時間（線分の長さ / T）は順番に関係なく固定
+    seg_time = 0.0
+    for a, b, c, d in segs:
+        seg_time += math.sqrt((a - c) ** 2 + (b - d) ** 2) / T
+
+    ans = INF
+    for perm in permutations(range(N)):
+        for bit in range(1 << N):
+            total = 0.0
+            x, y = 0.0, 0.0
+            for idx in perm:
+                a, b, c, d = segs[idx]
+                if (bit >> idx) & 1:
+                    sx, sy = c, d
+                    ex, ey = a, b
+                else:
+                    sx, sy = a, b
+                    ex, ey = c, d
+                total += math.sqrt((x - sx) ** 2 + (y - sy) ** 2) / S
+                x, y = ex, ey
+            ans = min(ans, total)
+    pr(ans+seg_time)
 
 
 
