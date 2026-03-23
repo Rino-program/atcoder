@@ -1,0 +1,20 @@
+{
+  "tasks": [
+    {
+      "label": "abc392_d",
+      "directory": {
+        "testdir": "input",
+        "submit": "main.py",
+        "path": "."
+      },
+      "url": "https://atcoder.jp/contests/abc392/tasks/abc392_d",
+      "title": "abc392_d",
+      "id": "abc392_d"
+    }
+  ],
+  "contest": {
+    "url": "https://atcoder.jp/contests/abc392",
+    "title": "abc392",
+    "id": "abc392"
+  }
+}

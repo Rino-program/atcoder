@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0031",
+    "title": "AtCoder Weekday Contest 0031 Beta",
+    "url": "https://atcoder.jp/contests/awc0031"
+  },
+  "tasks": [
+    {
+      "id": "awc0031_a",
+      "label": "A",
+      "title": "Cooking Contest and Ingredients",
+      "url": "https://atcoder.jp/contests/awc0031/tasks/awc0031_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0031_b",
+      "label": "B",
+      "title": "Outstanding Score",
+      "url": "https://atcoder.jp/contests/awc0031/tasks/awc0031_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0031_c",
+      "label": "C",
+      "title": "Island Hopping Adventure",
+      "url": "https://atcoder.jp/contests/awc0031/tasks/awc0031_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0031_d",
+      "label": "D",
+      "title": "Library Inventory Check",
+      "url": "https://atcoder.jp/contests/awc0031/tasks/awc0031_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0031_e",
+      "label": "E",
+      "title": "Power Grid Blackout Crisis",
+      "url": "https://atcoder.jp/contests/awc0031/tasks/awc0031_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
