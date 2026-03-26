@@ -1,0 +1,196 @@
+{
+  "contest": {
+    "id": "pakencamp-2025-day1",
+    "title": "パ研合宿2025　第1日「SpeedRun」",
+    "url": "https://atcoder.jp/contests/pakencamp-2025-day1"
+  },
+  "tasks": [
+    {
+      "id": "pakencamp_2025_day1_a",
+      "label": "A",
+      "title": "Kamigo",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_b",
+      "label": "B",
+      "title": "Keikyu Line",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_c",
+      "label": "C",
+      "title": "2nd Larger",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_d",
+      "label": "D",
+      "title": "Kth abs min",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_e",
+      "label": "E",
+      "title": "Starry Story String",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_f",
+      "label": "F",
+      "title": "Increasing GCD",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_g",
+      "label": "G",
+      "title": "Inclusive set",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_h",
+      "label": "H",
+      "title": "Typical Piece Problem",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_h",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_i",
+      "label": "I",
+      "title": "Dist Max",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_i",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_j",
+      "label": "J",
+      "title": "Small Product",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_j",
+      "directory": {
+        "path": ".",
+        "testdir": "input/j",
+        "submit": "mainj.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_k",
+      "label": "K",
+      "title": "Good Grid",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_k",
+      "directory": {
+        "path": ".",
+        "testdir": "input/k",
+        "submit": "maink.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_l",
+      "label": "L",
+      "title": "Typical Addition Problem",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_l",
+      "directory": {
+        "path": ".",
+        "testdir": "input/l",
+        "submit": "mainl.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_m",
+      "label": "M",
+      "title": "Minimum Divisible Sequence",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_m",
+      "directory": {
+        "path": ".",
+        "testdir": "input/m",
+        "submit": "mainm.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_n",
+      "label": "N",
+      "title": "Order of Linear",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_n",
+      "directory": {
+        "path": ".",
+        "testdir": "input/n",
+        "submit": "mainn.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_o",
+      "label": "O",
+      "title": "Red and Blue Filling",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_o",
+      "directory": {
+        "path": ".",
+        "testdir": "input/o",
+        "submit": "maino.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_p",
+      "label": "P",
+      "title": "Champion",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_p",
+      "directory": {
+        "path": ".",
+        "testdir": "input/p",
+        "submit": "mainp.py"
+      }
+    },
+    {
+      "id": "pakencamp_2025_day1_q",
+      "label": "Q",
+      "title": "Reconstruct",
+      "url": "https://atcoder.jp/contests/pakencamp-2025-day1/tasks/pakencamp_2025_day1_q",
+      "directory": {
+        "path": ".",
+        "testdir": "input/q",
+        "submit": "mainq.py"
+      }
+    }
+  ]
+}

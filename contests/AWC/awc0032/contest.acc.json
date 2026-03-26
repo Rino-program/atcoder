@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0032",
+    "title": "AtCoder Weekday Contest 0032 Beta",
+    "url": "https://atcoder.jp/contests/awc0032"
+  },
+  "tasks": [
+    {
+      "id": "awc0032_a",
+      "label": "A",
+      "title": "Closeness of Fireworks",
+      "url": "https://atcoder.jp/contests/awc0032/tasks/awc0032_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0032_b",
+      "label": "B",
+      "title": "Package Delivery Schedule",
+      "url": "https://atcoder.jp/contests/awc0032/tasks/awc0032_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0032_c",
+      "label": "C",
+      "title": "Observatory with a Mountain View",
+      "url": "https://atcoder.jp/contests/awc0032/tasks/awc0032_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0032_d",
+      "label": "D",
+      "title": "Part-Time Job Shift Assignment",
+      "url": "https://atcoder.jp/contests/awc0032/tasks/awc0032_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0032_e",
+      "label": "E",
+      "title": "Multiple Bonus",
+      "url": "https://atcoder.jp/contests/awc0032/tasks/awc0032_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

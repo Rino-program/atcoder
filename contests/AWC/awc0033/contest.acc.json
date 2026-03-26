@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0033",
+    "title": "AtCoder Weekday Contest 0033 Beta",
+    "url": "https://atcoder.jp/contests/awc0033"
+  },
+  "tasks": [
+    {
+      "id": "awc0033_a",
+      "label": "A",
+      "title": "Grading the Answer Sheet",
+      "url": "https://atcoder.jp/contests/awc0033/tasks/awc0033_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0033_b",
+      "label": "B",
+      "title": "Plant Temperature Management",
+      "url": "https://atcoder.jp/contests/awc0033/tasks/awc0033_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0033_c",
+      "label": "C",
+      "title": "Spread of Rumors",
+      "url": "https://atcoder.jp/contests/awc0033/tasks/awc0033_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0033_d",
+      "label": "D",
+      "title": "Cheapest Commute Route",
+      "url": "https://atcoder.jp/contests/awc0033/tasks/awc0033_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0033_e",
+      "label": "E",
+      "title": "Minimum Cost of Stepping Stones",
+      "url": "https://atcoder.jp/contests/awc0033/tasks/awc0033_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

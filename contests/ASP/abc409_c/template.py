@@ -2187,58 +2187,6 @@ def levenshtein_distance(s: str, t: str) -> int:
         prev = curr
     return prev[m]
 
-# ============================================================
-# 回文・進数変換
-# ============================================================
-
-def to_base(n: int, base: int) -> str:
-    """概要:
-        非負整数 n を base 進法表記の文字列に変換する。
-    入力:
-        n (int): 変換対象の非負整数。
-        base (int): 基数（2以上）。
-    出力:
-        str: base 進法表記の文字列（0 なら "0"）。
-    補足:
-        計算量は O(log_base(n))。
-    使用例:
-        to_base(414, 8)  # "636"
-        to_base(10, 2)   # "1010"
-    """
-    if n == 0:
-        return "0"
-    digits = []
-    while n > 0:
-        digits.append(str(n % base))
-        n //= base
-    return ''.join(reversed(digits))
-
-
-def gen_palindromes_d_digits(d: int):
-    """概要:
-        d 桁の十進法回文数を昇順に生成するジェネレータ。
-    入力:
-        d (int): 桁数（1以上）。
-    出力:
-        Iterator[int]: d 桁の回文数を昇順に yield する。
-    補足:
-        前半部（⌈d/2⌉桁）を走査して回文を構成する。計算量は O(10^(d/2)) 個生成。
-        d=1: 1〜9、d=2: 11,22,...,99、d=3: 101,111,...,999 など。
-    使用例:
-        for p in gen_palindromes_d_digits(3):
-            print(p)  # 101, 111, 121, ..., 999
-    """
-    half = (d + 1) // 2
-    start = 10 ** (half - 1)
-    end   = 10 ** half
-    for front in range(start, end):
-        s = str(front)
-        if d % 2 == 0:
-            palindrome_str = s + s[::-1]
-        else:
-            palindrome_str = s + s[-2::-1]
-        yield int(palindrome_str)
-
 
 # ============================================================
 # 二分探索

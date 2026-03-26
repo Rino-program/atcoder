@@ -1,0 +1,20 @@
+{
+  "contest": {
+    "title": "abc409",
+    "id": "abc409",
+    "url": "https://atcoder.jp/contests/abc409"
+  },
+  "tasks": [
+    {
+      "title": "abc409_c",
+      "id": "abc409_c",
+      "directory": {
+        "submit": "main.py",
+        "path": ".",
+        "testdir": "input"
+      },
+      "url": "https://atcoder.jp/contests/abc409/tasks/abc409_c",
+      "label": "abc409_c"
+    }
+  ]
+}
