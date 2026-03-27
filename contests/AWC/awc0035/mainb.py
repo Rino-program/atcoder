@@ -102,13 +102,17 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    S = STR()
-    ans = [0, 0]
-    posA = [i[0] for i in en(S) if i[1] == "A"]
-    ans[0] = sum(abs(posA[i] - 2 * i) for i in range(N))
-    ans[1] = sum(abs(posA[i] - (2 * i + 1)) for i in range(N))
-    print(min(ans))
+    N, M = MAP()
+    D = LIST()
+    S = LIST()
+    D.sort()
+    S.sort()
+    S = [-INF] + S + [INF]
+    ans = 0
+    for d in D:
+        idx = bisect_right(S, d)
+        ans += min(abs(d - S[idx]), abs(d - S[idx - 1]))
+    print(ans)
 
 
 

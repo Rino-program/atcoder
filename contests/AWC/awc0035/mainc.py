@@ -102,13 +102,30 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    S = STR()
-    ans = [0, 0]
-    posA = [i[0] for i in en(S) if i[1] == "A"]
-    ans[0] = sum(abs(posA[i] - 2 * i) for i in range(N))
-    ans[1] = sum(abs(posA[i] - (2 * i + 1)) for i in range(N))
-    print(min(ans))
+    N, M = MAP()
+    T = LIST()
+    UV = TUPLES(M)
+    g = [[] for _ in range(N)]
+    for u, v in UV:
+        g[u - 1].append(v - 1)
+    d = deque()
+    C = Counter(V for U, V in UV)
+    for i, v in C.items():
+        T[i - 1] -= v
+    for i, t in enumerate(T):
+        if t <= -1:
+            d.append(i)
+    debug(C)
+    debug(T)
+    debug(d)
+    while d:
+        now = d.popleft()
+        for to in g[now]:
+            T[to] -= 1
+            if T[to] == -1:
+                d.append(to)
+    debug(T)
+    pr(*([i for i, t in enumerate(T, 1) if t < 0] or [-1]))
 
 
 

@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "OJ Test",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "test",
+        "-c",
+        "${config:python.defaultInterpreterPath} main.py",
+        "-d",
+        "input"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "OJ Test+Submit",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "oj test -c ${config:python.defaultInterpreterPath} main.py -d input; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; oj submit -l 6083 https://atcoder.jp/contests/abc422/tasks/abc422_c main.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "OJ Submit",
+      "type": "shell",
+      "command": "oj",
+      "args": [
+        "submit",
+        "-l",
+        "6083",
+        "https://atcoder.jp/contests/abc422/tasks/abc422_c",
+        "main.py"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

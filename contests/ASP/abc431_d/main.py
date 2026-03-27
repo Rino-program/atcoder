@@ -103,12 +103,20 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    S = STR()
-    ans = [0, 0]
-    posA = [i[0] for i in en(S) if i[1] == "A"]
-    ans[0] = sum(abs(posA[i] - 2 * i) for i in range(N))
-    ans[1] = sum(abs(posA[i] - (2 * i + 1)) for i in range(N))
-    print(min(ans))
+    WHB = LISTS(N)
+    V = [h - b for w, h, b in WHB]
+    S = sum(w for w, _, _ in WHB)
+    dp = [[0 for i in range(S // 2 + 1)] for _ in range(N + 1)]
+
+    for i in range(1, N+1):
+        w, h, b = WHB[i - 1]
+        for j in range(S // 2 + 1):
+            if j < w:
+                dp[i][j] = dp[i-1][j]
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i - 1][j - w] + V[i - 1])
+    ans = max(dp[N])
+    print(ans + sum(b for _, _, b in WHB))
 
 
 

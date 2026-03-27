@@ -10,6 +10,7 @@ import operator
 import heapq
 import math
 import string
+from tokenize import group
 
 sys.setrecursionlimit(10 ** 6)
 
@@ -102,14 +103,27 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    S = STR()
-    ans = [0, 0]
-    posA = [i[0] for i in en(S) if i[1] == "A"]
-    ans[0] = sum(abs(posA[i] - 2 * i) for i in range(N))
-    ans[1] = sum(abs(posA[i] - (2 * i + 1)) for i in range(N))
-    print(min(ans))
-
+    N, K = MAP()
+    heap = []
+    nowK = 0
+    nowT = 0
+    ans = [0] * N
+    for i in range(N):
+        A, B, C = MAP()
+        while heap and heap[0][0] <= nowT:
+            _, x = hepo(heap)
+            nowK -= x
+        while nowK + C > K and heap:
+            t, x = hepo(heap)
+            nowK -= x
+            nowT = max(nowT, t)
+        et = max(A, nowT)
+        ans[i] = et
+        nowK += C
+        nt = et + B
+        hepu(heap, (nt, C))
+        nowT = et
+    print(*ans)
 
 
 

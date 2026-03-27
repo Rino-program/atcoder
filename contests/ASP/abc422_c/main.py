@@ -100,35 +100,22 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def main() -> None:
+def main(N: list[int]) -> int:
     # ここに解答を書く
-    N = INT()
-    S = STR()
-    ans = [0, 0]
-    posA = [i[0] for i in en(S) if i[1] == "A"]
-    ans[0] = sum(abs(posA[i] - 2 * i) for i in range(N))
-    ans[1] = sum(abs(posA[i] - (2 * i + 1)) for i in range(N))
-    print(min(ans))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ans = 0
+    m = min(N)
+    for i in range(3):
+        N[i] -= m
+    ans += m
+    del N[1]
+    N.sort(reverse=True)
+    ans += min(N[1], (N[0] + N[1]) // 3)
+    return ans
 
 if __name__ == "__main__":
-    main()
+    T = INT()
+    ans = []
+    for _ in range(T):
+        N = LIST()
+        ans.append(main(N))
+    print(*ans)

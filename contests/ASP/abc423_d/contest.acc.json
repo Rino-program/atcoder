@@ -1,0 +1,20 @@
+{
+  "contest": {
+    "url": "https://atcoder.jp/contests/abc423",
+    "id": "abc423",
+    "title": "abc423"
+  },
+  "tasks": [
+    {
+      "label": "abc423_d",
+      "url": "https://atcoder.jp/contests/abc423/tasks/abc423_d",
+      "directory": {
+        "submit": "main.py",
+        "testdir": "input",
+        "path": "."
+      },
+      "id": "abc423_d",
+      "title": "abc423_d"
+    }
+  ]
+}
