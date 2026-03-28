@@ -1,7 +1,7 @@
 # coding: utf-8
 # AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
-import sys, os
+import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
 from bisect import bisect_left, bisect_right
@@ -12,8 +12,6 @@ import math
 import string
 
 sys.setrecursionlimit(10 ** 6)
-
-ONLINE_JUDGE = 'ONLINE_JUDGE' in os.environ or not sys.stdin.isatty()
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -90,8 +88,7 @@ def yn(cond: bool) -> None:
 # ===== デバッグ =====
 def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
-    if not ONLINE_JUDGE:
-        print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+    print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
 def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
@@ -106,21 +103,6 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    A = LIST()
-    dr = dedict(int)
-    dl = dedict(int)
-    for i in A:
-        dr[i] += 1
-    ans = 0
-    for i in A:
-        tmp = dict()
-        dr[i] -= 1
-        if i % 5 == 0:
-            tmp[0] = i // 5
-            ans += dl[tmp[0]*7] * dl[tmp[0]*3]
-            ans += dr[tmp[0]*7] * dr[tmp[0]*3]
-        dl[i] += 1
-        debug(ans, dl, dr)
     print(ans)
 
 

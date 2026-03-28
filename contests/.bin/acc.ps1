@@ -208,13 +208,8 @@ if ([string]::IsNullOrWhiteSpace($Mode) -or $Mode -eq "default") {
     & code $ContestPath
     Write-Success "[$(Get-Timestamp)] [SUCCESS] VSCode opened"
 } elseif ($Mode -eq "s") {
-    # Sublime mode: open files in order
-    Write-Info "[$(Get-Timestamp)] [SUBLIME MODE] Opening Sublime first..."
-    
-    # Launch Sublime and wait 3 seconds
-    & subl
-    Write-Info "[$(Get-Timestamp)] Waiting 1.5 seconds for Sublime to launch..."
-    Start-Sleep -Seconds 1.5
+    # Sublime mode: open all files at once
+    Write-Info "[$(Get-Timestamp)] [SUBLIME MODE] Opening files in Sublime..."
     
     # Check if contest directory has template.py
     $TemplatePath = Join-Path $ContestPath "template.py"
@@ -223,9 +218,8 @@ if ([string]::IsNullOrWhiteSpace($Mode) -or $Mode -eq "default") {
         exit 1
     }
     
-    Write-Info "[$(Get-Timestamp)] Opening: template.py"
-    & subl (Join-Path $ContestPath "template.py")
-    Start-Sleep -Milliseconds 50
+    # Collect all files to open
+    $filesToOpen = @($TemplatePath)
     
     # Get all main*.py files and filter for single-letter suffix (a-z)
     $mainFiles = @()
@@ -233,12 +227,21 @@ if ([string]::IsNullOrWhiteSpace($Mode) -or $Mode -eq "default") {
         $file = Join-Path $ContestPath "main${letter}.py"
         if (Test-Path $file) {
             $mainFiles += $file
-            Write-Info "[$(Get-Timestamp)] Opening: main${letter}.py"
-            & subl $file
-            Start-Sleep -Milliseconds 50
+            $filesToOpen += $file
         }
     }
-    & subl (Join-Path $ContestPath "maina.py")
+    
+    # First call: open all files at once
+    Write-Info "[$(Get-Timestamp)] Opening $(1 + $mainFiles.Count) file(s) in Sublime..."
+    & subl $filesToOpen
+    
+    # Second call: focus on maina.py
+    $mainAPath = Join-Path $ContestPath "maina.py"
+    if (Test-Path $mainAPath) {
+        Write-Info "[$(Get-Timestamp)] Focusing on: maina.py"
+        & subl $mainAPath
+    }
+    
     if ($mainFiles.Count -eq 0) {
         Write-Warning "[$(Get-Timestamp)] [WARNING] No main*.py files found (only template.py opened)"
     } else {
