@@ -103,7 +103,7 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     S = STR()
-    yn(len(S) % 5 == 0)
+    print("Yes" if len(S) in {5, 10} else "No")
 
 
 

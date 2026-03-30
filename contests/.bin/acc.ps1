@@ -55,7 +55,8 @@ function Get-Timestamp {
 
 # Display ASCII art from file if -Art flag is set
 function Show-AsciiArt {
-    $asciiPath = Join-Path (Split-Path $PSScriptRoot) "image_ascii.txt"
+    param([int]$ArtNumber)
+    $asciiPath = Join-Path (Split-Path $PSScriptRoot) "image_ascii${ArtNumber}.txt"
     if ((Test-Path $asciiPath) -and $Art) {
         Write-Info "[$(Get-Timestamp)] ASCII Art Banner"
         Write-Host ""
@@ -149,9 +150,9 @@ function Show-Summary {
     Write-Host ""
 }
 
-# Display banner if -Art flag is set
+# Display banner if -Art flag is set 1
 if ($Art) {
-    Show-AsciiArt
+    Show-AsciiArt 1
 }
 
 # Interactive input for missing contest
@@ -197,9 +198,6 @@ if (-not (Test-Path $ContestPath)) {
 # Display generated files information
 Get-GeneratedFiles $ContestPath
 Write-Host ""
-
-# Display checklist/motivation
-Show-Checklist
 
 # Handle mode
 if ([string]::IsNullOrWhiteSpace($Mode) -or $Mode -eq "default") {
@@ -258,4 +256,15 @@ Show-Summary
 # Change to contest directory
 Write-Info "[$(Get-Timestamp)] [CD] Changing to contest directory: $Contest"
 Set-Location -Path $ContestPath
+
+# Display checklist/motivation
+Show-Checklist
+
 Write-Success "[$(Get-Timestamp)] [SUCCESS] Changed to: $(Get-Location)"
+
+# Display banner if -Art flag is set 2
+if ($Art) {
+    Show-AsciiArt 2
+}
+
+Write-Success "[$(Get-Timestamp)] All done! Good luck with the contest!"
