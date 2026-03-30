@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0036",
+    "title": "AtCoder Weekday Contest 0036 Beta",
+    "url": "https://atcoder.jp/contests/awc0036"
+  },
+  "tasks": [
+    {
+      "id": "awc0036_a",
+      "label": "A",
+      "title": "Library Loan Management",
+      "url": "https://atcoder.jp/contests/awc0036/tasks/awc0036_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0036_b",
+      "label": "B",
+      "title": "Managing the Guest List",
+      "url": "https://atcoder.jp/contests/awc0036/tasks/awc0036_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0036_c",
+      "label": "C",
+      "title": "Splitting Logs",
+      "url": "https://atcoder.jp/contests/awc0036/tasks/awc0036_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0036_d",
+      "label": "D",
+      "title": "Meeting Room Reservation",
+      "url": "https://atcoder.jp/contests/awc0036/tasks/awc0036_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0036_e",
+      "label": "E",
+      "title": "Grid Filling",
+      "url": "https://atcoder.jp/contests/awc0036/tasks/awc0036_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
