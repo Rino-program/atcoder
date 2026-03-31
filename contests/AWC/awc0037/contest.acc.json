@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0037",
+    "title": "AtCoder Weekday Contest 0037 Beta",
+    "url": "https://atcoder.jp/contests/awc0037"
+  },
+  "tasks": [
+    {
+      "id": "awc0037_a",
+      "label": "A",
+      "title": "The Highest Peak of the Mountain Range",
+      "url": "https://atcoder.jp/contests/awc0037/tasks/awc0037_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0037_b",
+      "label": "B",
+      "title": "Available Time Slots for Meeting Rooms",
+      "url": "https://atcoder.jp/contests/awc0037/tasks/awc0037_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0037_c",
+      "label": "C",
+      "title": "Sum of Products of Consecutive Intervals",
+      "url": "https://atcoder.jp/contests/awc0037/tasks/awc0037_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0037_d",
+      "label": "D",
+      "title": "Arrangement of Trees",
+      "url": "https://atcoder.jp/contests/awc0037/tasks/awc0037_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0037_e",
+      "label": "E",
+      "title": "Ball Transfer",
+      "url": "https://atcoder.jp/contests/awc0037/tasks/awc0037_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
