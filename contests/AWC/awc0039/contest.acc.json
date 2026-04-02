@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0039",
+    "title": "AtCoder Weekday Contest 0039 Beta",
+    "url": "https://atcoder.jp/contests/awc0039"
+  },
+  "tasks": [
+    {
+      "id": "awc0039_a",
+      "label": "A",
+      "title": "Password Verification",
+      "url": "https://atcoder.jp/contests/awc0039/tasks/awc0039_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0039_b",
+      "label": "B",
+      "title": "Student Grade Management",
+      "url": "https://atcoder.jp/contests/awc0039/tasks/awc0039_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0039_c",
+      "label": "C",
+      "title": "Organizing the Bookshelf",
+      "url": "https://atcoder.jp/contests/awc0039/tasks/awc0039_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0039_d",
+      "label": "D",
+      "title": "Fastest Delivery Route",
+      "url": "https://atcoder.jp/contests/awc0039/tasks/awc0039_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0039_e",
+      "label": "E",
+      "title": "Library Book Search",
+      "url": "https://atcoder.jp/contests/awc0039/tasks/awc0039_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
