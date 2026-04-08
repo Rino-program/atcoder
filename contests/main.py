@@ -83,7 +83,7 @@ def YES(): print("YES")
 def NO(): print("NO")
 def yn(cond: bool) -> None:
     """条件に応じてYes/No出力"""
-    print("Yes" if cond else "No")
+    print("Won" if cond else "Lost")
 
 # ===== デバッグ =====
 def debug(*args, **kwargs) -> None:
@@ -102,8 +102,9 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    A, B = MAP()
+    li = [(15, 8), (10, 3), (3, 0), (0, 0)]
+    print( if max)
 
 
 

@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc452",
+    "title": "AtCoder Beginner Contest 452",
+    "url": "https://atcoder.jp/contests/abc452"
+  },
+  "tasks": [
+    {
+      "id": "abc452_a",
+      "label": "A",
+      "title": "Gothec",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc452_b",
+      "label": "B",
+      "title": "Draw Frame",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc452_c",
+      "label": "C",
+      "title": "Fishbones",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc452_d",
+      "label": "D",
+      "title": "No-Subsequence Substring",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc452_e",
+      "label": "E",
+      "title": "You WILL Like Sigma Problem",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc452_f",
+      "label": "F",
+      "title": "Interval Inversion Count",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc452_g",
+      "label": "G",
+      "title": "221 Substring",
+      "url": "https://atcoder.jp/contests/abc452/tasks/abc452_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}

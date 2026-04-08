@@ -102,19 +102,15 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    adventurers = TUPLES(N)
-    adventurers.sort(key=lambda x: -x[1])
-    ans = 0
-    h = []
+    N = INT()
+    A = sorted(LIST())
     s = 0
-    for a, b in adventurers:
-        hepu(h, a)
-        s += a
-        if len(h) > K:
-            s -= hepo(h)
-        if len(h) == K:
-            ans = max(ans, s * b)
+    z = A[0]
+    ans = 0
+    for i, v in en(A):
+        ans += (v - A[0]) * i - s
+        s += v - A[0]
+        z = v
     print(ans)
 
 

@@ -102,20 +102,32 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = MAP()
-    adventurers = TUPLES(N)
-    adventurers.sort(key=lambda x: -x[1])
-    ans = 0
-    h = []
-    s = 0
-    for a, b in adventurers:
-        hepu(h, a)
-        s += a
-        if len(h) > K:
-            s -= hepo(h)
-        if len(h) == K:
-            ans = max(ans, s * b)
-    print(ans)
+    N, M = MAP()
+    R = LIST()
+    R = [(v, i) for i, v in en(R)]
+    R.sort()
+    UV = TUPLES(M)
+    g = [[] for _ in range(N)]
+    for u, v in UV:
+        u -= 1
+        v -= 1
+        g[u].append(v)
+        g[v].append(u)
+    g = [sorted(li) for li in g]
+    debug(g)
+    f = [False] * N
+    for _ in range(N):
+        v, i = R.pop()
+        if f[i]:
+            continue
+        f[i] = True
+        for j in g[i]:
+            if not f[j]:
+                f[j] = True
+                break
+        if f[0]:
+            print(int(''.join(map(str, {i, j} ^ {0}))) + 1)
+            return
 
 
 

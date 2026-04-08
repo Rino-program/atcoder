@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0043",
+    "title": "AtCoder Weekday Contest 0043 Beta",
+    "url": "https://atcoder.jp/contests/awc0043"
+  },
+  "tasks": [
+    {
+      "id": "awc0043_a",
+      "label": "A",
+      "title": "Signal Attenuation",
+      "url": "https://atcoder.jp/contests/awc0043/tasks/awc0043_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0043_b",
+      "label": "B",
+      "title": "Pairing for the Dance Party",
+      "url": "https://atcoder.jp/contests/awc0043/tasks/awc0043_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0043_c",
+      "label": "C",
+      "title": "Imbalance of the Organization",
+      "url": "https://atcoder.jp/contests/awc0043/tasks/awc0043_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0043_d",
+      "label": "D",
+      "title": "Sum of Height Differences",
+      "url": "https://atcoder.jp/contests/awc0043/tasks/awc0043_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0043_e",
+      "label": "E",
+      "title": "Hiking Score on a Mountain Trail",
+      "url": "https://atcoder.jp/contests/awc0043/tasks/awc0043_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
