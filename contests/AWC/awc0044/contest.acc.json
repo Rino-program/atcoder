@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0044",
+    "title": "AtCoder Weekday Contest 0044 Beta",
+    "url": "https://atcoder.jp/contests/awc0044"
+  },
+  "tasks": [
+    {
+      "id": "awc0044_a",
+      "label": "A",
+      "title": "Refilling Water",
+      "url": "https://atcoder.jp/contests/awc0044/tasks/awc0044_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0044_b",
+      "label": "B",
+      "title": "Library Book Survey on the Bookshelf",
+      "url": "https://atcoder.jp/contests/awc0044/tasks/awc0044_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0044_c",
+      "label": "C",
+      "title": "Range Addition",
+      "url": "https://atcoder.jp/contests/awc0044/tasks/awc0044_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0044_d",
+      "label": "D",
+      "title": "Optimizing Delivery Routes",
+      "url": "https://atcoder.jp/contests/awc0044/tasks/awc0044_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0044_e",
+      "label": "E",
+      "title": "Restoration of Compressed Number Sequence",
+      "url": "https://atcoder.jp/contests/awc0044/tasks/awc0044_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

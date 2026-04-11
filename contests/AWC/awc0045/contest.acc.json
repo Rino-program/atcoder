@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0045",
+    "title": "AtCoder Weekday Contest 0045 Beta",
+    "url": "https://atcoder.jp/contests/awc0045"
+  },
+  "tasks": [
+    {
+      "id": "awc0045_a",
+      "label": "A",
+      "title": "Event Refund",
+      "url": "https://atcoder.jp/contests/awc0045/tasks/awc0045_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0045_b",
+      "label": "B",
+      "title": "Order of Books on the Bookshelf",
+      "url": "https://atcoder.jp/contests/awc0045/tasks/awc0045_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0045_c",
+      "label": "C",
+      "title": "Watering Duty",
+      "url": "https://atcoder.jp/contests/awc0045/tasks/awc0045_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0045_d",
+      "label": "D",
+      "title": "Cell Division",
+      "url": "https://atcoder.jp/contests/awc0045/tasks/awc0045_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0045_e",
+      "label": "E",
+      "title": "Interval Evaluation Value",
+      "url": "https://atcoder.jp/contests/awc0045/tasks/awc0045_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
