@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0050",
+    "title": "AtCoder Weekday Contest 0050 Beta",
+    "url": "https://atcoder.jp/contests/awc0050"
+  },
+  "tasks": [
+    {
+      "id": "awc0050_a",
+      "label": "A",
+      "title": "Matching Sequences",
+      "url": "https://atcoder.jp/contests/awc0050/tasks/awc0050_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0050_b",
+      "label": "B",
+      "title": "Orchard Harvest",
+      "url": "https://atcoder.jp/contests/awc0050/tasks/awc0050_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0050_c",
+      "label": "C",
+      "title": "Stacking Cards",
+      "url": "https://atcoder.jp/contests/awc0050/tasks/awc0050_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0050_d",
+      "label": "D",
+      "title": "City Walk and Tolls",
+      "url": "https://atcoder.jp/contests/awc0050/tasks/awc0050_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0050_e",
+      "label": "E",
+      "title": "Minimum Cost Guard Plan",
+      "url": "https://atcoder.jp/contests/awc0050/tasks/awc0050_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

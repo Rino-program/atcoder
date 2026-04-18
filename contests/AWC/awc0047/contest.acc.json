@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0047",
+    "title": "AtCoder Weekday Contest 0047 Beta",
+    "url": "https://atcoder.jp/contests/awc0047"
+  },
+  "tasks": [
+    {
+      "id": "awc0047_a",
+      "label": "A",
+      "title": "Temperature Changes on a Mountain Trail",
+      "url": "https://atcoder.jp/contests/awc0047/tasks/awc0047_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0047_b",
+      "label": "B",
+      "title": "Road Closure on a One-Way Street",
+      "url": "https://atcoder.jp/contests/awc0047/tasks/awc0047_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0047_c",
+      "label": "C",
+      "title": "Piggy Bank Management",
+      "url": "https://atcoder.jp/contests/awc0047/tasks/awc0047_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0047_d",
+      "label": "D",
+      "title": "Equal Distribution of Cake",
+      "url": "https://atcoder.jp/contests/awc0047/tasks/awc0047_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0047_e",
+      "label": "E",
+      "title": "Repeat Playback and Partial Matching",
+      "url": "https://atcoder.jp/contests/awc0047/tasks/awc0047_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

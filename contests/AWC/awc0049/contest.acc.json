@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0049",
+    "title": "AtCoder Weekday Contest 0049 Beta",
+    "url": "https://atcoder.jp/contests/awc0049"
+  },
+  "tasks": [
+    {
+      "id": "awc0049_a",
+      "label": "A",
+      "title": "Progressive Taxation Simulation",
+      "url": "https://atcoder.jp/contests/awc0049/tasks/awc0049_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0049_b",
+      "label": "B",
+      "title": "Cell Cultivation",
+      "url": "https://atcoder.jp/contests/awc0049/tasks/awc0049_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0049_c",
+      "label": "C",
+      "title": "Sum of Intervals",
+      "url": "https://atcoder.jp/contests/awc0049/tasks/awc0049_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0049_d",
+      "label": "D",
+      "title": "Souvenir Combinations",
+      "url": "https://atcoder.jp/contests/awc0049/tasks/awc0049_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0049_e",
+      "label": "E",
+      "title": "Optimizing Delivery Routes",
+      "url": "https://atcoder.jp/contests/awc0049/tasks/awc0049_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
