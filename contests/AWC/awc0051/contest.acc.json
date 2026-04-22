@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0051",
+    "title": "AtCoder Weekday Contest 0051 Beta",
+    "url": "https://atcoder.jp/contests/awc0051"
+  },
+  "tasks": [
+    {
+      "id": "awc0051_a",
+      "label": "A",
+      "title": "Library Book Search",
+      "url": "https://atcoder.jp/contests/awc0051/tasks/awc0051_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0051_b",
+      "label": "B",
+      "title": "Data Compression",
+      "url": "https://atcoder.jp/contests/awc0051/tasks/awc0051_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0051_c",
+      "label": "C",
+      "title": "Project Selection",
+      "url": "https://atcoder.jp/contests/awc0051/tasks/awc0051_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0051_d",
+      "label": "D",
+      "title": "Shortest Evacuation Route",
+      "url": "https://atcoder.jp/contests/awc0051/tasks/awc0051_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0051_e",
+      "label": "E",
+      "title": "Organizing Books",
+      "url": "https://atcoder.jp/contests/awc0051/tasks/awc0051_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
