@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0054",
+    "title": "AtCoder Weekday Contest 0054 Beta",
+    "url": "https://atcoder.jp/contests/awc0054"
+  },
+  "tasks": [
+    {
+      "id": "awc0054_a",
+      "label": "A",
+      "title": "Alphabet Classification",
+      "url": "https://atcoder.jp/contests/awc0054/tasks/awc0054_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0054_b",
+      "label": "B",
+      "title": "Painting a Wall with Tape",
+      "url": "https://atcoder.jp/contests/awc0054/tasks/awc0054_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0054_c",
+      "label": "C",
+      "title": "Watering the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0054/tasks/awc0054_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0054_d",
+      "label": "D",
+      "title": "Card Taking Game",
+      "url": "https://atcoder.jp/contests/awc0054/tasks/awc0054_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0054_e",
+      "label": "E",
+      "title": "Library Bookshelf Guide",
+      "url": "https://atcoder.jp/contests/awc0054/tasks/awc0054_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
