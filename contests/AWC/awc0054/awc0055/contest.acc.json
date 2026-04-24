@@ -1,0 +1,39 @@
+{
+  "contest": {
+    "id": "awc0055",
+    "title": "AtCoder Weekday Contest 0055 Beta",
+    "url": "https://atcoder.jp/contests/awc0055"
+  },
+  "tasks": [
+    {
+      "id": "awc0055_a",
+      "label": "A",
+      "title": "Apple Picking",
+      "url": "https://atcoder.jp/contests/awc0055/tasks/awc0055_a"
+    },
+    {
+      "id": "awc0055_b",
+      "label": "B",
+      "title": "Nearest Post Office",
+      "url": "https://atcoder.jp/contests/awc0055/tasks/awc0055_b"
+    },
+    {
+      "id": "awc0055_c",
+      "label": "C",
+      "title": "Loading Cargo",
+      "url": "https://atcoder.jp/contests/awc0055/tasks/awc0055_c"
+    },
+    {
+      "id": "awc0055_d",
+      "label": "D",
+      "title": "Median Check",
+      "url": "https://atcoder.jp/contests/awc0055/tasks/awc0055_d"
+    },
+    {
+      "id": "awc0055_e",
+      "label": "E",
+      "title": "Mixing and Target Amount",
+      "url": "https://atcoder.jp/contests/awc0055/tasks/awc0055_e"
+    }
+  ]
+}
