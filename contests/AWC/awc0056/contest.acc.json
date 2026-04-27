@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0056",
+    "title": "AtCoder Weekday Contest 0056 Beta",
+    "url": "https://atcoder.jp/contests/awc0056"
+  },
+  "tasks": [
+    {
+      "id": "awc0056_a",
+      "label": "A",
+      "title": "Arranged Dish from a Recipe",
+      "url": "https://atcoder.jp/contests/awc0056/tasks/awc0056_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0056_b",
+      "label": "B",
+      "title": "Energy-Saving Strategy",
+      "url": "https://atcoder.jp/contests/awc0056/tasks/awc0056_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0056_c",
+      "label": "C",
+      "title": "Organizing Consecutive Bookshelves",
+      "url": "https://atcoder.jp/contests/awc0056/tasks/awc0056_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0056_d",
+      "label": "D",
+      "title": "Dividing the Flower Bed into Sections",
+      "url": "https://atcoder.jp/contests/awc0056/tasks/awc0056_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0056_e",
+      "label": "E",
+      "title": "Delivery Driver's Route",
+      "url": "https://atcoder.jp/contests/awc0056/tasks/awc0056_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
