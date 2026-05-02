@@ -1,18 +1,21 @@
 # coding: utf-8
-# AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
+from itertools import permutations, combinations, accumulate, product, chain
 from bisect import bisect_left, bisect_right
+from copy import deepcopy
+import operator
 import heapq
 import math
-from copy import deepcopy
 import string
 
 sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
-    return sys.stdin. readline().rstrip()
+    return sys.stdin.readline().rstrip()
 
 def INT() -> int:
     return int(input())
@@ -23,8 +26,14 @@ def MAP():
 def LIST() -> list[int]:
     return list(MAP())
 
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
 def LISTS(n: int) -> list[list[int]]:
     return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
 
 def LISTSI(n: int) -> list[int]:
     return [INT() for _ in range(n)]
@@ -38,13 +47,22 @@ def STRS(n: int) -> list[str]:
 def CHARS() -> list[str]:
     return list(STR())
 
-def STRSL(n: int) -> list[list[str]]:
+def CHARSL(n: int) -> list[list[str]]:
     return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====
 INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
+
+# ===== 関数短縮 =====
+pr = print
+en = enumerate
+hepu = heapq.heappush
+hepo = heapq.heappop
+bil = bisect_left
+bir = bisect_right
+dedict = defaultdict
 
 # ===== 方向ベクトル =====
 DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
@@ -57,7 +75,6 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
-pr = print # ただのさぼり。
 def Yes(): print("Yes")
 def No(): print("No")
 def yes(): print("yes")
@@ -73,7 +90,7 @@ def debug(*args, **kwargs) -> None:
     """デバッグ出力（標準エラー）"""
     print("[DEBUG]", *args, **kwargs, file=sys.stderr)
 
-def print_grid(grid:  list[list], sep: str = '') -> None:
+def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
@@ -86,7 +103,23 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    K = INT()
+    li = LISTSI(N)
+    ans = set()
+    for i in range(N):
+        for j in range(N):
+            if K == 2:
+                if i != j: ans.add(int(str(li[i]) + str(li[j])))
+            else:
+                for k in range(N):
+                    if K == 3:
+                        if i != j and j != k and i != k and i != k:
+                            ans.add(int(str(li[i]) + str(li[j]) + str(li[k])))
+                    else:
+                        for l in range(N):
+                            if i != j and i != k and i != l and j != k and j != l and k != l:
+                                ans.add(int(str(li[i]) + str(li[j]) + str(li[k]) + str(li[l])))
+    print(len(ans))
 
 
 
