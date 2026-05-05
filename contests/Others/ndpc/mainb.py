@@ -100,38 +100,56 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def main() -> None:
+def topological_sort(g: list[list[int]]) -> list[int] | None:
+    """概要:
+        有向グラフをトポロジカルソートする。
+    入力:
+        g (list[list[int]]): 有向グラフの隣接リスト。
+    出力:
+        list[int] | None: トポロジカル順序。閉路があれば None。
+    補足:
+        Kahn 法（入次数管理）を使用する。計算量は O(V+E)。
+    """
+    n = len(g)
+    indeg = [0] * n
+    for v in range(n):
+        for to in g[v]:
+            indeg[to] += 1
+    q = deque([i for i in range(n) if indeg[i] == 0])
+    result = []
+    while q:
+        v = q.popleft()
+        result.append(v)
+        for to in g[v]:
+            indeg[to] -= 1
+            if indeg[to] == 0:
+                q.append(to)
+    return result if len(result) == n else None
+
+def main(N: int, M: int, UV: list[tuple[int, int]]) -> int:
     # ここに解答を書く
-    N = INT()
-    A, B = MAP()
-    C = INT()
-    D = sorted(LISTSI(N))
-    Ds = sum(D)
-    ans = 0
-    for i in range(N):
-        Ds -= D[i]
-        ans = max(ans, int((Ds+C)/(A+(N-i-1)*B)))
-    print(ans)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    g = [[] for i in range(N)]
+    for U, V in UV:
+        U -= 1
+        V -= 1
+        g[V].append(U)
+    gn = topological_sort(g)[::-1] # トポロジカルソートする関数
+    #debug("gn: ", gn)
+    dp = [0] * N
+    for i in gn:
+        temp = 0
+        if i == 0: temp = 1
+        for j in g[i]:
+            temp += dp[j]
+        dp[i] = temp % MOD
+    #debug("dp: ", dp)
+    return dp[-1] % MOD
 
 if __name__ == "__main__":
-    main()
+    T = INT()
+    ans = []
+    for i in range(T):
+        N, M = MAP()
+        UV = TUPLES(M)
+        ans.append(main(N, M, UV))
+    print('\n'.join(map(str, ans)))

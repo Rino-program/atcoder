@@ -103,14 +103,6 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    A, B = MAP()
-    C = INT()
-    D = sorted(LISTSI(N))
-    Ds = sum(D)
-    ans = 0
-    for i in range(N):
-        Ds -= D[i]
-        ans = max(ans, int((Ds+C)/(A+(N-i-1)*B)))
     print(ans)
 
 

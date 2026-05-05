@@ -103,22 +103,24 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    A, B = MAP()
-    C = INT()
-    D = sorted(LISTSI(N))
-    Ds = sum(D)
-    ans = 0
-    for i in range(N):
-        Ds -= D[i]
-        ans = max(ans, int((Ds+C)/(A+(N-i-1)*B)))
+    ans = 5 ** (N // 3)
+    if N % 3 == 1:
+        ans *= 1
+    elif N % 3 == 2:
+        ans *= 2
     print(ans)
 
+12345
+12345
 
+11245
+12245
 
+11244
+12255
 
-
-
-
+112
+122
 
 
 

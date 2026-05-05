@@ -102,7 +102,39 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    fixed = dict()
+    for _ in range(K):
+        a, b = MAP()
+        fixed[a-1] = b-1
+    MOD = 10000
+    dp = [[0] * 2 for i in range(3)]
+    for i in range(3):
+        if 0 not in fixed or fixed[0] == i:
+            dp[i][0] = 1
+    for i in range(1, N):
+        next = [[0] * 2 for i in range(3)]
+        for j in range(3):
+            for k in range(2):
+                val = dp[j][k]
+                if val == 0:
+                    continue
+                if k == 0:
+                    if i not in fixed or fixed[i] == j:
+                        next[j][1] += val
+                        next[j][1] %= MOD
+                for c in range(3):
+                    if c == j:
+                        continue
+                    if i not in fixed or fixed[i] == c:
+                        next[c][0] += val
+                        next[c][0] %= MOD
+        dp = next
+    ans = 0
+    for i in range(3):
+        for j in range(2):
+            ans += dp[i][j]
+            ans %= MOD
     print(ans)
 
 

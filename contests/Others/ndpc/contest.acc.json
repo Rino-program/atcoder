@@ -1,0 +1,229 @@
+{
+  "contest": {
+    "id": "ndpc",
+    "title": "Next DP Contest",
+    "url": "https://atcoder.jp/contests/ndpc"
+  },
+  "tasks": [
+    {
+      "id": "ndpc2026_a",
+      "label": "A",
+      "title": "Polyomino",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "ndpc2026_b",
+      "label": "B",
+      "title": "DAG",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "ndpc2026_c",
+      "label": "C",
+      "title": "String",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "ndpc2026_d",
+      "label": "D",
+      "title": "Banknote",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "ndpc2026_e",
+      "label": "E",
+      "title": "Summer Vacation",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "ndpc2026_f",
+      "label": "F",
+      "title": "Set",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "ndpc2026_g",
+      "label": "G",
+      "title": "Mouth",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "ndpc2026_h",
+      "label": "H",
+      "title": "Coin",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_h",
+      "directory": {
+        "path": ".",
+        "testdir": "input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "ndpc2026_i",
+      "label": "I",
+      "title": "Update Positions",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_i",
+      "directory": {
+        "path": ".",
+        "testdir": "input/i",
+        "submit": "maini.py"
+      }
+    },
+    {
+      "id": "ndpc2026_j",
+      "label": "J",
+      "title": "Number and Total",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_j",
+      "directory": {
+        "path": ".",
+        "testdir": "input/j",
+        "submit": "mainj.py"
+      }
+    },
+    {
+      "id": "ndpc2026_k",
+      "label": "K",
+      "title": "Addition and Subtraction",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_k",
+      "directory": {
+        "path": ".",
+        "testdir": "input/k",
+        "submit": "maink.py"
+      }
+    },
+    {
+      "id": "ndpc2026_l",
+      "label": "L",
+      "title": "LCM",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_l",
+      "directory": {
+        "path": ".",
+        "testdir": "input/l",
+        "submit": "mainl.py"
+      }
+    },
+    {
+      "id": "ndpc2026_m",
+      "label": "M",
+      "title": "Numeral",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_m",
+      "directory": {
+        "path": ".",
+        "testdir": "input/m",
+        "submit": "mainm.py"
+      }
+    },
+    {
+      "id": "ndpc2026_n",
+      "label": "N",
+      "title": "Knapsack",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_n",
+      "directory": {
+        "path": ".",
+        "testdir": "input/n",
+        "submit": "mainn.py"
+      }
+    },
+    {
+      "id": "ndpc2026_o",
+      "label": "O",
+      "title": "Game",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_o",
+      "directory": {
+        "path": ".",
+        "testdir": "input/o",
+        "submit": "maino.py"
+      }
+    },
+    {
+      "id": "ndpc2026_p",
+      "label": "P",
+      "title": "LIS",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_p",
+      "directory": {
+        "path": ".",
+        "testdir": "input/p",
+        "submit": "mainp.py"
+      }
+    },
+    {
+      "id": "ndpc2026_q",
+      "label": "Q",
+      "title": "Union of Intervals",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_q",
+      "directory": {
+        "path": ".",
+        "testdir": "input/q",
+        "submit": "mainq.py"
+      }
+    },
+    {
+      "id": "ndpc2026_r",
+      "label": "R",
+      "title": "Triples",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_r",
+      "directory": {
+        "path": ".",
+        "testdir": "input/r",
+        "submit": "mainr.py"
+      }
+    },
+    {
+      "id": "ndpc2026_s",
+      "label": "S",
+      "title": "Two doors",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_s",
+      "directory": {
+        "path": ".",
+        "testdir": "input/s",
+        "submit": "mains.py"
+      }
+    },
+    {
+      "id": "ndpc2026_t",
+      "label": "T",
+      "title": "Independent Set",
+      "url": "https://atcoder.jp/contests/ndpc/tasks/ndpc2026_t",
+      "directory": {
+        "path": ".",
+        "testdir": "input/t",
+        "submit": "maint.py"
+      }
+    }
+  ]
+}
