@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0062",
+    "title": "AtCoder Weekday Contest 0062 Beta",
+    "url": "https://atcoder.jp/contests/awc0062"
+  },
+  "tasks": [
+    {
+      "id": "awc0062_a",
+      "label": "A",
+      "title": "Completing the Training Menu",
+      "url": "https://atcoder.jp/contests/awc0062/tasks/awc0062_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0062_b",
+      "label": "B",
+      "title": "Highway Toll Booth",
+      "url": "https://atcoder.jp/contests/awc0062/tasks/awc0062_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0062_c",
+      "label": "C",
+      "title": "Optimal Menu Selection for an Izakaya",
+      "url": "https://atcoder.jp/contests/awc0062/tasks/awc0062_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0062_d",
+      "label": "D",
+      "title": "Nearly Identical Signal Patterns",
+      "url": "https://atcoder.jp/contests/awc0062/tasks/awc0062_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0062_e",
+      "label": "E",
+      "title": "Radio Tower and Signal Strength",
+      "url": "https://atcoder.jp/contests/awc0062/tasks/awc0062_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

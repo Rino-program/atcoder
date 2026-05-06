@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0063",
+    "title": "AtCoder Weekday Contest 0063 Beta",
+    "url": "https://atcoder.jp/contests/awc0063"
+  },
+  "tasks": [
+    {
+      "id": "awc0063_a",
+      "label": "A",
+      "title": "Starry Sky Observation Log",
+      "url": "https://atcoder.jp/contests/awc0063/tasks/awc0063_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0063_b",
+      "label": "B",
+      "title": "Meeting Room Where Everyone Can Attend",
+      "url": "https://atcoder.jp/contests/awc0063/tasks/awc0063_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0063_c",
+      "label": "C",
+      "title": "Maximizing Investment",
+      "url": "https://atcoder.jp/contests/awc0063/tasks/awc0063_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0063_d",
+      "label": "D",
+      "title": "Card Taking Game",
+      "url": "https://atcoder.jp/contests/awc0063/tasks/awc0063_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0063_e",
+      "label": "E",
+      "title": "Number of Blocks in an Interval",
+      "url": "https://atcoder.jp/contests/awc0063/tasks/awc0063_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
