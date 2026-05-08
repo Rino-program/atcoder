@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0065",
+    "title": "AtCoder Weekday Contest 0065 Beta",
+    "url": "https://atcoder.jp/contests/awc0065"
+  },
+  "tasks": [
+    {
+      "id": "awc0065_a",
+      "label": "A",
+      "title": "Rest Plan for a Long-Distance Drive",
+      "url": "https://atcoder.jp/contests/awc0065/tasks/awc0065_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0065_b",
+      "label": "B",
+      "title": "Shopping List",
+      "url": "https://atcoder.jp/contests/awc0065/tasks/awc0065_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0065_c",
+      "label": "C",
+      "title": "Choosing Flowers for the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0065/tasks/awc0065_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0065_d",
+      "label": "D",
+      "title": "Total Sales Within Delivery Range",
+      "url": "https://atcoder.jp/contests/awc0065/tasks/awc0065_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0065_e",
+      "label": "E",
+      "title": "Period of Stable Temperature",
+      "url": "https://atcoder.jp/contests/awc0065/tasks/awc0065_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

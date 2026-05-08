@@ -1,6 +1,5 @@
 # coding: utf-8
 # AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter

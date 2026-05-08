@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0064",
+    "title": "AtCoder Weekday Contest 0064 Beta",
+    "url": "https://atcoder.jp/contests/awc0064"
+  },
+  "tasks": [
+    {
+      "id": "awc0064_a",
+      "label": "A",
+      "title": "Consecutive High-Score Segments",
+      "url": "https://atcoder.jp/contests/awc0064/tasks/awc0064_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0064_b",
+      "label": "B",
+      "title": "Card Taking Game",
+      "url": "https://atcoder.jp/contests/awc0064/tasks/awc0064_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0064_c",
+      "label": "C",
+      "title": "Summer Homework Plan",
+      "url": "https://atcoder.jp/contests/awc0064/tasks/awc0064_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0064_d",
+      "label": "D",
+      "title": "Bridges Connecting Remote Islands",
+      "url": "https://atcoder.jp/contests/awc0064/tasks/awc0064_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0064_e",
+      "label": "E",
+      "title": "Reduce Inversions with Adjacent Swaps",
+      "url": "https://atcoder.jp/contests/awc0064/tasks/awc0064_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

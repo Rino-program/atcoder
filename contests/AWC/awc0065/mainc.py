@@ -1,6 +1,5 @@
 # coding: utf-8
 # AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
 # oj test -c 'C:\VSCode_program\atcoder\contests\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
 from collections import deque, defaultdict, Counter
@@ -104,7 +103,12 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    A = LIST()
+    dp = [[0] * 2 for _ in range(N + 1)]
+    for i in range(N):
+        dp[i + 1][1] = max(dp[i][0], dp[i][1])
+        dp[i + 1][0] = max(dp[i][1] + A[i], dp[i][0])
+    print(max(dp[N][0], dp[N][1]))
 
 
 
