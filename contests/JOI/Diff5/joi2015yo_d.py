@@ -102,8 +102,19 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M = MAP()
+    D = LISTSI(N)
+    C = LISTSI(M)
+    dp = [[INF] * (M+1) for _ in range(N + 1)]
+    dp[0][0] = 0
+    for i in range(N+1):
+        mi = INF
+        if i == 0: mi = 0
+        for j in range(i, M+1):
+            dp[i][j] = min(mi, dp[i-1][j-1] + D[i-1] * C[j-1])
+            mi = min(mi, dp[i][j])
+    #print_grid(dp, sep='_')
+    print(dp[-1][-1])
 
 
 

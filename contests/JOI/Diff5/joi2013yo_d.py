@@ -102,8 +102,23 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    D, N = MAP()
+    T = LISTSI(D)
+    ABC = TUPLES(N)
+    kouho = [[] for _ in range(D)]
+    for i, t in en(T):
+        for j, (a, b, c) in en(ABC):
+            if a <= t <= b:
+                kouho[i].append(c)
+    for i in range(D):
+        kouho[i] = [max(kouho[i]), min(kouho[i])]
+    dp = [[0, 0] for i in range(D)]
+    for i in range(1, D):
+        p_ma, p_mi = kouho[i-1]
+        c_ma, c_mi = kouho[i]
+        dp[i][0] = max(dp[i-1][0] + abs(p_ma - c_ma), dp[i-1][1] + abs(p_mi - c_ma))
+        dp[i][1] = max(dp[i-1][0] + abs(p_ma - c_mi), dp[i-1][1] + abs(p_mi - c_mi))
+    print(max(dp[-1][0], dp[-1][1]))
 
 
 

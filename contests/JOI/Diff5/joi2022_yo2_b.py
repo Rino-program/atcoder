@@ -100,10 +100,40 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def bfs(g: list[list[int]], s: int) -> list[int]:
+    """概要:
+        重みなしグラフで始点 s からの最短距離を BFS で求める。
+    入力:
+        g (list[list[int]]): 隣接リスト。
+        s (int): 始点。
+    出力:
+        list[int]: 各頂点への距離。未到達は -1。
+    補足:
+        計算量は O(V+E)。
+    """
+    dist = [-1] * len(g)
+    dist[s] = 0
+    q = deque([s])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if dist[to] == -1:
+                dist[to] = dist[v] + 1
+                q.append(to)
+    return dist
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    H, W = MAP()
+    S = CHARSL(H)
+    g = [[] for i in range(H*W)]
+    for i in range(H):
+        for j in range(W):
+            for di, dj in DIR4:
+                ni, nj = i+di, j+dj
+                if 0 <= ni < H and 0 <= nj < W and S[ni][nj] != S[i][j]:
+                    g[i*W+j].append(ni*W+nj)
+    print(bfs(g, 0)[-1])
 
 
 

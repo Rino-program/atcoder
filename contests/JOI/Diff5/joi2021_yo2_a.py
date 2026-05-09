@@ -100,12 +100,71 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+import random
+def f(N: int) -> (int, str, int):
+    li = ["X"] + [random.choice(["#", "."]) for _ in range(N)] + ["X"]
+    s = random.randint(1, N-1)
+    li[s] = "."
+    limit = 1
+    if li.count("#") <= limit:
+        while li.count("#") <= limit:
+            li = ["X"] + [random.choice(["#", "."]) for _ in range(N)] + ["X"]
+            s = random.randint(1, N-1)
+            li[s] = "."
+    temp = li[:]
+    # 愚直解
+    now = s
+    ans = 0
+    muki = 0
+    while "#" in li:
+        ans += 1
+        if muki == 0:
+            now += 1
+            if li[now] == "#" or li[now] == "X":
+                if li[now] == "#":
+                    li[now] = "."
+                muki ^= 1
+        else:
+            now -= 1
+            if li[now] == "#" or li[now] == "X":
+                if li[now] == "#":
+                    li[now] = "."
+                muki ^= 1
+    return ans, "".join(temp[1:-1]), s
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, A = MAP()
+    S = STR()
+    li = []
+    for i in range(N):
+        if S[i] == "#":
+            li.append(i+1)
+    lr = bil(li, A)
+    lli, rli = li[:lr], li[lr:][::-1]
+    f = 0
+    now = A
+    ans = 0
+    while lli or rli:
+        if f == 1:
+            if lli:
+                ans += abs(now - lli[-1])
+                now = lli.pop()
+            else:
+                ans += now
+                now = 0
+            f = 0
+        else:
+            if rli:
+                ans += abs(now - rli[-1])
+                now = rli.pop()
+            else:
+                ans += N - now + 1
+                now = N + 1
+            f = 1
     print(ans)
 
-
+    #return ans
 
 
 
@@ -127,3 +186,16 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    """T = 10
+    i = 0
+    for _ in range(T):
+        N = random.randint(2, 1000)
+        ans, S, A = f(N)
+        if ans != (tmp := main(N, A, S)):
+            print(f"~ case {i} ~")
+            print("長さN:", N)
+            print("開始位置A:", A)
+            print("文字列S:", S)
+            print("答えans:", ans)
+            print("実行結果tmp:", tmp)
+            i += 1"""

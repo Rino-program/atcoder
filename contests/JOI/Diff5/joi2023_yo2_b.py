@@ -103,6 +103,39 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A = sorted(LIST())+[INF]
+    B = sorted(LIST())+[INF]
+    C = sorted(LIST())+[INF]
+    D = sorted(LIST())+[INF]
+    ans = INF
+    for i in range(N):
+        a = A[i]
+        b = B[bisect_left(B, a)]
+        c = C[bisect_left(C, a)]
+        d = D[bisect_left(D, a)]
+        li = sorted([a, b, c, d])
+        ans = min(ans, li[3] - li[0])
+    for i in range(N):
+        b = B[i]
+        a = A[bisect_left(A, b)]
+        c = C[bisect_left(C, b)]
+        d = D[bisect_left(D, b)]
+        li = sorted([a, b, c, d])
+        ans = min(ans, li[3] - li[0])
+    for i in range(N):
+        c = C[i]
+        b = B[bisect_left(B, c)]
+        a = A[bisect_left(A, c)]
+        d = D[bisect_left(D, c)]
+        li = sorted([a, b, c, d])
+        ans = min(ans, li[3] - li[0])
+    for i in range(N):
+        d = D[i]
+        c = C[bisect_left(C, d)]
+        b = B[bisect_left(B, d)]
+        a = A[bisect_left(A, d)]
+        li = sorted([a, b, c, d])
+        ans = min(ans, li[3] - li[0])
     print(ans)
 
 

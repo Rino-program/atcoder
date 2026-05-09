@@ -1,0 +1,504 @@
+{
+    "contest":  {
+                    "title":  "Diff6",
+                    "url":  "",
+                    "id":  "Diff6"
+                },
+    "tasks":  [
+                  {
+                      "label":  "joisc2007_anagra",
+                      "title":  "joisc2007_anagra",
+                      "url":  "https://atcoder.jp/contests/joisc2007/tasks/joisc2007_anagra",
+                      "directory":  {
+                                        "submit":  "joisc2007_anagra.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2007_anagra"
+                                    },
+                      "id":  "joisc2007_anagra"
+                  },
+                  {
+                      "label":  "joi2008yo_e",
+                      "title":  "joi2008yo_e",
+                      "url":  "https://atcoder.jp/contests/joi2008yo/tasks/joi2008yo_e",
+                      "directory":  {
+                                        "submit":  "joi2008yo_e.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2008yo_e"
+                                    },
+                      "id":  "joi2008yo_e"
+                  },
+                  {
+                      "label":  "joi2008ho_c",
+                      "title":  "joi2008ho_c",
+                      "url":  "https://atcoder.jp/contests/joi2008ho/tasks/joi2008ho_c",
+                      "directory":  {
+                                        "submit":  "joi2008ho_c.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2008ho_c"
+                                    },
+                      "id":  "joi2008ho_c"
+                  },
+                  {
+                      "label":  "joisc2008_nile",
+                      "title":  "joisc2008_nile",
+                      "url":  "https://atcoder.jp/contests/joisc2008/tasks/joisc2008_nile",
+                      "directory":  {
+                                        "submit":  "joisc2008_nile.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2008_nile"
+                                    },
+                      "id":  "joisc2008_nile"
+                  },
+                  {
+                      "label":  "joisc2008_origami",
+                      "title":  "joisc2008_origami",
+                      "url":  "https://atcoder.jp/contests/joisc2008/tasks/joisc2008_origami",
+                      "directory":  {
+                                        "submit":  "joisc2008_origami.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2008_origami"
+                                    },
+                      "id":  "joisc2008_origami"
+                  },
+                  {
+                      "label":  "joi2009yo_c",
+                      "title":  "joi2009yo_c",
+                      "url":  "https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_c",
+                      "directory":  {
+                                        "submit":  "joi2009yo_c.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2009yo_c"
+                                    },
+                      "id":  "joi2009yo_c"
+                  },
+                  {
+                      "label":  "joi2009ho_b",
+                      "title":  "joi2009ho_b",
+                      "url":  "https://atcoder.jp/contests/joi2009ho/tasks/joi2009ho_b",
+                      "directory":  {
+                                        "submit":  "joi2009ho_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2009ho_b"
+                                    },
+                      "id":  "joi2009ho_b"
+                  },
+                  {
+                      "label":  "joi2010yo_e",
+                      "title":  "joi2010yo_e",
+                      "url":  "https://atcoder.jp/contests/joi2010yo/tasks/joi2010yo_e",
+                      "directory":  {
+                                        "submit":  "joi2010yo_e.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2010yo_e"
+                                    },
+                      "id":  "joi2010yo_e"
+                  },
+                  {
+                      "label":  "joi2010ho_c",
+                      "title":  "joi2010ho_c",
+                      "url":  "https://atcoder.jp/contests/joi2010ho/tasks/joi2010ho_c",
+                      "directory":  {
+                                        "submit":  "joi2010ho_c.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2010ho_c"
+                                    },
+                      "id":  "joi2010ho_c"
+                  },
+                  {
+                      "label":  "joisc2010_stairs",
+                      "title":  "joisc2010_stairs",
+                      "url":  "https://atcoder.jp/contests/joisc2010/tasks/joisc2010_stairs",
+                      "directory":  {
+                                        "submit":  "joisc2010_stairs.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2010_stairs"
+                                    },
+                      "id":  "joisc2010_stairs"
+                  },
+                  {
+                      "label":  "joi2011ho2",
+                      "title":  "joi2011ho2",
+                      "url":  "https://atcoder.jp/contests/joi2011ho/tasks/joi2011ho2",
+                      "directory":  {
+                                        "submit":  "joi2011ho2.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2011ho2"
+                                    },
+                      "id":  "joi2011ho2"
+                  },
+                  {
+                      "label":  "joisc2011_banner",
+                      "title":  "joisc2011_banner",
+                      "url":  "https://atcoder.jp/contests/joisc2011/tasks/joisc2011_banner",
+                      "directory":  {
+                                        "submit":  "joisc2011_banner.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2011_banner"
+                                    },
+                      "id":  "joisc2011_banner"
+                  },
+                  {
+                      "label":  "joisc2011_ioi",
+                      "title":  "joisc2011_ioi",
+                      "url":  "https://atcoder.jp/contests/joisc2011/tasks/joisc2011_ioi",
+                      "directory":  {
+                                        "submit":  "joisc2011_ioi.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2011_ioi"
+                                    },
+                      "id":  "joisc2011_ioi"
+                  },
+                  {
+                      "label":  "joi2012yo_e",
+                      "title":  "joi2012yo_e",
+                      "url":  "https://atcoder.jp/contests/joi2012yo/tasks/joi2012yo_e",
+                      "directory":  {
+                                        "submit":  "joi2012yo_e.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2012yo_e"
+                                    },
+                      "id":  "joi2012yo_e"
+                  },
+                  {
+                      "label":  "joi2012ho3",
+                      "title":  "joi2012ho3",
+                      "url":  "https://atcoder.jp/contests/joi2012ho/tasks/joi2012ho3",
+                      "directory":  {
+                                        "submit":  "joi2012ho3.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2012ho3"
+                                    },
+                      "id":  "joi2012ho3"
+                  },
+                  {
+                      "label":  "joi2013ho1",
+                      "title":  "joi2013ho1",
+                      "url":  "https://atcoder.jp/contests/joi2013ho/tasks/joi2013ho1",
+                      "directory":  {
+                                        "submit":  "joi2013ho1.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2013ho1"
+                                    },
+                      "id":  "joi2013ho1"
+                  },
+                  {
+                      "label":  "joisc2013_joi_poster",
+                      "title":  "joisc2013_joi_poster",
+                      "url":  "https://atcoder.jp/contests/joisc2013-day1/tasks/joisc2013_joi_poster",
+                      "directory":  {
+                                        "submit":  "joisc2013_joi_poster.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2013_joi_poster"
+                                    },
+                      "id":  "joisc2013_joi_poster"
+                  },
+                  {
+                      "label":  "joi2014yo_d",
+                      "title":  "joi2014yo_d",
+                      "url":  "https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_d",
+                      "directory":  {
+                                        "submit":  "joi2014yo_d.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2014yo_d"
+                                    },
+                      "id":  "joi2014yo_d"
+                  },
+                  {
+                      "label":  "joi2014ho1",
+                      "title":  "joi2014ho1",
+                      "url":  "https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho1",
+                      "directory":  {
+                                        "submit":  "joi2014ho1.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2014ho1"
+                                    },
+                      "id":  "joi2014ho1"
+                  },
+                  {
+                      "label":  "joi2014ho2",
+                      "title":  "joi2014ho2",
+                      "url":  "https://atcoder.jp/contests/joi2014ho/tasks/joi2014ho2",
+                      "directory":  {
+                                        "submit":  "joi2014ho2.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2014ho2"
+                                    },
+                      "id":  "joi2014ho2"
+                  },
+                  {
+                      "label":  "joisc2014_h",
+                      "title":  "joisc2014_h",
+                      "url":  "https://atcoder.jp/contests/joisc2014/tasks/joisc2014_h",
+                      "directory":  {
+                                        "submit":  "joisc2014_h.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joisc2014_h"
+                                    },
+                      "id":  "joisc2014_h"
+                  },
+                  {
+                      "label":  "joi2016yo_d",
+                      "title":  "joi2016yo_d",
+                      "url":  "https://atcoder.jp/contests/joi2016yo/tasks/joi2016yo_d",
+                      "directory":  {
+                                        "submit":  "joi2016yo_d.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2016yo_d"
+                                    },
+                      "id":  "joi2016yo_d"
+                  },
+                  {
+                      "label":  "joi2016ho_a",
+                      "title":  "joi2016ho_a",
+                      "url":  "https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_a",
+                      "directory":  {
+                                        "submit":  "joi2016ho_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2016ho_a"
+                                    },
+                      "id":  "joi2016ho_a"
+                  },
+                  {
+                      "label":  "joi2016ho_b",
+                      "title":  "joi2016ho_b",
+                      "url":  "https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_b",
+                      "directory":  {
+                                        "submit":  "joi2016ho_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2016ho_b"
+                                    },
+                      "id":  "joi2016ho_b"
+                  },
+                  {
+                      "label":  "joi2017ho_a",
+                      "title":  "joi2017ho_a",
+                      "url":  "https://atcoder.jp/contests/joi2017ho/tasks/joi2017ho_a",
+                      "directory":  {
+                                        "submit":  "joi2017ho_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2017ho_a"
+                                    },
+                      "id":  "joi2017ho_a"
+                  },
+                  {
+                      "label":  "joi2019_yo_d",
+                      "title":  "joi2019_yo_d",
+                      "url":  "https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d",
+                      "directory":  {
+                                        "submit":  "joi2019_yo_d.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2019_yo_d"
+                                    },
+                      "id":  "joi2019_yo_d"
+                  },
+                  {
+                      "label":  "joi2020ho_a",
+                      "title":  "joi2020ho_a",
+                      "url":  "https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_a",
+                      "directory":  {
+                                        "submit":  "joi2020ho_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2020ho_a"
+                                    },
+                      "id":  "joi2020ho_a"
+                  },
+                  {
+                      "label":  "joi2020ho_b",
+                      "title":  "joi2020ho_b",
+                      "url":  "https://atcoder.jp/contests/joi2020ho/tasks/joi2020ho_b",
+                      "directory":  {
+                                        "submit":  "joi2020ho_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2020ho_b"
+                                    },
+                      "id":  "joi2020ho_b"
+                  },
+                  {
+                      "label":  "joig2021_d",
+                      "title":  "joig2021_d",
+                      "url":  "https://atcoder.jp/contests/joig2021-open/tasks/joig2021_d",
+                      "directory":  {
+                                        "submit":  "joig2021_d.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joig2021_d"
+                                    },
+                      "id":  "joig2021_d"
+                  },
+                  {
+                      "label":  "joigsc2022_a",
+                      "title":  "joigsc2022_a",
+                      "url":  "https://atcoder.jp/contests/joigsc2022/tasks/joigsc2022_a",
+                      "directory":  {
+                                        "submit":  "joigsc2022_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joigsc2022_a"
+                                    },
+                      "id":  "joigsc2022_a"
+                  },
+                  {
+                      "label":  "joig2023_d",
+                      "title":  "joig2023_d",
+                      "url":  "https://atcoder.jp/contests/joig2023-open/tasks/joig2023_d",
+                      "directory":  {
+                                        "submit":  "joig2023_d.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joig2023_d"
+                                    },
+                      "id":  "joig2023_d"
+                  },
+                  {
+                      "label":  "joi2023ho_a",
+                      "title":  "joi2023ho_a",
+                      "url":  "https://atcoder.jp/contests/joi2023ho/tasks/joi2023ho_a",
+                      "directory":  {
+                                        "submit":  "joi2023ho_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2023ho_a"
+                                    },
+                      "id":  "joi2023ho_a"
+                  },
+                  {
+                      "label":  "joi2024_yo2_b",
+                      "title":  "joi2024_yo2_b",
+                      "url":  "https://atcoder.jp/contests/joi2024yo2/tasks/joi2024_yo2_b",
+                      "directory":  {
+                                        "submit":  "joi2024_yo2_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2024_yo2_b"
+                                    },
+                      "id":  "joi2024_yo2_b"
+                  },
+                  {
+                      "label":  "joig2024_c",
+                      "title":  "joig2024_c",
+                      "url":  "https://atcoder.jp/contests/joig2024-open/tasks/joig2024_c",
+                      "directory":  {
+                                        "submit":  "joig2024_c.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joig2024_c"
+                                    },
+                      "id":  "joig2024_c"
+                  },
+                  {
+                      "label":  "joig2024_d",
+                      "title":  "joig2024_d",
+                      "url":  "https://atcoder.jp/contests/joig2024-open/tasks/joig2024_d",
+                      "directory":  {
+                                        "submit":  "joig2024_d.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joig2024_d"
+                                    },
+                      "id":  "joig2024_d"
+                  },
+                  {
+                      "label":  "joi2024ho_a",
+                      "title":  "joi2024ho_a",
+                      "url":  "https://atcoder.jp/contests/joi2024ho/tasks/joi2024ho_a",
+                      "directory":  {
+                                        "submit":  "joi2024ho_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2024ho_a"
+                                    },
+                      "id":  "joi2024ho_a"
+                  },
+                  {
+                      "label":  "joigsp2024_a",
+                      "title":  "joigsp2024_a",
+                      "url":  "https://atcoder.jp/contests/joigsp2024/tasks/joigsp2024_a",
+                      "directory":  {
+                                        "submit":  "joigsp2024_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joigsp2024_a"
+                                    },
+                      "id":  "joigsp2024_a"
+                  },
+                  {
+                      "label":  "joi2025_yo2_b",
+                      "title":  "joi2025_yo2_b",
+                      "url":  "https://atcoder.jp/contests/joi2025yo2/tasks/joi2025_yo2_b",
+                      "directory":  {
+                                        "submit":  "joi2025_yo2_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2025_yo2_b"
+                                    },
+                      "id":  "joi2025_yo2_b"
+                  },
+                  {
+                      "label":  "joig2025_b",
+                      "title":  "joig2025_b",
+                      "url":  "https://atcoder.jp/contests/joig2025-open/tasks/joig2025_b",
+                      "directory":  {
+                                        "submit":  "joig2025_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joig2025_b"
+                                    },
+                      "id":  "joig2025_b"
+                  },
+                  {
+                      "label":  "joig2025_c",
+                      "title":  "joig2025_c",
+                      "url":  "https://atcoder.jp/contests/joig2025-open/tasks/joig2025_c",
+                      "directory":  {
+                                        "submit":  "joig2025_c.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joig2025_c"
+                                    },
+                      "id":  "joig2025_c"
+                  },
+                  {
+                      "label":  "joi2025ho_a",
+                      "title":  "joi2025ho_a",
+                      "url":  "https://atcoder.jp/contests/joi2025ho/tasks/joi2025ho_a",
+                      "directory":  {
+                                        "submit":  "joi2025ho_a.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2025ho_a"
+                                    },
+                      "id":  "joi2025ho_a"
+                  },
+                  {
+                      "label":  "joigsp2025_e",
+                      "title":  "joigsp2025_e",
+                      "url":  "https://atcoder.jp/contests/joigsp2025/tasks/joigsp2025_e",
+                      "directory":  {
+                                        "submit":  "joigsp2025_e.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joigsp2025_e"
+                                    },
+                      "id":  "joigsp2025_e"
+                  },
+                  {
+                      "label":  "joi2026_yo2_b",
+                      "title":  "joi2026_yo2_b",
+                      "url":  "https://atcoder.jp/contests/joi2026yo2/tasks/joi2026_yo2_b",
+                      "directory":  {
+                                        "submit":  "joi2026_yo2_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2026_yo2_b"
+                                    },
+                      "id":  "joi2026_yo2_b"
+                  },
+                  {
+                      "label":  "joi2026_yo2_c",
+                      "title":  "joi2026_yo2_c",
+                      "url":  "https://atcoder.jp/contests/joi2026yo2/tasks/joi2026_yo2_c",
+                      "directory":  {
+                                        "submit":  "joi2026_yo2_c.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2026_yo2_c"
+                                    },
+                      "id":  "joi2026_yo2_c"
+                  },
+                  {
+                      "label":  "joi2026_semifinal_b",
+                      "title":  "joi2026_semifinal_b",
+                      "url":  "https://atcoder.jp/contests/joi2026sf/tasks/joi2026_semifinal_b",
+                      "directory":  {
+                                        "submit":  "joi2026_semifinal_b.py",
+                                        "path":  ".",
+                                        "testdir":  "input/joi2026_semifinal_b"
+                                    },
+                      "id":  "joi2026_semifinal_b"
+                  }
+              ]
+}

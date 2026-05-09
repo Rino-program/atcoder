@@ -103,7 +103,14 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    dp = [False] * (10 ** 6 + 10 ** 5)
+    dp[-N] = True
+    for i in range(N-1, 0, -1):
+        num = i
+        if dp[-(s := (sum(map(int, list(str(num))))) + num)]:
+            dp[-i] = True
+        #debug(s)
+    print(sum([1 if i else 0 for i in dp]))
 
 
 

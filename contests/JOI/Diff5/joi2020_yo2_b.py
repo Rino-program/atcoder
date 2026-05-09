@@ -103,6 +103,14 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    AT = sorted(TUPLES(N))
+    ans = AT[-1][0]
+    AT = AT[::-1]
+    now = ans
+    for A, T in AT:
+        ans += max(T - ans, abs(now - A))
+        now = A
+    ans += now
     print(ans)
 
 
