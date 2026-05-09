@@ -2903,6 +2903,115 @@ def doubling_query_with_weight(
     return v, total
 
 # ============================================================
+# Kadane's Algorithm（最大・最小・循環最大部分配列和）
+# ============================================================
+
+def kadane_max(arr: list[int]) -> tuple[int, int, int]:
+    """概要:
+        最大部分配列和（Kadane's Algorithm）。
+        空でない連続部分配列 arr[l:r+1] の和の最大値を O(N) で求める。
+    入力:
+        arr (list[int]): 対象配列。空でないこと。
+    出力:
+        tuple[int, int, int]: (最大和, 開始インデックス l, 終了インデックス r)。
+                               arr[l:r+1] が最大部分配列（複数あれば最左を返す）。
+    補足:
+        全要素が負の場合は最大の単一要素を返す。
+        部分配列のインデックスが不要なら戻り値の [0] だけ使えばよい。
+    使用例:
+        A = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+        val, l, r = kadane_max(A)
+        print(val, l, r)  # 6, 3, 6  (A[3:7] = [4,-1,2,1])
+    """
+    best      = arr[0]
+    cur       = arr[0]
+    best_l    = 0
+    best_r    = 0
+    cur_l     = 0
+
+    for i in range(1, len(arr)):
+        if cur + arr[i] < arr[i]:
+            # ここから新たに始めるほうが良い
+            cur   = arr[i]
+            cur_l = i
+        else:
+            cur += arr[i]
+
+        if cur > best:
+            best   = cur
+            best_l = cur_l
+            best_r = i
+
+    return best, best_l, best_r
+
+
+def kadane_min(arr: list[int]) -> tuple[int, int, int]:
+    """概要:
+        最小部分配列和（Kadane's Algorithm の最小版）。
+        空でない連続部分配列 arr[l:r+1] の和の最小値を O(N) で求める。
+    入力:
+        arr (list[int]): 対象配列。空でないこと。
+    出力:
+        tuple[int, int, int]: (最小和, 開始インデックス l, 終了インデックス r)。
+    補足:
+        最大版と符号を反転させた実装。全要素が正の場合は最小の単一要素を返す。
+    使用例:
+        A = [2, -1, 3, -4, 2, -1, 2, 1, -5]
+        val, l, r = kadane_min(A)
+        print(val, l, r)  # -5, 8, 8
+    """
+    best   = arr[0]
+    cur    = arr[0]
+    best_l = 0
+    best_r = 0
+    cur_l  = 0
+
+    for i in range(1, len(arr)):
+        if cur + arr[i] > arr[i]:
+            cur   = arr[i]
+            cur_l = i
+        else:
+            cur += arr[i]
+
+        if cur < best:
+            best   = cur
+            best_l = cur_l
+            best_r = i
+
+    return best, best_l, best_r
+
+
+def kadane_circular_max(arr: list[int]) -> int:
+    """概要:
+        循環配列における最大部分配列和。
+        arr を円環とみなしたとき、連続部分配列の和の最大値を O(N) で求める。
+    入力:
+        arr (list[int]): 対象配列。空でないこと。
+    出力:
+        int: 最大部分配列和。
+    補足:
+        考え方:
+            ケース1: 最大部分配列が「折り返しを含まない」→ 通常の kadane_max と同じ。
+            ケース2: 最大部分配列が「折り返しを含む」
+                    → 残り（除外）部分が最小部分配列 = total - kadane_min の値が答え。
+        全要素が負の場合は折り返しを使わない通常の最大値を返す（ケース2は空になるため）。
+    使用例:
+        A = [8, -1, 3, -2]
+        print(kadane_circular_max(A))  # 12  (8 + 3 + (-2) + (-1) の折り返し = 12 ではなく 8+3+fold)
+        # A = [5, -3, 5]
+        print(kadane_circular_max([5, -3, 5]))  # 10  ([5,-3,5] 折り返して 5+5=10)
+    """
+    total    = sum(arr)
+    max_val  = kadane_max(arr)[0]
+    min_val  = kadane_min(arr)[0]
+
+    # 全部が負のケースでは total - min_val が 0（空配列）になるので除外
+    if max_val < 0:
+        return max_val
+
+    return max(max_val, total - min_val)
+
+# ============================================================
 # 単調スタック
 # ============================================================
 
