@@ -103,30 +103,23 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    ABXY = TUPLES(M)
-    g = [[] for _ in range(N)]
-    for i, (A, B, X, Y) in en(ABXY):
-        A -= 1
-        B -= 1
-        g[A].append((B, X, Y))
-        g[B].append((A, -X, -Y))
-    dist = [[INF, INF] for _ in range(N)]
-    dist[0]= [0, 0]
-    d = deque()
-    d.append(0)
-    while d:
-        v = d.popleft()
-        for w, x, y in g[v]:
-            if dist[w][0] == INF:
-                dist[w][0] = dist[v][0] + x
-                dist[w][1] = dist[v][1] + y
-                d.append(w)
+    N, Q = MAP()
+    A = LIST()
+    Ad = dedict(Counter(A))
+    ix = TUPLES(Q)
+    li = []
     for i in range(N):
-        if dist[i][0] == INF:
-            print("undecidable")
-        else:
-            print(dist[i][0], dist[i][1])
+        if i not in Ad: hepu(li, i)
+    kill = []
+    for i, x in ix:
+        i -= 1
+        Ad[A[i]] -= 1
+        A[i] = x
+        Ad[x] += 1
+        hepu(kill, A[i])
+        hepu(li, A[i])
+        while li and 
+    print(ans)
 
 
 
