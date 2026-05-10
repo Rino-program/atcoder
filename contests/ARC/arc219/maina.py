@@ -101,40 +101,57 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-from collections.abc import Callable
-def binary_search_max(ok: int, ng: int, check: Callable[[int], bool]) -> int:
-    """概要:
-        単調性を利用して `check(x)=True` となる最大 x を整数二分探索で求める。
-    入力:
-        ok (int): 条件を満たす側の初期値。
-        ng (int): 条件を満たさない側の初期値。
-        check (Callable[[int], bool]): 判定関数（単調）。
-    出力:
-        int: 条件を満たす最大の値。
-    補足:
-        境界の妥当性（ok 側True, ng 側False）を事前に満たすこと。
-        計算量は O(log|ok-ng|) 回の判定関数呼び出し。
-    """
-    while abs(ok - ng) > 1:
-        mid = (ok + ng) // 2
-        if check(mid):
-            ok = mid
+import random
+def f(N, M, f):
+    if f == 0:
+        li = ["".join([random.choice(["0", "1"]) for _ in range(M)]) for _ in range(N)]
+        return li
+    else:
+        pass
+        """S = deepcopy(N)
+        T = M[:]
+        se = set()
+        for i in range(len(T)):
+            se.add(i)
+        for i, t in en(T):
+            for s in S:
+                if s[i] == t:
+                    se.remove(i)
+        if len(se) == 0:
+            return True
         else:
-            ng = mid
-    return ok
+            return False"""
 
-def main() -> None:
+def main(N, M, S) -> None:
     # ここに解答を書く
-    N, K = MAP()
-    A = LIST()
-    def f(limit, K=K, li=A):
-        for i, a in en(li, 1):
-            if limit > a:
-                tmp = ((limit-a)+(i-1))//i
-                K -= tmp
-        return K >= 0
-    ans = binary_search_max(1, A[0]+K+1, f)
-    print(ans)
+    """N, M = MAP()
+    S = CHARSL(N)"""
+    # O(N*M)ぽい。
+    # 入力例1では、110でもおっけーぽい
+    # 斜めに探索して、フラグを建てていく。
+    se = set()
+    for i in range(N):
+        se.add(i)
+    ans = []
+    i = 0
+    while i != N and len(ans) < M:
+        if i not in se:
+            i += 1
+            continue
+        idx = len(ans)
+        ans.append((tmp := S[i][idx]))
+        kill = []
+        for j in se:
+            if S[j][idx] == tmp:
+                kill.append(j)
+        for j in kill:
+            se.remove(j)
+    if len(se) == 0:
+        """return [True, "".join(ans) + "0"*(M-len(ans))]"""
+        return ["Yes", "".join(ans) + "0"*(M-len(ans))]
+    else:
+        """return [False]"""
+        return ["No"]
 
 
 
@@ -157,4 +174,14 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    T = INT()
+    for i in range(T):
+        N1, M1 = random.randint(1, 10), random.randint(1, 100)
+        li1 = f(N1, M1, 0)
+        ans = main(N1, M1, li1)
+        if ans[0] == "No":
+            print(f"~ case {i} ~")
+            for j in li1:
+                print(j)
+            for j in ans:
+                print(j)

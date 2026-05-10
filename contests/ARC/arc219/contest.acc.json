@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "arc219",
+    "title": "AtCoder Regular Contest-- 219",
+    "url": "https://atcoder.jp/contests/arc219"
+  },
+  "tasks": [
+    {
+      "id": "arc219_a",
+      "label": "A",
+      "title": "Similarity",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "arc219_b",
+      "label": "B",
+      "title": "Reverse Permutation",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "arc219_c",
+      "label": "C",
+      "title": "Traveling Door-to-Door Salesman (Elevator)",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "arc219_d",
+      "label": "D",
+      "title": "Grid Game",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "arc219_e",
+      "label": "E",
+      "title": "Equal Distribution",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "arc219_f",
+      "label": "F",
+      "title": "Range Division",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "arc219_g",
+      "label": "G",
+      "title": "Traveling Door-to-Door Salesman (Stairs)",
+      "url": "https://atcoder.jp/contests/arc219/tasks/arc219_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
