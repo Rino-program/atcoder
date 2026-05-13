@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0066",
+    "title": "AtCoder Weekday Contest 0066 Beta",
+    "url": "https://atcoder.jp/contests/awc0066"
+  },
+  "tasks": [
+    {
+      "id": "awc0066_a",
+      "label": "A",
+      "title": "Belt Conveyor",
+      "url": "https://atcoder.jp/contests/awc0066/tasks/awc0066_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0066_b",
+      "label": "B",
+      "title": "Smartphone Battery",
+      "url": "https://atcoder.jp/contests/awc0066/tasks/awc0066_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0066_c",
+      "label": "C",
+      "title": "Discount Coupon",
+      "url": "https://atcoder.jp/contests/awc0066/tasks/awc0066_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0066_d",
+      "label": "D",
+      "title": "Splitting a Rope",
+      "url": "https://atcoder.jp/contests/awc0066/tasks/awc0066_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0066_e",
+      "label": "E",
+      "title": "Average Score of Tourist Routes",
+      "url": "https://atcoder.jp/contests/awc0066/tasks/awc0066_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

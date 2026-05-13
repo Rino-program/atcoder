@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0068",
+    "title": "AtCoder Weekday Contest 0068 Beta",
+    "url": "https://atcoder.jp/contests/awc0068"
+  },
+  "tasks": [
+    {
+      "id": "awc0068_a",
+      "label": "A",
+      "title": "Comfortable Temperature",
+      "url": "https://atcoder.jp/contests/awc0068/tasks/awc0068_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0068_b",
+      "label": "B",
+      "title": "Farm Partitioning",
+      "url": "https://atcoder.jp/contests/awc0068/tasks/awc0068_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0068_c",
+      "label": "C",
+      "title": "Team Flag Colors",
+      "url": "https://atcoder.jp/contests/awc0068/tasks/awc0068_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0068_d",
+      "label": "D",
+      "title": "Congested Intersection",
+      "url": "https://atcoder.jp/contests/awc0068/tasks/awc0068_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0068_e",
+      "label": "E",
+      "title": "Selecting Photo Spots",
+      "url": "https://atcoder.jp/contests/awc0068/tasks/awc0068_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

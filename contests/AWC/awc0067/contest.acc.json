@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0067",
+    "title": "AtCoder Weekday Contest 0067 Beta",
+    "url": "https://atcoder.jp/contests/awc0067"
+  },
+  "tasks": [
+    {
+      "id": "awc0067_a",
+      "label": "A",
+      "title": "Grade Management System",
+      "url": "https://atcoder.jp/contests/awc0067/tasks/awc0067_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0067_b",
+      "label": "B",
+      "title": "Maximum Subarray Sum of Profit and Loss",
+      "url": "https://atcoder.jp/contests/awc0067/tasks/awc0067_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0067_c",
+      "label": "C",
+      "title": "Grocery Shopping",
+      "url": "https://atcoder.jp/contests/awc0067/tasks/awc0067_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0067_d",
+      "label": "D",
+      "title": "City Network",
+      "url": "https://atcoder.jp/contests/awc0067/tasks/awc0067_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0067_e",
+      "label": "E",
+      "title": "Card Taking Game",
+      "url": "https://atcoder.jp/contests/awc0067/tasks/awc0067_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
