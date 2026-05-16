@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc458",
+    "title": "AtCoder Beginner Contest 458",
+    "url": "https://atcoder.jp/contests/abc458"
+  },
+  "tasks": [
+    {
+      "id": "abc458_a",
+      "label": "A",
+      "title": "Chompers",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc458_b",
+      "label": "B",
+      "title": "Count Adjacent Cells",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc458_c",
+      "label": "C",
+      "title": "C Stands for Center",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc458_d",
+      "label": "D",
+      "title": "Chalkboard Median",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc458_e",
+      "label": "E",
+      "title": "Count 123",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc458_f",
+      "label": "F",
+      "title": "Critical Misread",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc458_g",
+      "label": "G",
+      "title": "Children Yearn for the Evil Kindergarten",
+      "url": "https://atcoder.jp/contests/abc458/tasks/abc458_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
