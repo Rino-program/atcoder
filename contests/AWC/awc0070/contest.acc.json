@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0070",
+    "title": "AtCoder Weekday Contest 0070 Beta",
+    "url": "https://atcoder.jp/contests/awc0070"
+  },
+  "tasks": [
+    {
+      "id": "awc0070_a",
+      "label": "A",
+      "title": "Sorting Packages",
+      "url": "https://atcoder.jp/contests/awc0070/tasks/awc0070_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0070_b",
+      "label": "B",
+      "title": "Days of the Passing Line",
+      "url": "https://atcoder.jp/contests/awc0070/tasks/awc0070_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0070_c",
+      "label": "C",
+      "title": "Ways to Climb Stairs",
+      "url": "https://atcoder.jp/contests/awc0070/tasks/awc0070_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0070_d",
+      "label": "D",
+      "title": "Switching the Lights",
+      "url": "https://atcoder.jp/contests/awc0070/tasks/awc0070_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0070_e",
+      "label": "E",
+      "title": "Delivery Person's Round",
+      "url": "https://atcoder.jp/contests/awc0070/tasks/awc0070_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

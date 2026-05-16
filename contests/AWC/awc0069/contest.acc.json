@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0069",
+    "title": "AtCoder Weekday Contest 0069 Beta",
+    "url": "https://atcoder.jp/contests/awc0069"
+  },
+  "tasks": [
+    {
+      "id": "awc0069_a",
+      "label": "A",
+      "title": "Stock Price Fluctuation Range",
+      "url": "https://atcoder.jp/contests/awc0069/tasks/awc0069_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0069_b",
+      "label": "B",
+      "title": "Candy Selection Contest",
+      "url": "https://atcoder.jp/contests/awc0069/tasks/awc0069_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0069_c",
+      "label": "C",
+      "title": "Light Switch Operation",
+      "url": "https://atcoder.jp/contests/awc0069/tasks/awc0069_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0069_d",
+      "label": "D",
+      "title": "Installation of Radio Towers",
+      "url": "https://atcoder.jp/contests/awc0069/tasks/awc0069_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0069_e",
+      "label": "E",
+      "title": "Library Inventory Check",
+      "url": "https://atcoder.jp/contests/awc0069/tasks/awc0069_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
