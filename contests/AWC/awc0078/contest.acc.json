@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0078",
+    "title": "AtCoder Weekday Contest 0078 Beta",
+    "url": "https://atcoder.jp/contests/awc0078"
+  },
+  "tasks": [
+    {
+      "id": "awc0078_a",
+      "label": "A",
+      "title": "Warehouse Shipment Management",
+      "url": "https://atcoder.jp/contests/awc0078/tasks/awc0078_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0078_b",
+      "label": "B",
+      "title": "Number of Snow Shoveling Times",
+      "url": "https://atcoder.jp/contests/awc0078/tasks/awc0078_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0078_c",
+      "label": "C",
+      "title": "Eliminated Players and the Standings",
+      "url": "https://atcoder.jp/contests/awc0078/tasks/awc0078_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0078_d",
+      "label": "D",
+      "title": "Product Return",
+      "url": "https://atcoder.jp/contests/awc0078/tasks/awc0078_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0078_e",
+      "label": "E",
+      "title": "Company Management Simulation",
+      "url": "https://atcoder.jp/contests/awc0078/tasks/awc0078_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
