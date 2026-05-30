@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc460",
+    "title": "AtCoder Beginner Contest 460",
+    "url": "https://atcoder.jp/contests/abc460"
+  },
+  "tasks": [
+    {
+      "id": "abc460_a",
+      "label": "A",
+      "title": "Mod While Positive",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc460_b",
+      "label": "B",
+      "title": "Two Rings",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc460_c",
+      "label": "C",
+      "title": "Sushi",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc460_d",
+      "label": "D",
+      "title": "Repeatedly Repainting ",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc460_e",
+      "label": "E",
+      "title": "x + y ≡ x + y",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc460_f",
+      "label": "F",
+      "title": "Farthest Pair Query",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_f",
+      "directory": {
+        "path": ".",
+        "testdir": "input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc460_g",
+      "label": "G",
+      "title": "Vertex Flip Query",
+      "url": "https://atcoder.jp/contests/abc460/tasks/abc460_g",
+      "directory": {
+        "path": ".",
+        "testdir": "input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
