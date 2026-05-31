@@ -104,7 +104,7 @@ struct RobotState {
 };
 
 struct TargetChoice {
-    int kind;   // 0: deliver held ball, 1: pick/swap a ball
+    int kind;   // 0: カゴへ直行, 1: ボールを拾う/スワップする
     int ball;
     int loc_id;
     long long score;
@@ -118,43 +118,103 @@ bool is_valid_interrupt_location(int loc_id, const vector<int>& occupant_at_loc)
     return loc_id >= 0 && loc_id < (int)occupant_at_loc.size() && occupant_at_loc[loc_id] != -1;
 }
 
+// 🌟 利益・不利益の計算と、寄り道制限を組み込んだターゲット選択
 TargetChoice choose_next_target(
     const RobotState& st,
     int held_ball,
     const vector<int>& ball_pos,
     const vector<char>& delivered,
-    const vector<int>& occupant_at_loc
+    const vector<int>& occupant_at_loc,
+    int last_dropped_ball
 ) {
     const long long INF = (1LL << 60);
     TargetChoice best{0, -1, -1, INF};
 
+    auto get_min_dist = [](int u, int v) {
+        if (u == v) return 0;
+        int mn = 1e9;
+        for (int d = 0; d < 4; ++d) mn = min(mn, memo_dist[u][d][v].first);
+        return mn;
+    };
+
+    // ----------------------------------------------------
+    // 【空手の場合】メインのボールBを探しつつ、進路上のCも評価
+    // ----------------------------------------------------
     if (held_ball == -1) {
         for (int i = 0; i < M; ++i) {
             if (delivered[i] || ball_pos[i] == -1) continue;
-            int src = ball_pos[i];
+            int src = ball_pos[i]; // メインターゲット（ボールB）
             int dst = basket_loc(i);
+            
             auto p1 = memo_dist[st.loc_id][st.dir][src];
             auto p2 = memo_dist[src][p1.second][dst];
-            long long score = (long long)p1.first + 1 + p2.first + 1;
-            if (score < best.score) {
-                best = {1, i, src, score};
+            
+            // ボールBに直行して届ける純粋なコスト
+            long long direct_cost = (long long)p1.first + p2.first + 2;
+            
+            if (direct_cost < best.score) {
+                best = {1, i, src, direct_cost};
+            }
+
+            // ついでにボールC（j）を運べるかチェック
+            for (int j = 0; j < M; ++j) {
+                if (i == j || delivered[j] || ball_pos[j] == -1) continue;
+                if (j == last_dropped_ball) continue; 
+                
+                int y_src = ball_pos[j]; // ついでターゲット（ボールC）
+                auto p_curr_y = memo_dist[st.loc_id][st.dir][y_src];
+                auto p_y_x = memo_dist[y_src][p_curr_y.second][src];
+                auto p_x_bx = memo_dist[src][p_y_x.second][dst];
+                
+                // 🌟 修正ポイント1: 「寄り道歩数」を計算
+                // Cを経由することで、Bに直行するより何歩余分にかかるか？
+                int detour = p_curr_y.first + p_y_x.first - p1.first;
+                
+                // 寄り道が3歩以上になるなら、それは「ついで」ではなく「取りに行っている」ので無視
+                if (detour > 2) continue;
+                
+                // CをBの場所まで運ぶことで、C自身がカゴに近づく歩数
+                int benefit = get_min_dist(y_src, basket_loc(j)) - get_min_dist(src, basket_loc(j));
+                
+                // 🌟 修正ポイント2: Cがカゴから遠ざかる（または変わらない）なら運ばない
+                if (benefit <= 0) continue;
+
+                long long sequence_cost = (long long)p_curr_y.first + p_y_x.first + p_x_bx.first + 3;
+                long long eval_score = sequence_cost - benefit; 
+                
+                if (eval_score < best.score) {
+                    best = {1, j, y_src, eval_score};
+                }
             }
         }
         return best;
     }
 
+    // ----------------------------------------------------
+    // 【ボールを持っている場合】そのままカゴに入れるか、スワップするか
+    // ----------------------------------------------------
     int dst = basket_loc(held_ball);
     best = {0, held_ball, dst, (long long)memo_dist[st.loc_id][st.dir][dst].first + 1};
 
     for (int i = 0; i < M; ++i) {
         if (i == held_ball || delivered[i] || ball_pos[i] == -1) continue;
-        int src = ball_pos[i];
-        auto p1 = memo_dist[st.loc_id][st.dir][src];
-        auto p2 = memo_dist[src][p1.second][basket_loc(i)];
-        if (p1.first > 3 || p2.first > 3) continue;
-        long long score = (long long)p1.first + 1 + p2.first + 1;
-        if (score + 2 < best.score) {
-            best = {1, i, src, score};
+        if (i == last_dropped_ball) continue; 
+        
+        int x_src = ball_pos[i];
+        auto p_curr_x = memo_dist[st.loc_id][st.dir][x_src];
+        auto p_x_bx = memo_dist[x_src][p_curr_x.second][basket_loc(i)];
+        
+        // 今持っているボール（C）を、次のボール（B）の場所でスワップした場合の利益
+        int benefit = get_min_dist(st.loc_id, basket_loc(held_ball)) - get_min_dist(x_src, basket_loc(held_ball));
+        
+        // 🌟 修正ポイント3: 今持っているボールがカゴから遠ざかるような無駄なスワップは絶対にしない
+        if (benefit <= 0) continue;
+
+        long long sequence_cost = (long long)p_curr_x.first + p_x_bx.first + 2; 
+        long long eval_score = sequence_cost - benefit;
+        
+        if (eval_score < best.score) {
+            best = {1, i, x_src, eval_score};
         }
     }
 
@@ -196,25 +256,6 @@ bool move_towards(
     return true;
 }
 
-int evaluate_order(const vector<int>& order) {
-    int total_cost = 0;
-    int cur_id = 0; 
-    int cur_d = 0;  
-    for (int ball_idx : order) {
-        int ball_id = 1 + ball_idx;
-        int basket_id = 1 + M + ball_idx;
-        auto p1 = memo_dist[cur_id][cur_d][ball_id];
-        total_cost += p1.first + 1;
-        cur_id = ball_id; cur_d = p1.second;
-        
-        auto p2 = memo_dist[cur_id][cur_d][basket_id];
-        total_cost += p2.first + 1;
-        cur_id = basket_id; cur_d = p2.second;
-    }
-    return total_cost;
-}
-
-// 🌟 ステップ3: マクロ圧縮関数
 string compress(const string& s) {
     if (s.length() <= 3) return s;
 
@@ -223,7 +264,6 @@ string compress(const string& s) {
     vector<int> best_positions;
 
     int n = s.length();
-    // 探索するマクロの長さ (長すぎても効果が薄いため上限50)
     int max_len = min(n / 2, 50);
     unordered_set<string> evaluated;
 
@@ -232,13 +272,11 @@ string compress(const string& s) {
         for (int i = 0; i <= n - len; ++i) {
             string T = s.substr(i, len);
             
-            // 定数倍高速化: 同じ文字列の重複探索を防ぐ
             if (evaluated.count(T)) continue;
             evaluated.insert(T);
 
             vector<int> pos;
             int curr = i;
-            // 互いに重ならない出現位置を探す
             while (curr <= n - len) {
                 if (s.compare(curr, len, T) == 0) {
                     pos.push_back(curr);
@@ -248,8 +286,6 @@ string compress(const string& s) {
                 }
             }
 
-            // 利益 = (元の文字数) - (圧縮後の文字数)
-            // 圧縮後 = (初回 M + len + M) + (2回目以降 P(1文字) * (出現回数-1))
             int profit = (int)pos.size() * len - (len + 2 + (int)pos.size() - 1);
             if (profit > best_profit) {
                 best_profit = profit;
@@ -259,28 +295,22 @@ string compress(const string& s) {
         }
     }
 
-    // 圧縮しても文字数が減らないならそのまま返す
     if (best_profit <= 0) return s;
 
-    // 前後の安全な領域を切り出す
     string prefix = s.substr(0, best_positions[0]);
     int last_idx = best_positions.back() + best_T.length();
     string suffix = s.substr(last_idx);
 
-    // 前半を再帰的に圧縮
     string result = compress(prefix);
     
-    // 中心部分（マクロ定義と使用）
-    result += "M" + best_T + "M"; // 初回をマクロ登録
+    result += "M" + best_T + "M"; 
     int curr = best_positions[0] + best_T.length();
     for (size_t i = 1; i < best_positions.size(); ++i) {
-        // マクロとマクロの間の「隙間の文字列」はそのまま追加
         result += s.substr(curr, best_positions[i] - curr);
-        result += "P"; // マクロ呼び出し
+        result += "P"; 
         curr = best_positions[i] + best_T.length();
     }
     
-    // 後半を再帰的に圧縮
     result += compress(suffix);
     
     return result;
@@ -311,7 +341,6 @@ int main() {
         location_id[locations[id].r][locations[id].c] = id;
     }
     
-    // 全点間最短経路の事前計算
     for (int id = 0; id < (int)locations.size(); ++id) {
         for (int d = 0; d < 4; ++d) {
             bfs_all_targets(id, d);
@@ -330,10 +359,11 @@ int main() {
     RobotState st{0, 0, 0, 0};
     int held_ball = -1;
     int delivered_cnt = 0;
+    int last_dropped_ball = -1; // 🌟 ここで直前のボールを追跡
 
     string raw_ops = "";
     while (delivered_cnt < M && (int)raw_ops.size() < T_limit) {
-        TargetChoice target = choose_next_target(st, held_ball, ball_pos, delivered, occupant_at_loc);
+        TargetChoice target = choose_next_target(st, held_ball, ball_pos, delivered, occupant_at_loc, last_dropped_ball);
         if (target.loc_id < 0) break;
 
         bool reached_target = move_towards(target, st, raw_ops, occupant_at_loc, true);
@@ -344,10 +374,12 @@ int main() {
         if ((int)raw_ops.size() >= T_limit) break;
         raw_ops += 'S';
 
+        // 🌟 スワップ結果に応じて last_dropped_ball を更新
         if (target.kind == 0) {
             delivered[held_ball] = true;
             ball_pos[held_ball] = target.loc_id;
             occupant_at_loc[target.loc_id] = -1;
+            last_dropped_ball = held_ball; // 置いたボールを記録
             held_ball = -1;
             ++delivered_cnt;
         } else {
@@ -356,23 +388,23 @@ int main() {
                 held_ball = next_ball;
                 ball_pos[next_ball] = -1;
                 occupant_at_loc[target.loc_id] = -1;
+                last_dropped_ball = -1; // 拾っただけなので置いたボールはなし
             } else {
                 int prev_ball = held_ball;
                 ball_pos[prev_ball] = target.loc_id;
                 occupant_at_loc[target.loc_id] = prev_ball;
                 held_ball = next_ball;
                 ball_pos[next_ball] = -1;
+                last_dropped_ball = prev_ball; // スワップして床に置かれたボールを記録
             }
         }
     }
     
-    // マクロによる圧縮は、出力長が T_limit を超えない場合のみ採用する
     string compressed_ops = compress(raw_ops);
     if (compressed_ops.size() > (size_t)T_limit || compressed_ops.size() >= raw_ops.size()) {
         compressed_ops = raw_ops;
     }
     
-    // 出力
     for (char c : compressed_ops) {
         cout << c << "\n";
     }
