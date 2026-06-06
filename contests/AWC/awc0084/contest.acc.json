@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0084",
+    "title": "AtCoder Weekday Contest 0084 Beta",
+    "url": "https://atcoder.jp/contests/awc0084"
+  },
+  "tasks": [
+    {
+      "id": "awc0084_a",
+      "label": "A",
+      "title": "Warehouse Inventory Management",
+      "url": "https://atcoder.jp/contests/awc0084/tasks/awc0084_a",
+      "directory": {
+        "path": ".",
+        "testdir": "input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0084_b",
+      "label": "B",
+      "title": "Shopping Plan",
+      "url": "https://atcoder.jp/contests/awc0084/tasks/awc0084_b",
+      "directory": {
+        "path": ".",
+        "testdir": "input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0084_c",
+      "label": "C",
+      "title": "Shortest Path in a Maze",
+      "url": "https://atcoder.jp/contests/awc0084/tasks/awc0084_c",
+      "directory": {
+        "path": ".",
+        "testdir": "input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0084_d",
+      "label": "D",
+      "title": "Museum Patrol",
+      "url": "https://atcoder.jp/contests/awc0084/tasks/awc0084_d",
+      "directory": {
+        "path": ".",
+        "testdir": "input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0084_e",
+      "label": "E",
+      "title": "Cipher Conversion Device and Password Authentication",
+      "url": "https://atcoder.jp/contests/awc0084/tasks/awc0084_e",
+      "directory": {
+        "path": ".",
+        "testdir": "input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

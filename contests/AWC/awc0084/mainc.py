@@ -101,17 +101,45 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+def bfs_grid(grid: list[list[str]], sy: int, sx: int, wall: str = '#') -> list[list[int]]:
+    """概要:
+        4近傍グリッド上で始点からの最短距離を BFS で求める。
+    入力:
+        grid (list[list[str]]): 盤面。
+        sy, sx (int): 始点座標。
+        wall (str): 通行不可セル文字。
+    出力:
+        list[list[int]]: 距離グリッド。未到達は -1。
+    補足:
+        `DIR4`（上下左右）を使用する。計算量は O(HW)。
+    """
+    H, W = len(grid), len(grid[0])
+    dist = [[-1] * W for _ in range(H)]
+    dist[sy][sx] = 0
+    q = deque([(sy, sx)])
+    while q:
+        y, x = q.popleft()
+        for dy, dx in DIR4:
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < H and 0 <= nx < W and dist[ny][nx] == -1 and grid[ny][nx] != wall:
+                dist[ny][nx] = dist[y][x] + 1
+                q.append((ny, nx))
+    return dist
+
 def main() -> None:
     # ここに解答を書く
-    R, C = MAP()
-    A = LISTS(R)
-    ans = INF
-    for i in range(1<<R):
-        for j in range(R):
-            for k in range(C):
-                if 1&(i>>j):
-                    
-    print(ans)
+    N = INT()
+    S = CHARSL(N)
+    s = (0, 0)
+    e = (0, 0)
+    for i in range(N):
+        for j in range(N):
+            if S[i][j] == "S":
+                s = (i, j)
+            if S[i][j] == "G":
+                e = (i, j)
+    ans = bfs_grid(S, s[0], s[1])
+    print(ans[e[0]][e[1]]+1)
 
 
 
