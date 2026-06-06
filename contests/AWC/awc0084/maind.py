@@ -103,14 +103,7 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    R, C = MAP()
-    A = LISTS(R)
-    ans = INF
-    for i in range(1<<R):
-        for j in range(R):
-            for k in range(C):
-                if 1&(i>>j):
-                    
+    N = INT()
     print(ans)
 
 

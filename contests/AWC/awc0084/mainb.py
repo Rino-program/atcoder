@@ -103,15 +103,18 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    R, C = MAP()
-    A = LISTS(R)
-    ans = INF
-    for i in range(1<<R):
-        for j in range(R):
-            for k in range(C):
-                if 1&(i>>j):
-                    
-    print(ans)
+    N, M = MAP()
+    T = LIST()
+    SC = TUPLES(M)
+    di = dedict(int)
+    for S, C in SC:
+        if S not in di:
+            di[S] = INF
+        di[S] = min(di[S], C)
+    ans = 0
+    for t in T:
+        ans += di.get(t, -INF)
+    print(max(-1, ans))
 
 
 
