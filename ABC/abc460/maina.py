@@ -103,14 +103,11 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    ans = 0
-    while M != 0:
-        M = N%M
-        ans += 1
-    print(ans)
-
-
+    S = STR()
+    for i in S:
+        if i in {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}:
+            print(i, end="")
+    print()
 
 
 

@@ -3,20 +3,12 @@
     "static": [
       ".vscode",
       "template.py",
-      [
-        ".md",
-        "{ContestID}.md"
-      ]
+      [".md", "{ContestID}.md"]
     ]
   },
   "task": {
-    "program": [
-      [
-        "main.py",
-        "main{tasklabel}.py"
-      ]
-    ],
+    "program": [["main.py", "main{tasklabel}.py"]],
     "submit": "main{tasklabel}.py",
-    "testdir": "input/{tasklabel}"
+    "testdir": "../input/{tasklabel}"
   }
 }

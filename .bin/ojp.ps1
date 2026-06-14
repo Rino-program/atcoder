@@ -1,3 +1,3 @@
 #Requires -Version 5.1
 
-& (Join-Path $PSScriptRoot "oj.ps1") @args
+& (Join-Path $PSScriptRoot "myoj.ps1") @args
