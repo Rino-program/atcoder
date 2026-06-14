@@ -195,6 +195,35 @@ if (-not (Test-Path $ContestPath)) {
     exit 1
 }
 
+# ============================================================
+# Flatten acc task directories
+# ============================================================
+
+Write-Info "[$(Get-Timestamp)] Flattening task structure..."
+
+$taskDirs = Get-ChildItem $ContestPath -Directory |
+    Where-Object { $_.Name -match '^[a-z]$' }
+
+foreach ($dir in $taskDirs) {
+
+    $label = $dir.Name
+
+    $src = Join-Path $dir.FullName "main$label.py"
+    $dst = Join-Path $ContestPath "main$label.py"
+
+    if (Test-Path $src) {
+
+        Move-Item $src $dst -Force
+
+        Write-Success "Moved main$label.py"
+
+        # a,b,c... フォルダは空なので削除
+        Remove-Item $dir.FullName -Force
+    }
+}
+
+Write-Success "[$(Get-Timestamp)] Task structure flattened"
+
 # Display generated files information
 Get-GeneratedFiles $ContestPath
 Write-Host ""

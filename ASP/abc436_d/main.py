@@ -103,15 +103,48 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    ans = [[] for i in range(N)]
-    for i in range(N):
-        KA = LIST()
-        for j in range(1, KA[0]+1):
-            ans[KA[j]-1].append(i+1)
-    for i in ans:
-        print(len(i), end=" ")
-        print(" ".join(map(str, i)))
+    H, W = MAP()
+    S = CHARSL(H)
+    di = {k: [] for k in LOWER}
+    for i in range(H):
+        for j in range(W):
+            if S[i][j] not in {".", "#"}: di[S[i][j]].append((i, j))
+    d = deque()
+    d.append((0, 0, 0))
+    f = [[1 for i in range(W)] for i in range(H)]
+    f[0][0] = 0
+    while d:
+        x, y, n = d.popleft()
+        if x == H-1 and y == W-1:
+            pr(n)
+            return
+        if S[x][y] == ".":
+            for dx, dy in DIR4:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < H and 0 <= ny < W and f[nx][ny] and S[nx][ny] != "#":
+                    f[nx][ny] = 0
+                    d.append((nx, ny, n+1))
+        else:
+            if di[S[x][y]] == []:
+                for dx, dy in DIR4:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < H and 0 <= ny < W and f[nx][ny] and S[nx][ny] != "#":
+                        f[nx][ny] = 0
+                        d.append((nx, ny, n+1))
+            for dx, dy in di[S[x][y]]:
+                if dx == x and y == dy:
+                    for dx, dy in DIR4:
+                        nx, ny = x + dx, y + dy
+                        if 0 <= nx < H and 0 <= ny < W and f[nx][ny] and S[nx][ny] != "#":
+                            f[nx][ny] = 0
+                            d.append((nx, ny, n+1))
+                else:
+                    if 0 <= dx < H and 0 <= dy < W and f[dx][dy]:
+                        f[dx][dy] = 0
+                        d.append((dx, dy, n+1))
+            di[S[x][y]] = []
+        # debug(d)
+    pr(-1)
 
 
 

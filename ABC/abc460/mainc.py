@@ -103,18 +103,16 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    A = sorted(LIST(), reverse=True)
-    B = sorted(LIST())
+    N = INT()
+    XY = TUPLES(N)
+    XY.sort()
+    mi = INF
     ans = 0
-    for i in range(N):
-        while B and B[-1] > A[i]*2:
-            B.pop()
-        if B:
+    for X, Y in XY:
+        if mi > Y:
             ans += 1
-            B.pop()
-    print(ans)
-
+            mi = Y
+    pr(ans)
 
 
 

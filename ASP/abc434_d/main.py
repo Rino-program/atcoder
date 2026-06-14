@@ -104,14 +104,11 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    ans = [[] for i in range(N)]
+    Map = [[]]
     for i in range(N):
-        KA = LIST()
-        for j in range(1, KA[0]+1):
-            ans[KA[j]-1].append(i+1)
-    for i in ans:
-        print(len(i), end=" ")
-        print(" ".join(map(str, i)))
+        U, D, L, R = MAP()
+        
+    print(ans)
 
 
 
