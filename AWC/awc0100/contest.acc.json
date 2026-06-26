@@ -1,0 +1,174 @@
+{
+  "contest": {
+    "id": "awc0100",
+    "title": "AtCoder Weekday Contest 0100 Beta",
+    "url": "https://atcoder.jp/contests/awc0100"
+  },
+  "tasks": [
+    {
+      "id": "awc0100_a",
+      "label": "A",
+      "title": "Calculating Part-Time Job Pay",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0100_b",
+      "label": "B",
+      "title": "Cooking Contest",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0100_c",
+      "label": "C",
+      "title": "Permission Management System",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0100_d",
+      "label": "D",
+      "title": "Team Division",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0100_e",
+      "label": "E",
+      "title": "Mountain View",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "awc0100_f",
+      "label": "F",
+      "title": "Sales Target for Consecutive Intervals",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_f",
+      "directory": {
+        "path": "f",
+        "testdir": "../input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "awc0100_g",
+      "label": "G",
+      "title": "Circle of Friends",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_g",
+      "directory": {
+        "path": "g",
+        "testdir": "../input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "awc0100_h",
+      "label": "H",
+      "title": "City Tour Survey",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_h",
+      "directory": {
+        "path": "h",
+        "testdir": "../input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "awc0100_i",
+      "label": "I",
+      "title": "Circle Pass Game",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_i",
+      "directory": {
+        "path": "i",
+        "testdir": "../input/i",
+        "submit": "maini.py"
+      }
+    },
+    {
+      "id": "awc0100_j",
+      "label": "J",
+      "title": "Road Network Development",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_j",
+      "directory": {
+        "path": "j",
+        "testdir": "../input/j",
+        "submit": "mainj.py"
+      }
+    },
+    {
+      "id": "awc0100_k",
+      "label": "K",
+      "title": "Choosing Blocks in a Shopping Street",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_k",
+      "directory": {
+        "path": "k",
+        "testdir": "../input/k",
+        "submit": "maink.py"
+      }
+    },
+    {
+      "id": "awc0100_l",
+      "label": "L",
+      "title": "Schedule Adjustment",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_l",
+      "directory": {
+        "path": "l",
+        "testdir": "../input/l",
+        "submit": "mainl.py"
+      }
+    },
+    {
+      "id": "awc0100_m",
+      "label": "M",
+      "title": "Secret Sequence and Branching Notes",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_m",
+      "directory": {
+        "path": "m",
+        "testdir": "../input/m",
+        "submit": "mainm.py"
+      }
+    },
+    {
+      "id": "awc0100_n",
+      "label": "N",
+      "title": "Stock Price Correction",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_n",
+      "directory": {
+        "path": "n",
+        "testdir": "../input/n",
+        "submit": "mainn.py"
+      }
+    },
+    {
+      "id": "awc0100_o",
+      "label": "O",
+      "title": "Joining of Circular Tablets",
+      "url": "https://atcoder.jp/contests/awc0100/tasks/awc0100_o",
+      "directory": {
+        "path": "o",
+        "testdir": "../input/o",
+        "submit": "maino.py"
+      }
+    }
+  ]
+}
