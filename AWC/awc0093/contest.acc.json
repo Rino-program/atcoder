@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0093",
+    "title": "AtCoder Weekday Contest 0093 Beta",
+    "url": "https://atcoder.jp/contests/awc0093"
+  },
+  "tasks": [
+    {
+      "id": "awc0093_a",
+      "label": "A",
+      "title": "Lunch Box Orders",
+      "url": "https://atcoder.jp/contests/awc0093/tasks/awc0093_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0093_b",
+      "label": "B",
+      "title": "Message Forwarding",
+      "url": "https://atcoder.jp/contests/awc0093/tasks/awc0093_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0093_c",
+      "label": "C",
+      "title": "Watering the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0093/tasks/awc0093_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0093_d",
+      "label": "D",
+      "title": "Selection of a Mountain Climbing Route",
+      "url": "https://atcoder.jp/contests/awc0093/tasks/awc0093_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0093_e",
+      "label": "E",
+      "title": "Consistency of Team Division",
+      "url": "https://atcoder.jp/contests/awc0093/tasks/awc0093_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
