@@ -105,12 +105,15 @@ def main() -> None:
     # ここに解答を書く
     R, C = MAP()
     A = LISTS(R)
-    ans = INF
+    ans = 0
     for i in range(1<<R):
-        for j in range(R):
-            for k in range(C):
-                if 1&(i>>j):
-                    
+        num = 0
+        for j in range(C):
+            tmp = 0
+            for k in range(R):
+                tmp += A[k][j] ^ 1&(i>>k)
+            num += max(R - tmp, tmp)
+        ans = max(ans, num)
     print(ans)
 
 

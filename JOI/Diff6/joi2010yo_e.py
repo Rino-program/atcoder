@@ -53,7 +53,7 @@ def CHARSL(n: int) -> list[list[str]]:
 
 # ===== 定数 =====
 INF = 10 ** 18
-MOD = 998244353
+MOD = 100000
 # MOD = 10**9 + 7
 
 # ===== 関数短縮 =====
@@ -103,8 +103,29 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    W, H = MAP()
+    dp = [[[0 for i in range(4)] for i in range(W)] for i in range(H)]
+    dp[0][1][0] = 1
+    dp[1][0][1] = 1
+    for i in range(H):
+        for j in range(W):
+            if (i == 0 and j == 0) or (i == 1 and j == 0) or (i == 0 and j == 1):
+                continue
+            # 0 横直進
+            if 0 <= j-1 < W:
+                dp[i][j][0] += dp[i][j-1][0] + dp[i][j-1][2]
+            # 1 縦直進
+            if 0 <= i-1 < H:
+                dp[i][j][1] += dp[i-1][j][1] + dp[i-1][j][3]
+            # 2 右折直後
+            if 0 <= j-1 < W:
+                dp[i][j][2] += dp[i][j-1][1]
+            # 3 左折直後
+            if 0 <= i-1 < H:
+                dp[i][j][3] += dp[i-1][j][0]
+            for k in range(4):
+                dp[i][j][k] %= MOD
+    print(sum(dp[H-1][W-1]) % MOD)
 
 
 
