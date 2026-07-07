@@ -102,26 +102,24 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def main(N, S, X, Y) -> int:
+def main() -> None:
     # ここに解答を書く
-    dp = [[0 for i in range(2)] for i in range(N)]
-    if S[0] == 'S':
-        dp[0][0] = 0
-        dp[0][1] = -X[0]
-    else:
-        dp[0][1] = 0
-        dp[0][0] = -X[0]
-    for i in range(1, N):
-        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + Y[i-1])
-        dp[i][1] = max(dp[i-1][1], dp[i-1][0])
-        if S[i] == 'S':
-            dp[i][1] -= X[i]
-        else:
-            dp[i][0] -= X[i]
-    ans = max(dp[-1][0], dp[-1][1])
-    #debug(dp)
-    return ans
-
+    N, K = MAP()
+    A = LIST()
+    if K % 2 == 0:
+        ans = sum(A[i+1] - A[i] for i in range(0, K, 2))
+        print(ans)
+        return
+    li = [INF] * K
+    tmp = sum(A[i+1] - A[i] for i in range(1, K, 2))
+    for i in range(0, K, 2):
+        li[i] = tmp
+        if i + 2 < K:
+            tmp += abs(A[i] - A[i+1])
+            tmp -= abs(A[i+1] - A[i+2])
+    li = [(v, i) for i, v in en(li)]
+    li.sort()
+    print(li[0][0])
 
 
 
@@ -143,13 +141,4 @@ def main(N, S, X, Y) -> int:
 
 
 if __name__ == "__main__":
-    T = INT()
-    ans = []
-    for _ in range(T):
-        N = INT()
-        S = CHARS()
-        X = LIST()
-        Y = LIST()
-        ans.append(main(N, S, X, Y))
-    for i in ans:
-        print(i)
+    main()
