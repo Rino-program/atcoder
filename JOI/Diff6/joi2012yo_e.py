@@ -103,7 +103,30 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    W, H = MAP()
+    S = LISTS(H)
+    Sn = [["0"] * (W+2)]
+    for i in S:
+        Sn.append(["0"] + list(map(str, i)) + ["0"])
+    Sn.append(["0"] * (W+2))
+    S = Sn
+
+    d = deque()
+    d.append((0, 0))
+    ans = 0
+    DIR6K = [(-1, 0), (-1, 1), (0, 1), (0, -1), (1, 0), (1, 1)]
+    DIR6G = [(-1, -1), (-1, 0), (0, 1), (0, -1), (1, -1), (1, 0)]
+    f = [[1 for i in range(W+2)] for i in range(H+2)]
+    f[0][0] = 0
+    while d:
+        x, y = d.popleft()
+        for dx, dy in (DIR6K if x % 2 == 1 else DIR6G):
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < H+2 and 0 <= ny < W+2:
+                if S[nx][ny] == "1": ans += 1
+                elif S[nx][ny] == "0" and f[nx][ny]:
+                    f[nx][ny] = 0
+                    d.append((nx, ny))
     print(ans)
 
 

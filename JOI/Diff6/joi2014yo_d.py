@@ -104,7 +104,16 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    S = STR()
+    global MOD
+    MOD = 10007
+    dp = [[0 for i in range(3)] for i in range(N + 1)]
+    dp[0] = [1, 1, 1]
+    d = 
+    for i in range(1, N+1):
+        idx1 = i - 1
+        for idx2 in range(3):
+            
 
 
 
