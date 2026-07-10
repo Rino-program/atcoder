@@ -104,6 +104,30 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A = LIST()
+    if list(set(A)) == [0]:
+        print(0)
+        return
+    d = dict()
+    for i, a in en(A):
+        if a not in d:
+            d[a] = []
+        d[a].append(i)
+    ans = 1
+    B = sorted(list(set(A)), reverse=True)
+    A = [-INF] + A + [-INF]
+    now = 1
+    f = [1] * (N + 2)
+    f[0], f[-1] = 0, 0
+    for _ in range(len(B)):
+        num = B.pop()
+        for i in d[num]:
+            if f[i] == f[i+2] == 0:
+                now -= 1
+            elif f[i] == f[i+2] == 1:
+                now += 1
+            f[i+1] = 0
+        ans = max(ans, now)
     print(ans)
 
 

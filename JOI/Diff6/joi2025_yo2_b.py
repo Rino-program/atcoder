@@ -103,8 +103,25 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, X = MAP()
+    A = LIST()
+    P = LIST()
+    g = [[] for i in range(N+1)]
+    for i, (A, P) in en(zip(A, P)):
+        if P == -1:
+            P = 0
+        g[P].append((i+1, -A))
+    d = deque()
+    d.append((0, X))
+    ans = 0
+    while d:
+        to, x = d.popleft()
+        for nxt, a in g[to]:
+            if x + a < 0:
+                continue
+            ans = max(ans, nxt)
+            d.append((nxt, x + a))
+    print(-1 if ans == 0 else ans)
 
 
 

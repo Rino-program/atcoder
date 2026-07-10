@@ -107,13 +107,21 @@ def main() -> None:
     S = STR()
     global MOD
     MOD = 10007
-    dp = [[0 for i in range(3)] for i in range(N + 1)]
-    dp[0] = [1, 1, 1]
-    d = 
+    dp = [[0 for i in range(1<<3)] for i in range(N + 1)]
+    d = {"J":0, "O":1, "I":2}
+    dp[0][1<<d["J"]] = 1
     for i in range(1, N+1):
         idx1 = i - 1
-        for idx2 in range(3):
-            
+        now = d[S[idx1]]
+        for idx2 in range(1<<3):
+            if (idx2 & (1<<now)) == 0:
+                continue
+            for idx3 in range(1<<3):
+                if (idx2 & idx3) == 0:
+                    continue
+                dp[i][idx2] += dp[idx1][idx3]
+                dp[i][idx2] %= MOD
+    pr(sum(dp[N]) % MOD)
 
 
 
