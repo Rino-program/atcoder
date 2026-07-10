@@ -103,8 +103,25 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, T, Q = MAP()
+    AD = LISTS(N)
+    INF = 10 ** 21 # 10 ** 18 から変更
+    A = [-INF] + [a for a, d in AD] + [INF]
+    D = [1] + [d for a, d in AD] + [2]
+    now = -INF
+    ans = [-INF] * (N + 2)
+    for i in range(N + 2):
+        if D[i] == 2:
+            if D[i-1] == 1:
+                now = (A[i] + A[i-1]) // 2
+            while i >= 0 and ans[i] == -INF:
+                tmp = min(T, abs(now - A[i]))
+                tmp = tmp if now > A[i] else -tmp
+                ans[i] = tmp + A[i]
+                i -= 1
+    for i in range(Q):
+        x = INT()
+        pr(ans[x])
 
 
 

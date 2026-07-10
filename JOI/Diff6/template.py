@@ -7,6 +7,7 @@ from bisect import bisect_left, bisect_right
 import heapq
 import math
 from itertools import permutations, combinations, accumulate, product, chain
+from sortedcontainers import SortedSet, SortedList, SortedDict
 from functools import lru_cache, reduce
 from collections.abc import Callable
 from copy import deepcopy
@@ -313,6 +314,32 @@ class Combination:
     def catalan(self, n: int) -> int:
         """カタラン数 C_n"""
         return self.nCr(2 * n, n) * pow_mod(n + 1, self.mod - 2, self.mod) % self.mod
+
+def fast_mod_nCr(n, r, MOD=MOD):
+    """概要:
+        逐次積で組み合わせ nCr を求める。
+    入力:
+        n (int): 項数
+        r (int): 選ぶ個数
+        MOD (int): MOD
+    出力:
+        int: C(n, r) mod MOD
+    補足:
+        反復回数を少なくするため、r と n-r の小さい方を使う。
+        計算量は O(min(r, n-r))
+    """
+    if n < r:
+        return 0
+    if n-r < r:
+        r = n-r
+    comb = 1
+    for x in range(n-r+1, n+1):
+        comb = (comb * x) % MOD
+    d = 1
+    for x in range(1, r+1):
+        d = (d * x) % MOD
+    comb *= pow(d, MOD-2, MOD)
+    return comb % MOD
 
 
 # ============================================================
@@ -2061,6 +2088,307 @@ class Mo:
 
         return answers
 
+class ImplicitTreap:
+    """概要:
+        列に対する挿入、削除、区間反転、区間クエリ(和など)を平均 O(log N) で処理する平衡二分探索木(非再帰実装)。
+        ノードを配列で管理し、再帰によるオーバーヘッドをなくした高速版。
+        ※ デフォルトでは区間和(sum)を管理する実装になっていますが、_update関数内の演算を変えることで
+           区間最小値(min)や区間最大値(max)などに容易に変更可能です。
+
+    メソッド:
+        insert(pos, val): pos番目に値valを挿入する。
+        erase(pos): pos番目の要素を削除する。
+        query(l, r): 区間 [l, r) の値(デフォルトは和)を取得する。
+        reverse(l, r): 区間 [l, r) の要素の並びを反転させる。
+        update(pos, val): pos番目の要素をvalに変更する。
+
+    入力:
+        n_max (int): 挿入される最大要素数（ノード配列の最大サイズ）。
+
+    出力:
+        query(l, r) は区間 [l, r) の計算結果(int)を返す。
+        __len__() により現在の要素数を返す。
+
+    計算量:
+        時間計算量: 各操作について平均 O(log N)
+        空間計算量: O(n_max)
+
+    補足:
+        - Xorshiftを用いた乱数生成により、Treapの優先度を決定しています。
+        - 0番目のインデックスはNullノード(Noneの代わり)として扱い、アクセスしないようになっています。
+        - lower_boundを使う場合、途中でreverse(区間反転)はしないでください、値の順序が崩れるため正しく動作しません。
+    """
+    def __init__(self, n_max: int):
+        self.left = [0] * (n_max + 1)
+        self.right = [0] * (n_max + 1)
+        self.val = [0] * (n_max + 1)
+        self.sm = [0] * (n_max + 1)
+        self.size = [0] * (n_max + 1)
+        self.priority = [0] * (n_max + 1)
+        self.rev = [False] * (n_max + 1)
+        self.node_cnt = 0
+        self.root = 0
+        self._seed = 123456789  # 乱数シード
+
+    def _rand(self) -> int:
+        self._seed ^= (self._seed << 13) & 0xFFFFFFFF
+        self._seed ^= (self._seed >> 17)
+        self._seed ^= (self._seed << 5) & 0xFFFFFFFF
+        return self._seed
+
+    def _update(self, k: int) -> None:
+        if not k:
+            return
+        l = self.left[k]
+        r = self.right[k]
+        self.size[k] = self.size[l] + self.size[r] + 1
+        # 区間和の場合。区間最小値などの場合はここを変更する
+        self.sm[k] = self.sm[l] + self.sm[r] + self.val[k]
+
+    def _push(self, k: int) -> None:
+        if not k:
+            return
+        if self.rev[k]:
+            l = self.left[k]
+            r = self.right[k]
+            self.left[k], self.right[k] = r, l
+            if l: self.rev[l] = not self.rev[l]
+            if r: self.rev[r] = not self.rev[r]
+            self.rev[k] = False
+
+    def _split(self, root: int, k: int) -> tuple[int, int]:
+        l_root = r_root = 0
+        l_ptr = r_ptr = 0
+        l_path = []
+        r_path = []
+        curr = root
+        while curr:
+            self._push(curr)
+            l_size = self.size[self.left[curr]]
+            if k <= l_size:
+                if not r_root: r_root = curr
+                else: self.left[r_ptr] = curr
+                r_ptr = curr
+                r_path.append(curr)
+                curr = self.left[curr]
+            else:
+                if not l_root: l_root = curr
+                else: self.right[l_ptr] = curr
+                l_ptr = curr
+                l_path.append(curr)
+                curr = self.right[curr]
+                k -= l_size + 1
+
+        if l_ptr: self.right[l_ptr] = 0
+        if r_ptr: self.left[r_ptr] = 0
+
+        while l_path: self._update(l_path.pop())
+        while r_path: self._update(r_path.pop())
+
+        return l_root, r_root
+
+    def _merge(self, l: int, r: int) -> int:
+        if not l: return r
+        if not r: return l
+
+        head = 0
+        prev = 0
+        is_left = False
+        curr_l = l
+        curr_r = r
+        path = []
+
+        while curr_l and curr_r:
+            if self.priority[curr_l] > self.priority[curr_r]:
+                self._push(curr_l)
+                path.append(curr_l)
+                if prev:
+                    if is_left: self.left[prev] = curr_l
+                    else: self.right[prev] = curr_l
+                else: head = curr_l
+                prev = curr_l
+                is_left = False
+                curr_l = self.right[curr_l]
+            else:
+                self._push(curr_r)
+                path.append(curr_r)
+                if prev:
+                    if is_left: self.left[prev] = curr_r
+                    else: self.right[prev] = curr_r
+                else: head = curr_r
+                prev = curr_r
+                is_left = True
+                curr_r = self.left[curr_r]
+
+        rem = curr_l if curr_l else curr_r
+        if prev:
+            if is_left: self.left[prev] = rem
+            else: self.right[prev] = rem
+
+        while path: self._update(path.pop())
+
+        return head
+
+    def insert(self, pos: int, val: int) -> None:
+        self.node_cnt += 1
+        idx = self.node_cnt
+        self.val[idx] = val
+        self.sm[idx] = val
+        self.size[idx] = 1
+        self.priority[idx] = self._rand()
+
+        l, r = self._split(self.root, pos)
+        self.root = self._merge(self._merge(l, idx), r)
+
+    def erase(self, pos: int) -> None:
+        l, r = self._split(self.root, pos)
+        m, r = self._split(r, 1)
+        self.root = self._merge(l, r)
+
+    def query(self, l: int, r: int) -> int:
+        # [l, r) のクエリ
+        left, right = self._split(self.root, l)
+        mid, right = self._split(right, r - l)
+        res = self.sm[mid] if mid else 0
+        self.root = self._merge(self._merge(left, mid), right)
+        return res
+
+    def reverse(self, l: int, r: int) -> None:
+        # [l, r) の反転
+        left, right = self._split(self.root, l)
+        mid, right = self._split(right, r - l)
+        if mid:
+            self.rev[mid] = not self.rev[mid]
+        self.root = self._merge(self._merge(left, mid), right)
+
+    def update(self, pos: int, val: int) -> None:
+        # pos番目の要素をvalに変更する
+        self.erase(pos)
+        self.insert(pos, val)
+
+    def __len__(self) -> int:
+        return self.size[self.root]
+
+    def lower_bound(self, val: int) -> int:
+        """概要:
+            値が val 以上となる最初の位置（0-indexed）を返す。
+            ※ 木全体が値に関して昇順にソートされている必要があります。
+
+        入力:
+            val (int): 探索したい値。
+
+        出力:
+            条件を満たす位置のインデックス (int)。すべて val 未満なら現在の要素数を返す。
+
+        計算量:
+            時間計算量: 平均 O(log N)
+            空間計算量: O(1)
+        """
+        curr = self.root
+        pos = 0
+        while curr:
+            self._push(curr)
+            if self.val[curr] >= val:
+                # 左部分木に目的の値（またはそれ以上）がある可能性があるので左へ
+                curr = self.left[curr]
+            else:
+                # 現在の値は val 未満なので、左部分木と自分自身のサイズを位置に加算して右へ
+                pos += self.size[self.left[curr]] + 1
+                curr = self.right[curr]
+        return pos
+
+    def insert_sorted(self, val: int) -> None:
+        """概要:
+            ソートされた状態を維持しながら、値 val を適切な位置に挿入する。
+
+        入力:
+            val (int): 挿入したい値。
+
+        計算量:
+            時間計算量: 平均 O(log N)
+        """
+        pos = self.lower_bound(val)
+        self.insert(pos, val)
+
+    def get(self, pos: int) -> int:
+        """概要:
+            [ランダムアクセス・単体取得]
+            0-indexedで pos 番目にある要素の値を返す。
+
+        入力:
+            pos (int): 取得したい位置（0 <= pos < len(self)）
+
+        出力:
+            指定した位置にある要素の値 (int)
+
+        計算量:
+            時間計算量: 平均 O(log N)
+            空間計算量: O(1)
+        """
+        if pos < 0 or pos >= self.size[self.root]:
+            raise IndexError("Treap index out of range")
+        curr = self.root
+        while curr:
+            self._push(curr)
+            l_size = self.size[self.left[curr]]
+            if pos == l_size:
+                return self.val[curr]
+            elif pos < l_size:
+                curr = self.left[curr]
+            else:
+                pos -= l_size + 1
+                curr = self.right[curr]
+        raise IndexError
+
+    def pop_max(self) -> int:
+        """概要:
+            [最大値削除]
+            ソート状態が維持されている前提で、木の中の最大値を削除し、その値を返す。
+
+        出力:
+            削除された最大値 (int)
+
+        計算量:
+            時間計算量: 平均 O(log N)
+
+        補足:
+            ソート状態（昇順）が維持されている場合、最大値は常に一番右（末尾）に存在します。
+        """
+        total = self.size[self.root]
+        if total == 0:
+            raise IndexError("pop from empty Treap")
+        max_idx = total - 1
+        max_val = self.get(max_idx)
+        self.erase(max_idx)
+        return max_val
+
+    def rank(self, val: int) -> int:
+        """概要:
+            [順位取得]
+            ソート状態が維持されている前提で、値 val が小さい方から何番目（0-indexed）に位置するかを返す。
+            （val 未満の要素の個数に等しい）
+
+        入力:
+            val (int): 順位を調べたい値
+
+        出力:
+            値 val の順位 (int)
+
+        計算量:
+            時間計算量: 平均 O(log N)
+            空間計算量: O(1)
+        """
+        curr = self.root
+        pos = 0
+        while curr:
+            self._push(curr)
+            if self.val[curr] >= val:
+                curr = self.left[curr]
+            else:
+                pos += self.size[self.left[curr]] + 1
+                curr = self.right[curr]
+        return pos
+
 
 # ============================================================
 # 文字列アルゴリズム
@@ -2901,6 +3229,115 @@ def doubling_query_with_weight(
             total = op(total, acc[k][v])
             v = doubling[k][v]
     return v, total
+
+# ============================================================
+# Kadane's Algorithm（最大・最小・循環最大部分配列和）
+# ============================================================
+
+def kadane_max(arr: list[int]) -> tuple[int, int, int]:
+    """概要:
+        最大部分配列和（Kadane's Algorithm）。
+        空でない連続部分配列 arr[l:r+1] の和の最大値を O(N) で求める。
+    入力:
+        arr (list[int]): 対象配列。空でないこと。
+    出力:
+        tuple[int, int, int]: (最大和, 開始インデックス l, 終了インデックス r)。
+                               arr[l:r+1] が最大部分配列（複数あれば最左を返す）。
+    補足:
+        全要素が負の場合は最大の単一要素を返す。
+        部分配列のインデックスが不要なら戻り値の [0] だけ使えばよい。
+    使用例:
+        A = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+        val, l, r = kadane_max(A)
+        print(val, l, r)  # 6, 3, 6  (A[3:7] = [4,-1,2,1])
+    """
+    best      = arr[0]
+    cur       = arr[0]
+    best_l    = 0
+    best_r    = 0
+    cur_l     = 0
+
+    for i in range(1, len(arr)):
+        if cur + arr[i] < arr[i]:
+            # ここから新たに始めるほうが良い
+            cur   = arr[i]
+            cur_l = i
+        else:
+            cur += arr[i]
+
+        if cur > best:
+            best   = cur
+            best_l = cur_l
+            best_r = i
+
+    return best, best_l, best_r
+
+
+def kadane_min(arr: list[int]) -> tuple[int, int, int]:
+    """概要:
+        最小部分配列和（Kadane's Algorithm の最小版）。
+        空でない連続部分配列 arr[l:r+1] の和の最小値を O(N) で求める。
+    入力:
+        arr (list[int]): 対象配列。空でないこと。
+    出力:
+        tuple[int, int, int]: (最小和, 開始インデックス l, 終了インデックス r)。
+    補足:
+        最大版と符号を反転させた実装。全要素が正の場合は最小の単一要素を返す。
+    使用例:
+        A = [2, -1, 3, -4, 2, -1, 2, 1, -5]
+        val, l, r = kadane_min(A)
+        print(val, l, r)  # -5, 8, 8
+    """
+    best   = arr[0]
+    cur    = arr[0]
+    best_l = 0
+    best_r = 0
+    cur_l  = 0
+
+    for i in range(1, len(arr)):
+        if cur + arr[i] > arr[i]:
+            cur   = arr[i]
+            cur_l = i
+        else:
+            cur += arr[i]
+
+        if cur < best:
+            best   = cur
+            best_l = cur_l
+            best_r = i
+
+    return best, best_l, best_r
+
+
+def kadane_circular_max(arr: list[int]) -> int:
+    """概要:
+        循環配列における最大部分配列和。
+        arr を円環とみなしたとき、連続部分配列の和の最大値を O(N) で求める。
+    入力:
+        arr (list[int]): 対象配列。空でないこと。
+    出力:
+        int: 最大部分配列和。
+    補足:
+        考え方:
+            ケース1: 最大部分配列が「折り返しを含まない」→ 通常の kadane_max と同じ。
+            ケース2: 最大部分配列が「折り返しを含む」
+                    → 残り（除外）部分が最小部分配列 = total - kadane_min の値が答え。
+        全要素が負の場合は折り返しを使わない通常の最大値を返す（ケース2は空になるため）。
+    使用例:
+        A = [8, -1, 3, -2]
+        print(kadane_circular_max(A))  # 12  (8 + 3 + (-2) + (-1) の折り返し = 12 ではなく 8+3+fold)
+        # A = [5, -3, 5]
+        print(kadane_circular_max([5, -3, 5]))  # 10  ([5,-3,5] 折り返して 5+5=10)
+    """
+    total    = sum(arr)
+    max_val  = kadane_max(arr)[0]
+    min_val  = kadane_min(arr)[0]
+
+    # 全部が負のケースでは total - min_val が 0（空配列）になるので除外
+    if max_val < 0:
+        return max_val
+
+    return max(max_val, total - min_val)
 
 # ============================================================
 # 単調スタック

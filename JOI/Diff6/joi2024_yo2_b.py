@@ -101,10 +101,98 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+class BIT:
+    """概要:
+        1次元 Binary Indexed Tree（Fenwick Tree）を提供するクラス。
+
+    メソッド:
+        add(i, x): a[i] に x を加算する。
+        sum(i): 区間 [0, i] の和を返す。
+        range_sum(l, r): 区間 [l, r) の和を返す。
+        lower_bound(w): 累積和が w 以上になる最小インデックスを返す。
+
+    補足:
+        すべて 0-indexed インターフェース。各操作は O(logN)。
+
+    使用例:
+        bit = BIT(n)
+        bit.add(i, x)        # a[i] += x
+        bit.sum(i)           # a[0] + ...  + a[i]
+        bit.range_sum(l, r)  # a[l] + ... + a[r-1]
+    """
+    def __init__(self, n: int):
+        self.n = n
+        self.data = [0] * (n + 1)
+
+    def add(self, i: int, x: int) -> None:
+        i += 1
+        while i <= self.n:
+            self.data[i] += x
+            i += i & -i
+
+    def sum(self, i: int) -> int:
+        """a[0] + ... + a[i]"""
+        s = 0
+        i += 1
+        while i > 0:
+            s += self.data[i]
+            i -= i & -i
+        return s
+
+    def range_sum(self, l: int, r: int) -> int:
+        """a[l] + ... + a[r-1]"""
+        if l >= r: return 0
+        return self.sum(r - 1) - (self.sum(l - 1) if l > 0 else 0)
+
+    def lower_bound(self, w: int) -> int:
+        """累積和が w 以上になる最小のインデックス"""
+        if w <= 0: return 0
+        x, k = 0, 1
+        while k * 2 <= self.n: k *= 2
+        while k > 0:
+            if x + k <= self.n and self.data[x + k] < w:
+                w -= self.data[x + k]
+                x += k
+            k //= 2
+        return x
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, M, Q = MAP()
+    PA = LISTS(N)
+    bit = BIT(N)
+    for i in range(N):
+        bit.add(i, PA[i][0])
+    d = dict()
+    for i in range(N):
+        if PA[i][1] not in d:
+            d[PA[i][1]] = []
+        d[PA[i][1]].append(i)
+    A = [A for P, A in PA]
+    P = [P for P, A in PA]
+    TLR = TUPLES(Q)
+    ITLR = sorted([(T, L, R, i) for i, (T, L, R) in enumerate(TLR)])
+    T = [T for T, L, R, I in ITLR]
+    T = list(set(T))
+    ans = [None] * Q
+    now = 0
+    for t in T:
+        if t not in d:
+            while now < Q and ITLR[now][0] == t:
+                _, L, R, I = ITLR[now]
+                ans[I] = bit.range_sum(L-1, R)
+                now += 1
+        else:
+            for i in d[t]:
+                bit.add(i, -(P[i]//2))
+            while now < Q and ITLR[now][0] == t:
+                _, L, R, I = ITLR[now]
+                ans[I] = bit.range_sum(L-1, R)
+                now += 1
+            for i in d[t]:
+                bit.add(i, P[i]//2)
+    for a in ans:
+        pr(a)
 
 
 
