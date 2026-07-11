@@ -2090,304 +2090,302 @@ class Mo:
 
 class ImplicitTreap:
     """概要:
-        列に対する挿入、削除、区間反転、区間クエリ(和など)を平均 O(log N) で処理する平衡二分探索木(非再帰実装)。
-        ノードを配列で管理し、再帰によるオーバーヘッドをなくした高速版。
-        ※ デフォルトでは区間和(sum)を管理する実装になっていますが、_update関数内の演算を変えることで
-           区間最小値(min)や区間最大値(max)などに容易に変更可能です。
+    配列のように振る舞い、強力な区間操作や検索をO(log N)で処理する拡張版の平衡二分探索木（Treap）。
+    PyPyでの高速化のため、全てのノード情報を1次元配列で管理。区間加算・反転の遅延評価に対応。
 
     メソッド:
-        insert(pos, val): pos番目に値valを挿入する。
-        erase(pos): pos番目の要素を削除する。
-        query(l, r): 区間 [l, r) の値(デフォルトは和)を取得する。
-        reverse(l, r): 区間 [l, r) の要素の並びを反転させる。
-        update(pos, val): pos番目の要素をvalに変更する。
+    - build(arr): 配列からO(N log N)で初期木を構築する。
+    - insert(index, value): 指定したインデックスに要素を挿入する。
+    - erase(index): 指定したインデックスの要素を削除する。
+    - pop(index): 指定したインデックスの要素を削除し、その値を返す（デフォルトは末尾）。
+    - pop_max(): 配列内の最大値を検索して削除し、その値を返す。
+    - update(index, value): 指定したインデックスの要素の値をvalueに更新する。
+    - add_val(l, r, value): 区間 [l, r) の全ての要素に value を加算する。
+    - query(l, r): 区間 [l, r) の (和, 最小値, 最大値) のタプルを返す。
+    - reverse(l, r): 区間 [l, r) の要素の並びを反転させる。
+    - rotate(l, r, k): 区間 [l, r) の要素を右に k 個分シフト（巡回シフト）させる。
+    - bisect_left(value): 配列が昇順ソートされている前提で、value 以上となる最初のインデックスを返す。
+    - get(index): 指定したインデックスの要素の値を取得する。
+    - to_list(): 現在の配列の状態をPythonのリストとして返す。
 
     入力:
-        n_max (int): 挿入される最大要素数（ノード配列の最大サイズ）。
+    - init: capacity (予測される最大ノード数)
+    - 各メソッド: インデックス(l, r, index)は0-indexed。区間は半開区間 [l, r)。
 
     出力:
-        query(l, r) は区間 [l, r) の計算結果(int)を返す。
-        __len__() により現在の要素数を返す。
+    - query(l, r) は (区間和, 区間最小値, 区間最大値) のタプル。
+    - pop系, get系は該当する要素の値を返す。
 
     計算量:
-        時間計算量: 各操作について平均 O(log N)
-        空間計算量: O(n_max)
+    - 時間計算量: 各クエリ O(log N) (buildは O(N log N) )
+    - 空間計算量: O(capacity)
 
     補足:
-        - Xorshiftを用いた乱数生成により、Treapの優先度を決定しています。
-        - 0番目のインデックスはNullノード(Noneの代わり)として扱い、アクセスしないようになっています。
-        - lower_boundを使う場合、途中でreverse(区間反転)はしないでください、値の順序が崩れるため正しく動作しません。
+    - 遅延評価は `rev` (反転) と `add` (加算) の2種類を管理。
     """
-    def __init__(self, n_max: int):
-        self.left = [0] * (n_max + 1)
-        self.right = [0] * (n_max + 1)
-        self.val = [0] * (n_max + 1)
-        self.sm = [0] * (n_max + 1)
-        self.size = [0] * (n_max + 1)
-        self.priority = [0] * (n_max + 1)
-        self.rev = [False] * (n_max + 1)
-        self.node_cnt = 0
+
+    def __init__(self, capacity: int = 300005, default_min: int = 10**18, default_max: int = -10**18):
+        self.capacity = capacity
+        self.default_min = default_min
+        self.default_max = default_max
+        
+        self.val = [0] * capacity
+        self.pri = [0] * capacity
+        self.size = [0] * capacity
+        self.sum_v = [0] * capacity
+        self.min_v = [default_min] * capacity
+        self.max_v = [default_max] * capacity
+        
+        self.rev = [0] * capacity
+        self.add = [0] * capacity
+        
+        self.left = [0] * capacity
+        self.right = [0] * capacity
+        
         self.root = 0
-        self._seed = 123456789  # 乱数シード
+        self.node_count = 0
+        
+        self._x = 123456789
+        self._y = 362436069
+        self._z = 521288629
+        self._w = 88675123
 
     def _rand(self) -> int:
-        self._seed ^= (self._seed << 13) & 0xFFFFFFFF
-        self._seed ^= (self._seed >> 17)
-        self._seed ^= (self._seed << 5) & 0xFFFFFFFF
-        return self._seed
+        t = self._x ^ ((self._x << 11) & 0xFFFFFFFF)
+        self._x, self._y, self._z = self._y, self._z, self._w
+        self._w = (self._w ^ (self._w >> 19) ^ (t ^ (t >> 8))) & 0xFFFFFFFF
+        return self._w
 
-    def _update(self, k: int) -> None:
-        if not k:
+    def _create_node(self, value: int) -> int:
+        self.node_count += 1
+        u = self.node_count
+        self.val[u] = value
+        self.pri[u] = self._rand()
+        self.size[u] = 1
+        self.sum_v[u] = value
+        self.min_v[u] = value
+        self.max_v[u] = value
+        self.rev[u] = 0
+        self.add[u] = 0
+        self.left[u] = 0
+        self.right[u] = 0
+        return u
+
+    def _push_up(self, u: int):
+        if u == 0:
             return
-        l = self.left[k]
-        r = self.right[k]
-        self.size[k] = self.size[l] + self.size[r] + 1
-        # 区間和の場合。区間最小値などの場合はここを変更する
-        self.sm[k] = self.sm[l] + self.sm[r] + self.val[k]
+        l, r = self.left[u], self.right[u]
+        self.size[u] = self.size[l] + 1 + self.size[r]
+        self.sum_v[u] = self.sum_v[l] + self.val[u] + self.sum_v[r]
+        self.min_v[u] = min(self.min_v[l], self.val[u], self.min_v[r])
+        self.max_v[u] = max(self.max_v[l], self.val[u], self.max_v[r])
 
-    def _push(self, k: int) -> None:
-        if not k:
+    def _push_down(self, u: int):
+        if u == 0:
             return
-        if self.rev[k]:
-            l = self.left[k]
-            r = self.right[k]
-            self.left[k], self.right[k] = r, l
-            if l: self.rev[l] = not self.rev[l]
-            if r: self.rev[r] = not self.rev[r]
-            self.rev[k] = False
+        l, r = self.left[u], self.right[u]
+        
+        # 反転の伝播
+        if self.rev[u]:
+            if l:
+                self.rev[l] ^= 1
+                self.left[l], self.right[l] = self.right[l], self.left[l]
+            if r:
+                self.rev[r] ^= 1
+                self.left[r], self.right[r] = self.right[r], self.left[r]
+            self.rev[u] = 0
+            
+        # 加算の伝播
+        if self.add[u]:
+            add_val = self.add[u]
+            if l:
+                self.add[l] += add_val
+                self.val[l] += add_val
+                self.sum_v[l] += add_val * self.size[l]
+                self.min_v[l] += add_val
+                self.max_v[l] += add_val
+            if r:
+                self.add[r] += add_val
+                self.val[r] += add_val
+                self.sum_v[r] += add_val * self.size[r]
+                self.min_v[r] += add_val
+                self.max_v[r] += add_val
+            self.add[u] = 0
 
-    def _split(self, root: int, k: int) -> tuple[int, int]:
-        l_root = r_root = 0
-        l_ptr = r_ptr = 0
-        l_path = []
-        r_path = []
-        curr = root
-        while curr:
-            self._push(curr)
-            l_size = self.size[self.left[curr]]
-            if k <= l_size:
-                if not r_root: r_root = curr
-                else: self.left[r_ptr] = curr
-                r_ptr = curr
-                r_path.append(curr)
-                curr = self.left[curr]
-            else:
-                if not l_root: l_root = curr
-                else: self.right[l_ptr] = curr
-                l_ptr = curr
-                l_path.append(curr)
-                curr = self.right[curr]
-                k -= l_size + 1
-
-        if l_ptr: self.right[l_ptr] = 0
-        if r_ptr: self.left[r_ptr] = 0
-
-        while l_path: self._update(l_path.pop())
-        while r_path: self._update(r_path.pop())
-
-        return l_root, r_root
+    def _split(self, u: int, k: int):
+        if u == 0:
+            return 0, 0
+        self._push_down(u)
+        implicit_key = self.size[self.left[u]] + 1
+        if k < implicit_key:
+            l1, r1 = self._split(self.left[u], k)
+            self.left[u] = r1
+            self._push_up(u)
+            return l1, u
+        else:
+            l2, r2 = self._split(self.right[u], k - implicit_key)
+            self.right[u] = l2
+            self._push_up(u)
+            return u, r2
 
     def _merge(self, l: int, r: int) -> int:
-        if not l: return r
-        if not r: return l
+        if l == 0 or r == 0:
+            return l if l != 0 else r
+        self._push_down(l)
+        self._push_down(r)
+        if self.pri[l] > self.pri[r]:
+            self.right[l] = self._merge(self.right[l], r)
+            self._push_up(l)
+            return l
+        else:
+            self.left[r] = self._merge(l, self.left[r])
+            self._push_up(r)
+            return r
 
-        head = 0
-        prev = 0
-        is_left = False
-        curr_l = l
-        curr_r = r
-        path = []
+    def build(self, arr: list):
+        """配列から木を構築"""
+        for val in arr:
+            self.insert(self.size[self.root], val)
 
-        while curr_l and curr_r:
-            if self.priority[curr_l] > self.priority[curr_r]:
-                self._push(curr_l)
-                path.append(curr_l)
-                if prev:
-                    if is_left: self.left[prev] = curr_l
-                    else: self.right[prev] = curr_l
-                else: head = curr_l
-                prev = curr_l
-                is_left = False
-                curr_l = self.right[curr_l]
-            else:
-                self._push(curr_r)
-                path.append(curr_r)
-                if prev:
-                    if is_left: self.left[prev] = curr_r
-                    else: self.right[prev] = curr_r
-                else: head = curr_r
-                prev = curr_r
-                is_left = True
-                curr_r = self.left[curr_r]
+    def insert(self, index: int, value: int):
+        u = self._create_node(value)
+        l, r = self._split(self.root, index)
+        self.root = self._merge(self._merge(l, u), r)
 
-        rem = curr_l if curr_l else curr_r
-        if prev:
-            if is_left: self.left[prev] = rem
-            else: self.right[prev] = rem
-
-        while path: self._update(path.pop())
-
-        return head
-
-    def insert(self, pos: int, val: int) -> None:
-        self.node_cnt += 1
-        idx = self.node_cnt
-        self.val[idx] = val
-        self.sm[idx] = val
-        self.size[idx] = 1
-        self.priority[idx] = self._rand()
-
-        l, r = self._split(self.root, pos)
-        self.root = self._merge(self._merge(l, idx), r)
-
-    def erase(self, pos: int) -> None:
-        l, r = self._split(self.root, pos)
+    def erase(self, index: int):
+        l, r = self._split(self.root, index)
         m, r = self._split(r, 1)
         self.root = self._merge(l, r)
 
-    def query(self, l: int, r: int) -> int:
-        # [l, r) のクエリ
-        left, right = self._split(self.root, l)
-        mid, right = self._split(right, r - l)
-        res = self.sm[mid] if mid else 0
-        self.root = self._merge(self._merge(left, mid), right)
+    def pop(self, index: int = -1) -> int:
+        """指定位置（デフォルトは末尾）の要素を削除して返す"""
+        if index < 0:
+            index += self.size[self.root]
+        l, r = self._split(self.root, index)
+        m, r = self._split(r, 1)
+        res = self.val[m]
+        self.root = self._merge(l, r)
         return res
 
-    def reverse(self, l: int, r: int) -> None:
-        # [l, r) の反転
-        left, right = self._split(self.root, l)
-        mid, right = self._split(right, r - l)
-        if mid:
-            self.rev[mid] = not self.rev[mid]
-        self.root = self._merge(self._merge(left, mid), right)
-
-    def update(self, pos: int, val: int) -> None:
-        # pos番目の要素をvalに変更する
-        self.erase(pos)
-        self.insert(pos, val)
-
-    def __len__(self) -> int:
-        return self.size[self.root]
-
-    def lower_bound(self, val: int) -> int:
-        """概要:
-            値が val 以上となる最初の位置（0-indexed）を返す。
-            ※ 木全体が値に関して昇順にソートされている必要があります。
-
-        入力:
-            val (int): 探索したい値。
-
-        出力:
-            条件を満たす位置のインデックス (int)。すべて val 未満なら現在の要素数を返す。
-
-        計算量:
-            時間計算量: 平均 O(log N)
-            空間計算量: O(1)
-        """
-        curr = self.root
-        pos = 0
-        while curr:
-            self._push(curr)
-            if self.val[curr] >= val:
-                # 左部分木に目的の値（またはそれ以上）がある可能性があるので左へ
-                curr = self.left[curr]
-            else:
-                # 現在の値は val 未満なので、左部分木と自分自身のサイズを位置に加算して右へ
-                pos += self.size[self.left[curr]] + 1
-                curr = self.right[curr]
-        return pos
-
-    def insert_sorted(self, val: int) -> None:
-        """概要:
-            ソートされた状態を維持しながら、値 val を適切な位置に挿入する。
-
-        入力:
-            val (int): 挿入したい値。
-
-        計算量:
-            時間計算量: 平均 O(log N)
-        """
-        pos = self.lower_bound(val)
-        self.insert(pos, val)
-
-    def get(self, pos: int) -> int:
-        """概要:
-            [ランダムアクセス・単体取得]
-            0-indexedで pos 番目にある要素の値を返す。
-
-        入力:
-            pos (int): 取得したい位置（0 <= pos < len(self)）
-
-        出力:
-            指定した位置にある要素の値 (int)
-
-        計算量:
-            時間計算量: 平均 O(log N)
-            空間計算量: O(1)
-        """
-        if pos < 0 or pos >= self.size[self.root]:
-            raise IndexError("Treap index out of range")
-        curr = self.root
-        while curr:
-            self._push(curr)
-            l_size = self.size[self.left[curr]]
-            if pos == l_size:
-                return self.val[curr]
-            elif pos < l_size:
-                curr = self.left[curr]
-            else:
-                pos -= l_size + 1
-                curr = self.right[curr]
-        raise IndexError
+    def _find_max_index(self, u: int) -> int:
+        """部分木uから最大値を持つインデックスを探索"""
+        if u == 0:
+            return -1
+        self._push_down(u)
+        # 左の子に最大値があるか
+        if self.left[u] and self.max_v[self.left[u]] == self.max_v[u]:
+            return self._find_max_index(self.left[u])
+        # 現在のノードが最大値か
+        if self.val[u] == self.max_v[u]:
+            return self.size[self.left[u]]
+        # 右の子に最大値がある
+        return self.size[self.left[u]] + 1 + self._find_max_index(self.right[u])
 
     def pop_max(self) -> int:
-        """概要:
-            [最大値削除]
-            ソート状態が維持されている前提で、木の中の最大値を削除し、その値を返す。
+        """木全体の最大値を削除して返す"""
+        if self.root == 0:
+            raise IndexError("pop_max from empty tree")
+        idx = self._find_max_index(self.root)
+        return self.pop(idx)
 
-        出力:
-            削除された最大値 (int)
-
-        計算量:
-            時間計算量: 平均 O(log N)
-
-        補足:
-            ソート状態（昇順）が維持されている場合、最大値は常に一番右（末尾）に存在します。
-        """
-        total = self.size[self.root]
-        if total == 0:
-            raise IndexError("pop from empty Treap")
-        max_idx = total - 1
-        max_val = self.get(max_idx)
-        self.erase(max_idx)
-        return max_val
-
-    def rank(self, val: int) -> int:
-        """概要:
-            [順位取得]
-            ソート状態が維持されている前提で、値 val が小さい方から何番目（0-indexed）に位置するかを返す。
-            （val 未満の要素の個数に等しい）
-
-        入力:
-            val (int): 順位を調べたい値
-
-        出力:
-            値 val の順位 (int)
-
-        計算量:
-            時間計算量: 平均 O(log N)
-            空間計算量: O(1)
-        """
-        curr = self.root
-        pos = 0
-        while curr:
-            self._push(curr)
-            if self.val[curr] >= val:
-                curr = self.left[curr]
+    def bisect_left(self, value: int) -> int:
+        """配列が昇順のとき、value以上の値が現れる最初のインデックスを返す"""
+        u = self.root
+        idx = 0
+        while u != 0:
+            self._push_down(u)
+            if self.val[u] >= value:
+                # 自身を含め左側に候補がある
+                u = self.left[u]
             else:
-                pos += self.size[self.left[curr]] + 1
-                curr = self.right[curr]
-        return pos
+                # 左側と自身は条件を満たさないのでスキップ
+                idx += self.size[self.left[u]] + 1
+                u = self.right[u]
+        return idx
+
+    def update(self, index: int, value: int):
+        l, r = self._split(self.root, index)
+        m, r = self._split(r, 1)
+        self.val[m] = value
+        self._push_up(m)
+        self.root = self._merge(self._merge(l, m), r)
+
+    def add_val(self, left: int, right: int, value: int):
+        """区間加算"""
+        if left >= right:
+            return
+        l, r = self._split(self.root, left)
+        m, r = self._split(r, right - left)
+        
+        self.add[m] += value
+        self.val[m] += value
+        self.sum_v[m] += value * self.size[m]
+        self.min_v[m] += value
+        self.max_v[m] += value
+        
+        self.root = self._merge(self._merge(l, m), r)
+
+    def get(self, index: int) -> int:
+        l, r = self._split(self.root, index)
+        m, r = self._split(r, 1)
+        res = self.val[m]
+        self.root = self._merge(self._merge(l, m), r)
+        return res
+
+    def query(self, left: int, right: int):
+        """(区間和, 最小値, 最大値) を返す"""
+        if left >= right:
+            return 0, self.default_min, self.default_max
+        l, r = self._split(self.root, left)
+        m, r = self._split(r, right - left)
+        res = (self.sum_v[m], self.min_v[m], self.max_v[m])
+        self.root = self._merge(self._merge(l, m), r)
+        return res
+
+    def reverse(self, left: int, right: int):
+        if left >= right:
+            return
+        l, r = self._split(self.root, left)
+        m, r = self._split(r, right - left)
+        
+        self.rev[m] ^= 1
+        self.left[m], self.right[m] = self.right[m], self.left[m]
+        
+        self.root = self._merge(self._merge(l, m), r)
+
+    def rotate(self, left: int, right: int, k: int):
+        """区間を右にk個分巡回シフトさせる"""
+        if left >= right:
+            return
+        length = right - left
+        k %= length
+        if k == 0:
+            return
+        
+        l, r = self._split(self.root, left)
+        m, r = self._split(r, length)
+        
+        # m を [0, length-k) と [length-k, length) に分割
+        m1, m2 = self._split(m, length - k)
+        # m2を前に持ってきてマージ
+        m_rotated = self._merge(m2, m1)
+        
+        self.root = self._merge(self._merge(l, m_rotated), r)
+
+    def to_list(self) -> list:
+        res = []
+        def dfs(u):
+            if u == 0:
+                return
+            self._push_down(u)
+            dfs(self.left[u])
+            res.append(self.val[u])
+            dfs(self.right[u])
+        dfs(self.root)
+        return res
+
+    def __len__(self):
+        return self.size[self.root]
 
 
 # ============================================================
