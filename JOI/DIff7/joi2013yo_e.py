@@ -118,7 +118,7 @@ def compress(arr: list[int]) -> tuple[dict[int, int], list[int]]:
 
 def main() -> None:
     # ここに解答を書く
-    N, K = NAP()
+    N, K = MAP()
     fishes = []
     X_arr = []
     Y_arr = []
@@ -126,15 +126,27 @@ def main() -> None:
     for _ in range(N):
         X1, Y1, D1, X2, Y2, D2 = MAP()
         fishes.append((X1, Y1, D1, X2, Y2, D2))
-        X_arr.append([X1, X2])
-        Y_arr.append([Y1, Y2])
-        D_arr.append([D1, D2])
+        X_arr.extend([X1, X2])
+        Y_arr.extend([Y1, Y2])
+        D_arr.extend([D1, D2])
     cx, X_valus = compress(X_arr)
     cy, Y_valus = compress(Y_arr)
     cd, D_valus = compress(D_arr)
     nx = len(X_valus)
     ny = len(Y_valus)
     nd = len(D_valus)
+    grid = [[[0] * (nd-1) for _ in range(ny-1)] for _ in range(nx-1)]
+    for x1, y1, d1, x2, y2, d2 in fishes:
+        for i in range(cx[x1], cx[x2]):
+            for j in range(cy[y1], cy[y2]):
+                for k in range(cd[d1], cd[d2]):
+                    grid[i][j][k] += 1
+    ans = 0
+    for i in range(nx-1):
+        for j in range(ny-1):
+            for k in range(nd-1):
+                if grid[i][j][k] >= K:
+                    ans += (X_valus[i+1]-X_valus[i]) * (Y_valus[j+1]-Y_valus[j]) * (D_valus[k+1]-D_valus[k])
     print(ans)
 
 

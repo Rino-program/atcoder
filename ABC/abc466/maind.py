@@ -102,90 +102,20 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-class DSU:
-    """概要:
-        Union-Find（Disjoint Set Union）を提供するクラス。
-
-    メソッド:
-        leader(x): x の属する連結成分の代表元を返す。
-        merge(a, b): a と b の成分を併合する。
-        same(a, b): 同一成分か判定する。
-        size(x): x の成分サイズを返す。
-        group_count(): 現在の成分数を返す。
-        groups(): 全成分を頂点リストで返す。
-
-    計算量:
-        leader/merge/same/size は償却 O(α(N))、group_count は O(1)、groups は O(Nα(N))。
-
-    補足:
-        経路圧縮とサイズ併合でほぼ償却 O(α(N))。
-
-    使用例:
-        uf = DSU(n)
-        uf.merge(0, 1)
-        print(uf.same(0, 1))  # True
-    """
-    def __init__(self, n: int):
-        self.parent = list(range(n))
-        self.rank = [1] * n
-        self.n = n
-        self._group_count = n
-
-    def leader(self, x: int) -> int:
-        """根を取得"""
-        if self.parent[x] != x:
-            self.parent[x] = self.leader(self.parent[x])
-        return self.parent[x]
-
-    def merge(self, a: int, b: int) -> bool:
-        """併合（成功でTrue）"""
-        a, b = self.leader(a), self.leader(b)
-        if a == b: return False
-        if self.rank[a] < self.rank[b]: a, b = b, a
-        self.parent[b] = a
-        self.rank[a] += self.rank[b]
-        self._group_count -= 1
-        return True
-
-    def same(self, a: int, b: int) -> bool:
-        """同じグループか"""
-        return self.leader(a) == self.leader(b)
-
-    def size(self, x: int) -> int:
-        """xが属するグループのサイズ"""
-        return self.rank[self.leader(x)]
-
-    def group_count(self) -> int:
-        """グループ数"""
-        return self._group_count
-
-    def groups(self) -> list[list[int]]:
-        """全グループを取得"""
-        result = defaultdict(list)
-        for i in range(self.n):
-            result[self.leader(i)].append(i)
-        return list(result.values())
-
 def main() -> None:
     # ここに解答を書く
     N, M = MAP()
-    dsu = DSU(2*N)
-    for _ in range(M):
-        u, v = MAP()
-        u -= 1; v -= 1
-        u, v = min(u, v), max(u, v)
-        dsu.merge(u, v+N)
-    ans = [0] * N
-    for group in dsu.groups():
-        unique_cities = set()
-        for city in group:
-            unique_cities.add(city % N)
-        unreachable_cities = N - len(unique_cities)
-        for city in group:
-            if city < N:
-                ans[city] = unreachable_cities
-    for i in range(N):
-        print(ans[i])
+    RC = TUPLES(M)[::-1]
+    diR = dedict(int)
+    diC = dedict(int)
+    ans = 0
+    for R, C in RC:
+        if R not in diR and C not in diC:
+            ans += 1
+        diR[R] = 1
+        diC[C] = 1
+    print(ans)
+
 
 
 
