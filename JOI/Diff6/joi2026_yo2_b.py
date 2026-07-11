@@ -104,6 +104,22 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A = LIST()
+    now = [0]
+    ans = 0
+    for i in A:
+        now.append(i)
+        ans += sum(now) // 3
+        tmp = sum(now) // 3 * 3
+        while tmp > 0:
+            if now[0] >= tmp:
+                now[0] -= tmp
+                break
+            else:
+                tmp -= now[0]
+                now.pop(0)
+        if len(now) >= 2:
+            now.pop(0)
     print(ans)
 
 
