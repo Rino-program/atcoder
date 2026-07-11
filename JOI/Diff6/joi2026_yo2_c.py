@@ -104,7 +104,34 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    print(ans)
+    S = STR()
+    ans = []
+    now = 0
+    idx = 0
+    try:
+        while idx < N:
+            if S[idx] == "J":
+                now += 1
+                idx += 1
+            elif S[idx:idx+2] == "OI":
+                cut = 0
+                while idx < N and S[idx:idx+2] == "OI":
+                    idx += 2
+                    cut += 1
+                for j in range(cut):
+                    ans.append("O")
+                    ans.append("I")
+            else:
+                for j in range(now):
+                    ans.append("J")
+                ans.append(S[idx])
+                idx += 1
+                now = 0
+    except IndexError:
+        pass
+    for i in range(now):
+        ans.append("J")
+    print("".join(ans))
 
 
 
