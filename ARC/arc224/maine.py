@@ -5,6 +5,7 @@
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
+from sortedcontainers import SortedSet, SortedList, SortedDict
 from bisect import bisect_left, bisect_right
 from copy import deepcopy
 import operator
@@ -103,20 +104,38 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    S = STRS(N)
-    se = set()
-    for i in S:
-        li = []
-        for j in i:
-            li.append("0" if j == "1" else "1")
-        se.add(int("".join(li), 2))
-    for i in range(1<<min(20, M)):
-        if i not in se:
-            Yes()
-            print(bin(i)[2:].zfill(M))
-            return
-    No()
+    N = INT()
+    for _ in range(N):
+        S = STR()
+        now = 0
+        ans = len(S)
+        li = [0, 0, 0, 0, 0] # A, B, C, AB, ABC
+        for i, a in en(S):
+            if a == "A":
+                li[0] += 1
+            elif a == "B":
+                li[1] += 1
+                if li[0]:
+                    li[0] -= 1
+                    li[1] -= 1
+                    li[3] += 1
+                    if li[3] >= 2:
+                        ans -= 2
+                        li[3] = 1
+                else:
+                    ans -= li[0] + li[3]*2 + li[4]*3
+                    li = [0, 0, 0, 0, 0]
+            elif a == "C":
+                li[2] += 1
+                if li[3]:
+                    li[3] -= 1
+                    li[2] -= 1
+                    li[4] += 1
+                else:
+                    ans -= li[0] + li[3]*2 + li[4]*3
+                    li = [0, 0, 0, 0, 0]
+        ans -= li[0] + li[3]*2 + li[4]*3
+        print(ans)
 
 
 

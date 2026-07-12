@@ -5,6 +5,7 @@
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
+from sortedcontainers import SortedSet, SortedList, SortedDict
 from bisect import bisect_left, bisect_right
 from copy import deepcopy
 import operator
@@ -101,22 +102,44 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
+from collections.abc import Callable
+def binary_search_min(ng: int, ok: int, N: int) -> int:
+    """概要:
+        単調性を利用して `check(x)=True` となる最小 x を整数二分探索で求める。
+    入力:
+        ng (int): 条件を満たさない側の初期値。
+        ok (int): 条件を満たす側の初期値。
+        check (Callable[[int], bool]): 判定関数（単調）。
+    出力:
+        int: 条件を満たす最小の値。
+    補足:
+        境界の妥当性（ng 側False, ok 側True）を事前に満たすこと。
+        計算量は O(log|ok-ng|) 回の判定関数呼び出し。
+    """
+    while abs(ok - ng) > 1:
+        mid = (ok + ng) // 2
+        if mid**2>=N:
+            ok = mid
+        else:
+            ng = mid
+    return ok
+
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    S = STRS(N)
-    se = set()
-    for i in S:
-        li = []
-        for j in i:
-            li.append("0" if j == "1" else "1")
-        se.add(int("".join(li), 2))
-    for i in range(1<<min(20, M)):
-        if i not in se:
-            Yes()
-            print(bin(i)[2:].zfill(M))
-            return
-    No()
+    T = INT()
+    for i in range(T):
+        N = INT()
+        ans = 0
+        tmp = max(1, binary_search_min(0, 10**9+10, N))
+        ans += max(0, (tmp - 1) ** 2) * 2 - (tmp-1)*2
+        N -= (tmp - 1) ** 2
+        if N <= tmp - 1:
+            ans += 1
+            ans += (N-1)*2
+        else:
+            ans += 2
+            ans += (N-2)*2
+        print(ans)
 
 
 
