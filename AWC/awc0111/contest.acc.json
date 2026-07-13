@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0111",
+    "title": "AtCoder Weekday Contest 0111 Beta",
+    "url": "https://atcoder.jp/contests/awc0111"
+  },
+  "tasks": [
+    {
+      "id": "awc0111_a",
+      "label": "A",
+      "title": "Figure Skating Qualifying Round",
+      "url": "https://atcoder.jp/contests/awc0111/tasks/awc0111_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0111_b",
+      "label": "B",
+      "title": "Street Lights in a Circular Park",
+      "url": "https://atcoder.jp/contests/awc0111/tasks/awc0111_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0111_c",
+      "label": "C",
+      "title": "Watering the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0111/tasks/awc0111_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0111_d",
+      "label": "D",
+      "title": "Common Tour Record",
+      "url": "https://atcoder.jp/contests/awc0111/tasks/awc0111_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0111_e",
+      "label": "E",
+      "title": "Concatenation of Signboards",
+      "url": "https://atcoder.jp/contests/awc0111/tasks/awc0111_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
