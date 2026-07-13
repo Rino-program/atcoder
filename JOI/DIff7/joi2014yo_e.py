@@ -3,17 +3,8 @@
 # ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 import sys
-from collections import deque, defaultdict, Counter
-from itertools import permutations, combinations, accumulate, product, chain
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from bisect import bisect_left, bisect_right
-from copy import deepcopy
-import operator
+from collections import deque
 import heapq
-import math
-import string
-
-sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -31,80 +22,72 @@ def LIST() -> list[int]:
 def TUPLE() -> tuple[int, ...]:
     return tuple(MAP())
 
-def LISTS(n: int) -> list[list[int]]:
-    return [LIST() for _ in range(n)]
-
 def TUPLES(n: int) -> list[tuple[int, ...]]:
     return [TUPLE() for _ in range(n)]
 
-def LISTSI(n: int) -> list[int]:
-    return [INT() for _ in range(n)]
-
-def STR() -> str:
-    return input()
-
-def STRS(n: int) -> list[str]:
-    return [STR() for _ in range(n)]
-
-def CHARS() -> list[str]:
-    return list(STR())
-
-def CHARSL(n: int) -> list[list[str]]:
-    return [list(STR()) for _ in range(n)]
-
-# ===== 定数 =====
-INF = 10 ** 18
-MOD = 998244353
-# MOD = 10**9 + 7
-
-# ===== 関数短縮 =====
-pr = print
-en = enumerate
-hepu = heapq.heappush
-hepo = heapq.heappop
-bil = bisect_left
-bir = bisect_right
-dedict = defaultdict
-
-# ===== 方向ベクトル =====
-DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
-DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
-
-# ===== 文字列のリスト =====
-LOWER = list(string.ascii_lowercase) # 小文字 a-z の文字列リスト
-UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
-DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
-
-# ===== よく使う出力関数 =====
-def Yes(): print("Yes")
-def No(): print("No")
-def yes(): print("yes")
-def no(): print("no")
-def YES(): print("YES")
-def NO(): print("NO")
-def yn(cond: bool) -> None:
-    """条件に応じてYes/No出力"""
-    print("Yes" if cond else "No")
-
-# ===== デバッグ =====
-def debug(*args, **kwargs) -> None:
-    """デバッグ出力（標準エラー）"""
-    print("[DEBUG]", *args, **kwargs, file=sys.stderr)
-
-def print_grid(grid: list[list], sep: str = '') -> None:
-    """グリッド表示"""
-    for row in grid:
-        print(sep.join(map(str, row)))
-
+INF = 10**9
 
 # ==============================================
 # =================== main =====================
 # ==============================================
 
+def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
+    """概要:
+        非負重みグラフで始点 s からの最短距離を求める。
+    入力:
+        g (list[list[tuple[int, int]]]): 重み付き隣接リスト。
+        s (int): 始点。
+    出力:
+        list[int]: 各頂点への最短距離（未到達は INF）。
+    補足:
+        計算量は O((V+E)logV)。負辺は非対応。
+    """
+    dist = [INF] * len(g)
+    dist[s] = 0
+    pq = [(0, s)]
+    while pq:
+        d, v = heapq.heappop(pq)
+        if d > dist[v]: continue
+        for to, w in g[v]:
+            if dist[v] + w < dist[to]:
+                dist[to] = dist[v] + w
+                heapq.heappush(pq, (dist[to], to))
+    return dist
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, M = MAP()
+    CR = TUPLES(N)
+    g = [[] for _ in range(N)]
+    for i in range(M):
+        a, b = MAP()
+        a -= 1
+        b -= 1
+        g[a].append(b)
+        g[b].append(a)
+    gn = [[] for _ in range(N)]
+    for i in range(N):
+        C, R = CR[i]
+        f = [1] * N
+        d = deque()
+        d.append((i, 0))
+        f[i] = 0
+        s = set()
+        s.add(i)
+        while d:
+            v, num = d.popleft()
+            if num == R:
+                continue
+            for w in g[v]:
+                if f[w]:
+                    f[w] ^= 1
+                    d.append((w, num + 1))
+                    s.add(w)
+        #debug(i, s)
+        for v in s:
+            gn[i].append((v, C))
+    del g
+    ans = dijkstra(gn, 0)[-1]
     print(ans)
 
 
