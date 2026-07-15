@@ -104,7 +104,41 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    H, W = MAP()
+    grid = CHARSL(H)
+    ans = 0
+    s = set()
+    d = [(0, 0)]
+    grid = [[0 if grid[i][j] == "." else int(grid[i][j]) for j in range(W)] for i in range(H)]
+    ne = set()
+    gridn = deepcopy(grid)
+    for i in range(H):
+        for j in range(W):
+            for dx, dy in DIR8:
+                nx, ny = i + dx, j + dy
+                if 0 <= nx < H and 0 <= ny < W:
+                    if grid[i][j] > 0 and grid[nx][ny] <= 0:
+                        gridn[i][j] -= 1
+                        gridn[i][j] = max(gridn[i][j], 0)
+                        if gridn[i][j] == 0:
+                            ne.add((i, j))
+    #debug(ne)
+    #print_grid(gridn)
+    grid = gridn
+    d = deque()
+    for x, y in ne:
+        d.append((x, y, 0))
+    while d:
+        ans += 1
+        while d and d[-1][2] != ans:
+            x, y, t = d.pop()
+            for dx, dy in DIR8:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < H and 0 <= ny < W:
+                    if grid[nx][ny] > 0:
+                        grid[nx][ny] -= 1
+                        if grid[nx][ny] == 0:
+                            d.appendleft((nx, ny, t + 1))
     print(ans)
 
 

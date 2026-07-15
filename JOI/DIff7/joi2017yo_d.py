@@ -104,7 +104,35 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, M = MAP()
+    A = [a - 1 for a in LISTSI(N)]
+    cntC = Counter(A)
+    cnt = defaultdict(int)
+    for k, v in cntC.items():
+        cnt[k] += v
+    sum_a = [[0] * (N + 1) for _ in range(M)]
+    for i in range(M):
+        for j in range(N):
+            sum_a[i][j + 1] = sum_a[i][j] + (1 if A[j] == i else 0)
+    tot = [0] * (1<<M)
+    for i in range(1<<M):
+        for j in range(M):
+            if (i>>j) & 1:
+                tot[i] += cnt[j]
+    dp = [-1] * (1<<M)
+    dp[0] = 0
+    for i in range(1<<M):
+        if dp[i] == -1:
+            continue
+        start = tot[i]
+        for j in range(M):
+            if not (i>>j) & 1:
+                nxt = i | (1<<j)
+                match_count = sum_a[j][start + cnt[j]] - sum_a[j][start]
+                if dp[i] + match_count > dp[nxt]:
+                    dp[nxt] = dp[i] + match_count
+    max_keep = dp[(1<<M) - 1]
+    ans = N - max_keep
     print(ans)
 
 

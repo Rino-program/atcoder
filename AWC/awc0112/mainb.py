@@ -102,67 +102,20 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-def dijkstra(g: list[list[int]], s: int, se: set, P: int, Q: int, C: set) -> list[int]:
-    """概要:
-        非負重みグラフで始点 s からの最短距離を求める。
-    入力:
-        g (list[list[int]]): 隣接リスト。
-        s (int): 始点。
-        se (set): 特殊な頂点の集合。
-        P (int): 特殊でない辺の重み。
-        Q (int): 特殊な辺の重み。
-        C (set): 不可能な頂点の集合。
-    出力:
-        list[int]: 各頂点への最短距離（未到達は INF）。
-    補足:
-        計算量は O((V+E)logV)。負辺は非対応。
-    """
-    dist = [INF] * len(g)
-    dist[s] = 0
-    pq = [(0, s)]
-    while pq:
-        d, v = heapq.heappop(pq)
-        if d > dist[v]: continue
-        for to in g[v]:
-            if to in se:
-                w = Q
-            else:
-                w = P
-            if to in C:
-                continue
-            if dist[v] + w < dist[to]:
-                dist[to] = dist[v] + w
-                heapq.heappush(pq, (dist[to], to))
-    return dist
-
 def main() -> None:
     # ここに解答を書く
-    N, M, K, S = MAP()
-    P, Q = MAP()
-    C = LISTSI(K)
-    g = [set() for _ in range(N)]
-    for _ in range(M):
-        a, b = MAP()
-        a -= 1; b -= 1
-        g[a].add(b)
-        g[b].add(a)
-    d = deque()
-    s = set()
-    C = [c - 1 for c in C]
-    for c in C:
-        d.append((c, 0))
-    while d:
-        v, dist = d.popleft()
-        if dist == S:
-            continue
-        for nv in g[v]:
-            if nv in s:
-                continue
-            s.add(nv)
-            d.append((nv, dist + 1))
-    C = set(C)
-    ans = dijkstra(g, 0, s, P, Q, C)[-1]
-    print(ans - (Q if N-1 in s else P))
+    N, M, K = MAP()
+    D = LIST()
+    PS = TUPLES(M)[::-1]
+    for i, d in en(D):
+        if K <= 0:
+            No()
+            return
+        K -= d
+        if PS and PS[-1][0]-1 == i:
+            K = max(K, PS[-1][1])
+            PS.pop()
+    Yes()
 
 
 
