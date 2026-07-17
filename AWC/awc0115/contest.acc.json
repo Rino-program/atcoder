@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0115",
+    "title": "AtCoder Weekday Contest 0115 Beta",
+    "url": "https://atcoder.jp/contests/awc0115"
+  },
+  "tasks": [
+    {
+      "id": "awc0115_a",
+      "label": "A",
+      "title": "Watering the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0115/tasks/awc0115_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0115_b",
+      "label": "B",
+      "title": "Luggage Removal",
+      "url": "https://atcoder.jp/contests/awc0115/tasks/awc0115_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0115_c",
+      "label": "C",
+      "title": "Operation: Avoid Failing Grades",
+      "url": "https://atcoder.jp/contests/awc0115/tasks/awc0115_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0115_d",
+      "label": "D",
+      "title": "Photographing the Parade",
+      "url": "https://atcoder.jp/contests/awc0115/tasks/awc0115_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0115_e",
+      "label": "E",
+      "title": "Searching in a Circular String",
+      "url": "https://atcoder.jp/contests/awc0115/tasks/awc0115_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
