@@ -5,7 +5,7 @@
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
-from sortedcontainers import SortedSet, SortedList, SortedDict
+# from sortedcontainers import SortedSet, SortedList, SortedDict
 from bisect import bisect_left, bisect_right
 from copy import deepcopy
 import operator
@@ -104,13 +104,23 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    M, D = MAP()
-    S = STR()
-    L = []
-    R = []
-    for i in S:
-        if i == "G":
-            L.append()
+    T = INT()
+    for _ in range(T):
+        N = INT()
+        li = LIST()
+        f = 1 # 0 上向き 1 下向き
+        now = [0, 0] # 折り返しカウント
+        for i in range(1, N):
+            if li[i-1] > li[i] and f == 0:
+                f = 1
+                now[0] += 1
+            elif li[i-1] < li[i] and f == 1:
+                f = 0
+                now[1] += 1
+        if li[0] > li[1] and tuple(now) == (1, 2):
+            Yes()
+        else:
+            No()
 
 
 
