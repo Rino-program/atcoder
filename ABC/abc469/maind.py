@@ -102,178 +102,21 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # =================== main =====================
 # ==============================================
 
-from collections.abc import Callable
-class SegTree:
-    """概要:
-        モノイド演算を扱う汎用 Segment Tree。
-
-    メソッド:
-        build(arr): 初期配列から構築する。
-        set(i, v) / update(i, v): 1点更新を行う。
-        get(i): 1点取得を行う。
-        query(l, r): 区間 [l, r) の集約値を返す。
-        max_right(l, f): [l, r) の集約が条件 f を満たす最大の r を返す。
-        min_left(r, f): [l, r) の集約が条件 f を満たす最小の l を返す。
-        all_query(): 全区間の集約値を返す。
-
-    計算量:
-        build は O(n)、set/update/get/query/max_right/min_left は O(logN)、all_query は O(1)。
-
-    補足:
-        `op` は結合的、`e` は単位元を与える。
-
-    使用例:
-        # 区間和
-        st = SegTree(n, op=operator.add, e=0)
-        # 区間最小
-        st = SegTree(n, op=min, e=INF)
-        # 区間最大
-        st = SegTree(n, op=max, e=-INF)
-        # 区間GCD
-        st = SegTree(n, op=gcd, e=0)
-    """
-    def __init__(self, n: int, op: Callable = operator.add, e: int = 0):
-        self.n = n
-        self.op = op
-        self.e = e
-        self.size = 1
-        while self.size < n: self.size <<= 1
-        self.data = [e] * (2 * self.size)
-
-    def build(self, arr: list[int]) -> None:
-        for i, v in enumerate(arr):
-            self.data[self.size + i] = v
-        for i in range(self.size - 1, 0, -1):
-            self.data[i] = self.op(self.data[i << 1], self.data[i << 1 | 1])
-
-    def set(self, i: int, v: int) -> None:
-        """a[i] = v"""
-        i += self.size
-        self.data[i] = v
-        while i > 1:
-            i >>= 1
-            self.data[i] = self.op(self.data[i << 1], self.data[i << 1 | 1])
-
-    def get(self, i: int) -> int:
-        """a[i]を取得"""
-        return self.data[self.size + i]
-
-    def query(self, l: int, r: int) -> int:
-        """[l, r) の演算結果"""
-        sml = self.e
-        smr = self.e
-        l += self.size
-        r += self.size
-        while l < r:
-            if l & 1:
-                sml = self.op(sml, self.data[l])
-                l += 1
-            if r & 1:
-                r -= 1
-                smr = self.op(self.data[r], smr)
-            l >>= 1
-            r >>= 1
-        return self.op(sml, smr)
-
-    def max_right(self, l: int, f: Callable[[int], bool]) -> int:
-        """最大の r を返す（f(query(l, r)) が True）"""
-        if l == self.n:
-            return self.n
-        assert 0 <= l <= self.n
-        assert f(self.e)
-
-        l += self.size
-        sm = self.e
-        while True:
-            while l % 2 == 0:
-                l >>= 1
-            nxt = self.op(sm, self.data[l])
-            if not f(nxt):
-                while l < self.size:
-                    l <<= 1
-                    nxt = self.op(sm, self.data[l])
-                    if f(nxt):
-                        sm = nxt
-                        l += 1
-                return l - self.size
-            sm = nxt
-            l += 1
-            if (l & -l) == l:
-                break
-        return self.n
-
-    def min_left(self, r: int, f: Callable[[int], bool]) -> int:
-        """最小の l を返す（f(query(l, r)) が True）"""
-        if r == 0:
-            return 0
-        assert 0 <= r <= self.n
-        assert f(self.e)
-
-        r += self.size
-        sm = self.e
-        while True:
-            r -= 1
-            while r > 1 and r % 2:
-                r >>= 1
-            nxt = self.op(self.data[r], sm)
-            if not f(nxt):
-                while r < self.size:
-                    r = (r << 1) | 1
-                    nxt = self.op(self.data[r], sm)
-                    if f(nxt):
-                        sm = nxt
-                        r -= 1
-                return r + 1 - self.size
-            sm = nxt
-            if (r & -r) == r:
-                break
-        return 0
-
-    def all_query(self) -> int:
-        """全区間の演算結果"""
-        return self.data[1]
-
-    update = set  # エイリアス
-
 def main() -> None:
     # ここに解答を書く
-    N, M = MAP()
-    li = []
-    d = dict()
-    for i in range(1, N+1):
-        d[i] = []
-    for i in range(M):
-        A, B = MAP()
-        s = []
-        s.append(A)
-        s.append(B)
-        li.append(set(s))
-        d[A].append(i)
-        d[B].append(i)
-    def op(x, y):
-        if x == -1:
-            return y
-        elif y == -1:
-            return x
-        return(x&y)
-    e = -1
-    st = SegTree(M, op, e)
-    st.build(li)
-    ans = 0
-    lis = list(li[0])
-    for i in lis:
-        for j in d[i]:
-            st.set(j, -1)
-        answer = st.all_query()
-        if answer == -1:
-            pass
+    Q, V = MAP()
+    h = []
+    for i in range(Q):
+        ipt = LIST()
+        if ipt[0] == 1:
+            hepu(h, -(ipt[2] - ipt[1]))
         else:
-            answer = sorted(list(answer))
-            ans += len(answer) - bir(answer, i)
-        for j in d[i]:
-            st.set(j, li[j])
-    print(ans)
-
+            ans = None
+            if h:
+                ans = -hepo(h)
+            else:
+                ans = -1
+            print(min(V, ans+ipt[1]) if ans != -1 else -1)
 
 
 

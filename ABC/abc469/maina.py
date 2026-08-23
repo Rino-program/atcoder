@@ -104,8 +104,15 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    A, B = MAP()
+    li = [A+B, A-B, A*B]
+    if A % B == 0:
+        li.append(A // B)
+    li = list(map(str, li))
+    if "9" in li:
+        print("Nine")
+    else:
+        print("Nein")
 
 
 

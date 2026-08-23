@@ -105,31 +105,21 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    S = STR()
-    li = []
-    now = 0
+    A = LIST()
+    P = [i for i in A if i >= 0] + [INF]
+    M = [i for i in A if i < 0] + [-INF]
+    P.sort(reverse=True)
+    M.sort()
+    end = 0
+    ans = 0
     for i in range(N):
-        if now == 1:
-            li.append(0)
+        if abs(end - P[-1]) < abs(end - M[-1]):
+            ans += abs(end - P[-1])
+            end = P.pop()
         else:
-            li.append(1)
-        if S[i] == "o":
-            now = 1
-        else:
-            now = 0
-    ans = []
-    now = 0
-    for i in range(N):
-        if now <= 0:
-            ans.append(i)
-        if S[i] == "o":
-            now = 1
-        else:
-            now = max(0, now - 1)
-    for i in range(N - len(ans)+1):
-        ans.append(N)
-    print("\n".join(map(str, ans[1:])))
-
+            ans += abs(end - M[-1])
+            end = M.pop()
+    print(ans)
 
 
 

@@ -104,7 +104,12 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
+    N, K = MAP()
+    S = [STR() for _ in range(N)]
+    S.sort(key=len, reverse=True)
+    ans = []
+    for i in range(K-1):
+        ans
     print(ans)
 
 

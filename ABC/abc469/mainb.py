@@ -105,13 +105,9 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
-    S = "x" + STR() + "x"
-    debug(S)
-    ans = 0
-    for i in range(N):
-        if S[i] == S[i+2] == S[i+1] == "x":
-            ans += 1
-    print(ans)
+    S = [STR().upper() for i in range(N)]
+    C = Counter(S)
+    print(C.most_common(1)[0][1])
 
 
 
