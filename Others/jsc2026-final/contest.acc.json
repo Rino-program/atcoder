@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "jsc2026-final",
+    "title": "第七回日本最強プログラマー学生選手権 -決勝-",
+    "url": "https://atcoder.jp/contests/jsc2026-final"
+  },
+  "tasks": [
+    {
+      "id": "jsc2026_final_a",
+      "label": "A",
+      "title": "Avoid Consecutives",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "jsc2026_final_b",
+      "label": "B",
+      "title": "Binary Flood",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "jsc2026_final_c",
+      "label": "C",
+      "title": "Coin Bird",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "jsc2026_final_d",
+      "label": "D",
+      "title": "Debt Cancellation",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "jsc2026_final_e",
+      "label": "E",
+      "title": "Ensmile",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "jsc2026_final_f",
+      "label": "F",
+      "title": "Four Shelters",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_f",
+      "directory": {
+        "path": "f",
+        "testdir": "../input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "jsc2026_final_g",
+      "label": "G",
+      "title": "Glass Overflow",
+      "url": "https://atcoder.jp/contests/jsc2026-final/tasks/jsc2026_final_g",
+      "directory": {
+        "path": "g",
+        "testdir": "../input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
