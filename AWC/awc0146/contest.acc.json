@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0146",
+    "title": "AtCoder Weekday Contest 0146 Beta",
+    "url": "https://atcoder.jp/contests/awc0146"
+  },
+  "tasks": [
+    {
+      "id": "awc0146_a",
+      "label": "A",
+      "title": "Dice Rolling Operations",
+      "url": "https://atcoder.jp/contests/awc0146/tasks/awc0146_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0146_b",
+      "label": "B",
+      "title": "Cross Illumination",
+      "url": "https://atcoder.jp/contests/awc0146/tasks/awc0146_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0146_c",
+      "label": "C",
+      "title": "Watering the Flower Bed",
+      "url": "https://atcoder.jp/contests/awc0146/tasks/awc0146_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0146_d",
+      "label": "D",
+      "title": "Decryption of the Rotation Cipher",
+      "url": "https://atcoder.jp/contests/awc0146/tasks/awc0146_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0146_e",
+      "label": "E",
+      "title": "Flea Market Assignment",
+      "url": "https://atcoder.jp/contests/awc0146/tasks/awc0146_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
