@@ -1,9 +1,7 @@
 # coding: utf-8
-# AtCoder Competition Template v2.2 ALL (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.1 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/template.py
-
-import os
-import sys
+import os, sys
 from collections import deque, defaultdict, Counter
 from bisect import bisect_left, bisect_right
 import heapq
@@ -87,9 +85,7 @@ def yes(): print("yes")
 def no(): print("no")
 def YES(): print("YES")
 def NO(): print("NO")
-def yn(cond: bool) -> None:
-    """条件に応じてYes/No出力"""
-    print("Yes" if cond else "No")
+
 
 # ============================================================
 # 数学・整数論
@@ -1499,10 +1495,7 @@ class BIT:
             k //= 2
         return x
 
-
-from collections.abc import Callable, Sequence
-from typing import Any
-import operator
+from collections.abc import Callable
 class SegTree:
     """概要:
         モノイド演算を扱う汎用 Segment Tree。
@@ -1517,51 +1510,36 @@ class SegTree:
         all_query(): 全区間の集約値を返す。
 
     計算量:
-        初期化(配列指定)/build は O(N)、set/update/get/query/max_right/min_left は O(logN)、all_query は O(1)。
+        build は O(n)、set/update/get/query/max_right/min_left は O(logN)、all_query は O(1)。
 
     補足:
         `op` は結合的、`e` は単位元を与える。
 
     使用例:
-        # 配列から初期化
-        arr = [1, 2, 3, 4, 5]
-        st = SegTree(arr, op=operator.add, e=0)
-
-        # 要素数から初期化
-        st = SegTree(5, op=min, e=float("inf"))
+        # 区間和
+        st = SegTree(n, op=operator.add, e=0)
+        # 区間最小
+        st = SegTree(n, op=min, e=INF)
+        # 区間最大
+        st = SegTree(n, op=max, e=-INF)
+        # 区間GCD
+        st = SegTree(n, op=gcd, e=0)
     """
-
-    def __init__(
-        self,
-        n_or_arr: int | Sequence[Any],
-        op: Callable[[Any, Any], Any] = operator.add,
-        e: Any = 0,
-    ):
+    def __init__(self, n: int, op: Callable = operator.add, e: int = 0):
+        self.n = n
         self.op = op
         self.e = e
+        self.size = 1
+        while self.size < n: self.size <<= 1
+        self.data = [e] * (2 * self.size)
 
-        if isinstance(n_or_arr, int):
-            self.n = n_or_arr
-            self.size = 1
-            while self.size < self.n:
-                self.size <<= 1
-            self.data = [e] * (2 * self.size)
-        else:
-            self.n = len(n_or_arr)
-            self.size = 1
-            while self.size < self.n:
-                self.size <<= 1
-            self.data = [e] * (2 * self.size)
-            self.build(n_or_arr)
-
-    def build(self, arr: Sequence[Any]) -> None:
-        """初期配列から構築する (O(N))"""
+    def build(self, arr: list[int]) -> None:
         for i, v in enumerate(arr):
             self.data[self.size + i] = v
         for i in range(self.size - 1, 0, -1):
             self.data[i] = self.op(self.data[i << 1], self.data[i << 1 | 1])
 
-    def set(self, i: int, v: Any) -> None:
+    def set(self, i: int, v: int) -> None:
         """a[i] = v"""
         i += self.size
         self.data[i] = v
@@ -1569,11 +1547,11 @@ class SegTree:
             i >>= 1
             self.data[i] = self.op(self.data[i << 1], self.data[i << 1 | 1])
 
-    def get(self, i: int) -> Any:
+    def get(self, i: int) -> int:
         """a[i]を取得"""
         return self.data[self.size + i]
 
-    def query(self, l: int, r: int) -> Any:
+    def query(self, l: int, r: int) -> int:
         """[l, r) の演算結果"""
         sml = self.e
         smr = self.e
@@ -1590,7 +1568,7 @@ class SegTree:
             r >>= 1
         return self.op(sml, smr)
 
-    def max_right(self, l: int, f: Callable[[Any], bool]) -> int:
+    def max_right(self, l: int, f: Callable[[int], bool]) -> int:
         """最大の r を返す（f(query(l, r)) が True）"""
         if l == self.n:
             return self.n
@@ -1617,7 +1595,7 @@ class SegTree:
                 break
         return self.n
 
-    def min_left(self, r: int, f: Callable[[Any], bool]) -> int:
+    def min_left(self, r: int, f: Callable[[int], bool]) -> int:
         """最小の l を返す（f(query(l, r)) が True）"""
         if r == 0:
             return 0
@@ -1644,67 +1622,66 @@ class SegTree:
                 break
         return 0
 
-    def all_query(self) -> Any:
+    def all_query(self) -> int:
         """全区間の演算結果"""
         return self.data[1]
 
     update = set  # エイリアス
 
-
-from collections.abc import Callable, Sequence
-from typing import Any
-import operator
 class LazySegTree:
+    from collections.abc import Callable
     """概要:
-        作用付きモノイドを扱う汎用遅延セグメント木。
+        作用付きモノイドを扱う汎用遅延セグメント木（ACL風インターフェース）。
 
     メソッド:
         build(arr): 初期配列から木を構築する。
         set(p, x): 1点代入を行う。
         get(p): 1点値を取得する（必要な遅延伝播込み）。
         query(l, r): 区間 [l, r) の集約値を返す。
-        all_query(): 全区間の集約値を返す。
         apply(l, r, f): 区間 [l, r) に作用 f を適用する。
-        max_right(l, g): [l, r) の集約値が条件 g を満たす最大の r を返す (O(logN))。
-        min_left(r, g): [l, r) の集約値が条件 g を満たす最小の l を返す (O(logN))。
 
     計算量:
-        build は O(N)、
-        set/get/query/apply/max_right/min_left は O(logN)、
-        all_query は O(1)。
-    """
+        build は O(n)、set/get/query/apply は O(logN)。
 
+    補足:
+        `op/e` は値側モノイド、`mapping/composition/identity` は作用側定義。
+        区間更新・区間取得の典型問題を1つの器で実装できる。
+
+    使用例（区間加算・点取得）:
+        n = 10
+        op = operator.add
+        e = 0
+        mapping = lambda f, x: x + f
+        composition = lambda f, g: f + g
+        identity = 0
+        lst = LazySegTree(n, op, e, mapping, composition, identity)
+
+    注意:
+        上記の `mapping = lambda f, x: x + f` は「要素値」に作用を適用する形。
+        区間和を持たせる場合は、値に区間長を含めるなどして
+        `mapping` 側で長さ分を反映する設計にすること。
+    """
     def __init__(
         self,
-        n_or_arr: int | Sequence[Any],
+        n: int,
         op: Callable,
-        e: Any,
+        e,
         mapping: Callable,
         composition: Callable,
-        identity: Any,
+        identity,
     ):
+        self.n = n
         self.op = op
         self.e = e
         self.mapping = mapping
         self.composition = composition
         self.identity = identity
+        self.log = max(1, (n - 1).bit_length())
+        self.size = 1 << self.log
+        self.data = [e] * (2 * self.size)
+        self.lazy = [identity] * self.size
 
-        if isinstance(n_or_arr, int):
-            self.n = n_or_arr
-            self.log = max(1, (self.n - 1).bit_length())
-            self.size = 1 << self.log
-            self.data = [e] * (2 * self.size)
-            self.lazy = [identity] * self.size
-        else:
-            self.n = len(n_or_arr)
-            self.log = max(1, (self.n - 1).bit_length())
-            self.size = 1 << self.log
-            self.data = [e] * (2 * self.size)
-            self.lazy = [identity] * self.size
-            self.build(n_or_arr)
-
-    def build(self, arr: Sequence[Any]) -> None:
-        """初期配列から木を構築する (O(N))"""
+    def build(self, arr: list) -> None:
         for i, v in enumerate(arr):
             self.data[self.size + i] = v
         for i in range(self.size - 1, 0, -1):
@@ -1713,7 +1690,7 @@ class LazySegTree:
     def _update(self, k: int) -> None:
         self.data[k] = self.op(self.data[k << 1], self.data[k << 1 | 1])
 
-    def _all_apply(self, k: int, f: Any) -> None:
+    def _all_apply(self, k: int, f) -> None:
         self.data[k] = self.mapping(f, self.data[k])
         if k < self.size:
             self.lazy[k] = self.composition(f, self.lazy[k])
@@ -1724,7 +1701,7 @@ class LazySegTree:
             self._all_apply(k << 1 | 1, self.lazy[k])
             self.lazy[k] = self.identity
 
-    def set(self, p: int, x: Any) -> None:
+    def set(self, p: int, x) -> None:
         p += self.size
         for i in range(self.log, 0, -1):
             self._push(p >> i)
@@ -1732,13 +1709,13 @@ class LazySegTree:
         for i in range(1, self.log + 1):
             self._update(p >> i)
 
-    def get(self, p: int) -> Any:
+    def get(self, p: int):
         p += self.size
         for i in range(self.log, 0, -1):
             self._push(p >> i)
         return self.data[p]
 
-    def query(self, l: int, r: int) -> Any:
+    def query(self, l: int, r: int):
         """[l, r) の演算結果"""
         if l >= r:
             return self.e
@@ -1762,11 +1739,7 @@ class LazySegTree:
             r >>= 1
         return self.op(sml, smr)
 
-    def all_query(self) -> Any:
-        """全区間の演算結果"""
-        return self.data[1]
-
-    def apply(self, l: int, r: int, f: Any) -> None:
+    def apply(self, l: int, r: int, f) -> None:
         """[l, r) に作用fを適用"""
         if l >= r:
             return
@@ -1793,64 +1766,6 @@ class LazySegTree:
                 self._update(l >> i)
             if ((r >> i) << i) != r:
                 self._update((r - 1) >> i)
-
-    def max_right(self, l: int, g: Callable[[Any], bool]) -> int:
-        """最大の r を返す（g(query(l, r)) が True となる最大の r）"""
-        assert 0 <= l <= self.n
-        assert g(self.e)
-        if l == self.n:
-            return self.n
-
-        l += self.size
-        for i in range(self.log, 0, -1):
-            self._push(l >> i)
-
-        sm = self.e
-        while True:
-            while l % 2 == 0:
-                l >>= 1
-            if not g(self.op(sm, self.data[l])):
-                while l < self.size:
-                    self._push(l)
-                    l <<= 1
-                    if g(self.op(sm, self.data[l])):
-                        sm = self.op(sm, self.data[l])
-                        l += 1
-                return l - self.size
-            sm = self.op(sm, self.data[l])
-            l += 1
-            if (l & -l) == l:
-                break
-        return self.n
-
-    def min_left(self, r: int, g: Callable[[Any], bool]) -> int:
-        """最小の l を返す（g(query(l, r)) が True となる最小の l）"""
-        assert 0 <= r <= self.n
-        assert g(self.e)
-        if r == 0:
-            return 0
-
-        r += self.size
-        for i in range(self.log, 0, -1):
-            self._push((r - 1) >> i)
-
-        sm = self.e
-        while True:
-            r -= 1
-            while r > 1 and (r % 2):
-                r >>= 1
-            if not g(self.op(self.data[r], sm)):
-                while r < self.size:
-                    self._push(r)
-                    r = (r << 1) | 1
-                    if g(self.op(self.data[r], sm)):
-                        sm = self.op(self.data[r], sm)
-                        r -= 1
-                return r + 1 - self.size
-            sm = self.op(self.data[r], sm)
-            if (r & -r) == r:
-                break
-        return 0
 
 
 class BIT2:
@@ -1951,151 +1866,115 @@ class BIT2D:
         return self._sum(y2, x2) - self._sum(y1, x2) - self._sum(y2, x1) + self._sum(y1, x1)
 
 
-# https://github.com/tatyam-prime/SortedSet/blob/main/BucketList.py
-# T->_T, 補足や計算量など
-import math
-from typing import Generic, Iterable, Iterator, TypeVar
-_T = TypeVar('_T')
-class BucketList(Generic[_T]):
+class SortedMultiset:
+    from itertools import chain
     """概要:
-        バケット分割で高速に任意の場所に挿入と削除を行えるデータ構造
-    計算量:
-        初期化(__init__): O(N)
-        長さ取得(__len__): O(1)
-        参照(__getitem__): O(√N)  ※末尾近く(i = -1 など)は O(1)
-        挿入(insert): O(√N)
-        末尾追加(append): ならし O(1)
-        一括追加(extend): ならし O(K)  ※K は追加する要素数
-        削除(pop): O(√N)  ※末尾削除(i = -1)は O(1)
-        要素の存在判定(in, __contains__): O(N)
-        要素の出現回数(count): O(N)
-        要素の検索(index): O(N)
-        要素の削除(remove): O(N)
-        全走査(__iter__, __reversed__): O(N)
-        反転(reverse): O(N)
-        比較(__eq__): O(N)
-        複製(copy): O(N)
-        文字列表現(__repr__, __str__): O(N)
-        全消去(clear): O(1)
+        平方分割で実装した順序付き重複集合クラス。
+
+    メソッド:
+        add(x), discard(x): 挿入・削除。
+        __contains__(x): 存在判定。
+        __getitem__(i): i 番目要素取得（負インデックス対応）。
+        index(x), index_right(x): 順位取得（<x, <=x の個数）。
+
+    補足:
+        平均的に各操作は O(√N) 程度。標準ライブラリのみで運用可能。
+
+    使用例:
+        ms = SortedMultiset()
+        ms.add(5)
+        ms.add(3)
+        ms.discard(5)
+        print(ms[0])  # 最小値
+        print(ms[-1]) # 最大値
     """
-    
-    BUCKET_RATIO = 16
-    SPLIT_RATIO = 24
-    
-    def __init__(self, a: Iterable[_T] = []) -> None:
+    BUCKET_RATIO = 50
+    REBUILD_RATIO = 170
+
+    def __init__(self, a: list[int] = []):
         a = list(a)
-        n = self.size = len(a)
-        num_bucket = int(math.ceil(math.sqrt(n / self.BUCKET_RATIO)))
-        self.a = [a[n * i // num_bucket : n * (i + 1) // num_bucket] for i in range(num_bucket)]
-    def __iter__(self) -> Iterator[_T]:
-        for i in self.a:
-            for j in i: yield j
-    def __reversed__(self) -> Iterator[_T]:
-        for i in reversed(self.a):
-            for j in reversed(i): yield j
-    
-    def __eq__(self, other) -> bool:
-        if len(self) != len(other): return False
-        for x, y in zip(self, other):
-            if x != y: return False
-        return True
-    
+        if a:
+            a.sort()
+        self._build(a)
+
+    def _build(self, a: list[int]) -> None:
+        self.a = a
+        self.size = len(a)
+        if self.size == 0:
+            self.buckets = []
+        else:
+            bucket_size = int(math.ceil(math.sqrt(self.size / self.BUCKET_RATIO)))
+            self.buckets = [a[i:i + bucket_size] for i in range(0, self.size, bucket_size)]
+
     def __len__(self) -> int:
         return self.size
-    
-    def __repr__(self) -> str:
-        return "BucketList" + str(self.a)
-    
-    def __str__(self) -> str:
-        return str(list(self))
-    def __contains__(self, x: _T) -> bool:
-        "Return True if x is in the bucket list. / O(N)"
-        for y in self:
-            if x == y: return True
+
+    def __contains__(self, x: int) -> bool:
+        if not self.buckets: return False
+        for bucket in self.buckets:
+            if bucket[0] <= x <= bucket[-1]:
+                i = bisect_left(bucket, x)
+                if i < len(bucket) and bucket[i] == x:
+                    return True
         return False
-    
-    def _insert(self, a: list[_T], b: int, i: int, x: _T) -> None:
-        a.insert(i, x)
-        self.size += 1
-        if len(a) > len(self.a) * self.SPLIT_RATIO:
-            mid = len(a) >> 1
-            self.a[b:b+1] = [a[:mid], a[mid:]]
-    def insert(self, i: int, x: _T) -> None:
-        "Insert x at the i-th position. / O(√N)"
-        if self.size == 0:
-            if i != 0 and i != -1: raise IndexError
-            self.a = [[x]]
+
+    def add(self, x: int) -> None:
+        if not self.buckets:
+            self.buckets = [[x]]
             self.size = 1
             return
-        if i < 0:
-            for b, a in enumerate(reversed(self.a)):
-                i += len(a)
-                if i >= 0: return self._insert(a, len(self.a) + ~b, i, x)
-        else:
-            for b, a in enumerate(self.a):
-                if i <= len(a): return self._insert(a, b, i, x)
-                i -= len(a)
+        for i, bucket in enumerate(self.buckets):
+            if x <= bucket[-1] or i == len(self.buckets) - 1:
+                pos = bisect_right(bucket, x)
+                bucket.insert(pos, x)
+                self.size += 1
+                if len(bucket) > len(self.buckets) * self.REBUILD_RATIO:
+                    self._build(list(chain.from_iterable(self.buckets)))
+                return
+
+    def discard(self, x: int) -> bool:
+        for bucket in self.buckets:
+            if bucket[0] <= x <= bucket[-1]:
+                i = bisect_left(bucket, x)
+                if i < len(bucket) and bucket[i] == x:
+                    bucket.pop(i)
+                    self.size -= 1
+                    if not bucket:
+                        self.buckets.remove(bucket)
+                    return True
+        return False
+
+    def __getitem__(self, i: int) -> int:
+        if i < 0: i += self.size
+        for bucket in self.buckets:
+            if i < len(bucket):
+                return bucket[i]
+            i -= len(bucket)
         raise IndexError
-    def append(self, x: _T) -> None:
-        "Append x to the end of the list. / amortized O(1)"
-        if self.size == 0:
-            self.a = [[x]]
-            self.size = 1
-            return
-        a = self.a[-1]
-        return self._insert(a, len(self.a) - 1, len(a), x)
-    
-    def extend(self, a: Iterable[_T]) -> None:
-        for x in a: self.append(x)
-    
-    def __getitem__(self, i: int) -> _T:
-        if i < 0:
-            for a in reversed(self.a):
-                i += len(a)
-                if i >= 0: return a[i]
-        else:
-            for a in self.a:
-                if i < len(a): return a[i]
-                i -= len(a)
-        raise IndexError
-    
-    def _pop(self, a: list[_T], b: int, i: int) -> _T:
-        ans = a.pop(i)
-        self.size -= 1
-        if not a: del self.a[b]
-        return ans
-    
-    def pop(self, i: int = -1) -> _T:
-        "Remove and return the i-th element. / O(√N) / O(-i) if i < 0"
-        if i < 0:
-            for b, a in enumerate(reversed(self.a)):
-                i += len(a)
-                if i >= 0: return self._pop(a, ~b, i)
-        else:
-            for b, a in enumerate(self.a):
-                if i < len(a): return self._pop(a, b, i)
-                i -= len(a)
-        raise IndexError
-    def count(self, x: _T) -> int:
-        "Return the number of occurrences of x. / O(N)"
-        return sum(1 for y in self if x == y)
-    def index(self, x: _T) -> int:
-        "Return the index of the first occurrence of x, raise ValueError if not found. / O(N)"
-        for i, y in enumerate(self):
-            if x == y: return i
-        raise ValueError
-    
-    def remove(self, x: _T) -> None:
-        "Remove the first occurrence of x, raise ValueError if not found. / O(N)"
-        self.pop(self.index(x))
-    def clear(self) -> None:
-        self.a = []
-        self.size = 0
-    def reverse(self) -> None:
-        self.a.reverse()
-        for a in self.a: a.reverse()
-    def copy(self) -> 'BucketList[_T]':
-        return BucketList(self)
+
+    def index(self, x: int) -> int:
+        """x未満の要素数を返す"""
+        cnt = 0
+        for bucket in self.buckets:
+            if x <= bucket[0]:
+                return cnt
+            if x > bucket[-1]:
+                cnt += len(bucket)
+            else:
+                return cnt + bisect_left(bucket, x)
+        return cnt
+
+    def index_right(self, x: int) -> int:
+        """x以下の要素数を返す"""
+        cnt = 0
+        for bucket in self.buckets:
+            if x < bucket[0]:
+                return cnt
+            if x >= bucket[-1]:
+                cnt += len(bucket)
+            else:
+                return cnt + bisect_right(bucket, x)
+        return cnt
 
 class Mo:
     """概要:
@@ -3979,6 +3858,10 @@ def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
     for row in grid:
         print(sep.join(map(str, row)))
+
+def yn(cond: bool) -> None:
+    """条件に応じてYes/No出力"""
+    print("Yes" if cond else "No")
 
 # ============================================================
 # main

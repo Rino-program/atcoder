@@ -1,8 +1,7 @@
 # coding: utf-8
-# AtCoder Competition Template v2.2 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py &template.py
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
-
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
@@ -98,16 +97,46 @@ def print_grid(grid: list[list], sep: str = '') -> None:
     for row in grid:
         print(sep.join(map(str, row)))
 
-# ===== template.py =====
 
 # ==============================================
 # =================== main =====================
 # ==============================================
 
+def topological_sort(g: list[list[int]]) -> list[int] | None:
+    """概要:
+        有向グラフをトポロジカルソートする。
+    入力:
+        g (list[list[int]]): 有向グラフの隣接リスト。
+    出力:
+        list[int] | None: トポロジカル順序。閉路があれば None。
+    補足:
+        Kahn 法（入次数管理）を使用する。計算量は O(V+E)。
+    """
+    n = len(g)
+    indeg = [0] * n
+    for v in range(n):
+        for to in g[v]:
+            indeg[to] += 1
+    q = deque([i for i in range(n) if indeg[i] == 0])
+    result = []
+    while q:
+        v = q.popleft()
+        result.append(v)
+        for to in g[v]:
+            indeg[to] -= 1
+            if indeg[to] == 0:
+                q.append(to)
+    return result if len(result) == n else None
+
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, Q = MAP()
+    T = LIST()
+    g1 = [[] for _ in range(N)]
+    g2 = [[] for _ in range(N)]
+    for i in range(N):
+        g1[T[i]-1].append(i)
+        g2[i].append(T[i]-1)
 
 
 

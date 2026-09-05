@@ -1,8 +1,7 @@
 # coding: utf-8
-# AtCoder Competition Template v2.2 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py &template.py
+# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
-
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
@@ -98,7 +97,6 @@ def print_grid(grid: list[list], sep: str = '') -> None:
     for row in grid:
         print(sep.join(map(str, row)))
 
-# ===== template.py =====
 
 # ==============================================
 # =================== main =====================
