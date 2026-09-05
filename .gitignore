@@ -10,3 +10,9 @@ venv-pypy*/
 # Cookie files for atcoder.jp
 atcoder.jp_cookies.txt
 atcoder.jp_cookies.lwp
+
+# text & exe
+*.in
+*.out
+*.log
+*.exe
