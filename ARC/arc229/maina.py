@@ -1,16 +1,20 @@
 # coding: utf-8
-# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
+# AtCoder Competition Template v2.2 SHORT (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py &template.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
+
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
+from sortedcontainers import SortedSet, SortedList, SortedDict
 from bisect import bisect_left, bisect_right
 from copy import deepcopy
 import operator
 import heapq
 import math
 import string
+
+sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -94,56 +98,57 @@ def print_grid(grid: list[list], sep: str = '') -> None:
     for row in grid:
         print(sep.join(map(str, row)))
 
+# ===== template.py =====
 
 # ==============================================
 # =================== main =====================
 # ==============================================
 
-def main() -> None:
+def main(N: int) -> int:
     # ここに解答を書く
-    R, P, Q = MAP()
-    A, B, C, D = MAP()
-    ans = 0
-    tmp = min(A, B, C)
-    if R // P <= tmp:
-        print(R // P)
-        return
-    ans += tmp
-    R -= tmp * P
-    A -= tmp; B -= tmp; C -= tmp
-    A, B, C = sorted([A, B, C])
-    now = B
-    kanou = C - B + D
-    now = min(now, kanou)
-    A = P+Q
-    tmp = min(R // A, now)
-    R -= tmp * A
-    ans += tmp
-    C -= B
-    if P+Q*2 > R:
-        print(ans)
-        return
-    D = min(0, D - tmp)
-    A = P+Q*2
-    tmp = min(R // A, D//2, C)
-    R -= tmp * A
-    ans += tmp
-    if P+Q*2 > R:
-        print(ans)
-        return
-    
-    C += D % 2
-    tmp = min(R // A, C//3)
-    R -= tmp * A
-    ans += tmp
-    if P+Q*3 > R:
-        print(ans)
-        return
-    A = P+Q*3
-    D //= 2
-    tmp = min(R // A, D // 3)
-    ans += tmp
-    print(ans)
+    if N == 0:
+        print("A")
+        return 1
+    else:
+        ans_li = []
+        now = 0
+        while N > now:
+            ans_li.append(deque(["A", "R", "C"]))
+            now += 1
+            tmp = 3
+            hukasa = 0
+            while now+tmp <= N:
+                now += tmp
+                hukasa += 1
+                tmp += 2
+            for i in range(hukasa):
+                ans_li[-1].appendleft("R")
+                ans_li[-1].appendleft("A")
+                ans_li[-1].append("R")
+                ans_li[-1].append("C")
+            for i in range((N-now)//(hukasa+1)):
+                ans_li[-1].append("R")
+                ans_li[-1].append("C")
+                now += hukasa+1
+    ans = []
+    #debug(ans_li)
+    for i in range(len(ans_li)):
+        for j in range(len(ans_li[i])):
+            ans.append(ans_li[i].popleft())
+    S = "".join(ans)
+    print("S:", S)
+    # 判定
+    A = 0
+    while "ARC" in S:
+        S = S.replace("ARC", "CRA", 1)
+        A += 1
+    print("回数:", A == N, "長さ:",  len(S) <= 100)
+    print("回数:", A)
+    print("A"*100, "長さ100の目安")
+    return len(S)
+
+
+
 
 
 
@@ -163,4 +168,22 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    """m = 600
+    ma = 0
+    tmp = 0
+    for i in range(m+1):
+        ans = main(i)
+        if ma < ans:
+            tmp = i
+            ma = ans
+    print(tmp, ma)"""
+    N = INT()
+    main(N)
+    """now = 1
+    hukasa = 0
+    tmp = 3
+    while now < 600:
+        hukasa += 1
+        now += tmp
+        tmp += 2
+    print(hukasa)"""

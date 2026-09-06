@@ -1,16 +1,20 @@
 # coding: utf-8
-# AtCoder Competition Template v2.1 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py
+# AtCoder Competition Template v2.2 SHORT (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py &template.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
+
 import sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
+from sortedcontainers import SortedSet, SortedList, SortedDict
 from bisect import bisect_left, bisect_right
 from copy import deepcopy
 import operator
 import heapq
 import math
 import string
+
+sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
 def input() -> str:
@@ -94,6 +98,7 @@ def print_grid(grid: list[list], sep: str = '') -> None:
     for row in grid:
         print(sep.join(map(str, row)))
 
+# ===== template.py =====
 
 # ==============================================
 # =================== main =====================
@@ -101,49 +106,11 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    R, P, Q = MAP()
-    A, B, C, D = MAP()
-    ans = 0
-    tmp = min(A, B, C)
-    if R // P <= tmp:
-        print(R // P)
-        return
-    ans += tmp
-    R -= tmp * P
-    A -= tmp; B -= tmp; C -= tmp
-    A, B, C = sorted([A, B, C])
-    now = B
-    kanou = C - B + D
-    now = min(now, kanou)
-    A = P+Q
-    tmp = min(R // A, now)
-    R -= tmp * A
-    ans += tmp
-    C -= B
-    if P+Q*2 > R:
-        print(ans)
-        return
-    D = min(0, D - tmp)
-    A = P+Q*2
-    tmp = min(R // A, D//2, C)
-    R -= tmp * A
-    ans += tmp
-    if P+Q*2 > R:
-        print(ans)
-        return
-    
-    C += D % 2
-    tmp = min(R // A, C//3)
-    R -= tmp * A
-    ans += tmp
-    if P+Q*3 > R:
-        print(ans)
-        return
-    A = P+Q*3
-    D //= 2
-    tmp = min(R // A, D // 3)
-    ans += tmp
+    N = INT()
     print(ans)
+
+
+
 
 
 
