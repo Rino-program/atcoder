@@ -16,44 +16,25 @@ from copy import deepcopy
 import operator
 import string
 
-sys.setrecursionlimit(10 ** 6)
+sys.setrecursionlimit(2 * 10 ** 6)
 
 # ===== 入出力ヘルパ =====
-def input() -> str:
-    return sys.stdin.readline().rstrip()
-
-def INT() -> int:
-    return int(input())
-
-def MAP():
-    return map(int, input().split())
-
-def LIST() -> list[int]:
-    return list(MAP())
-
-def TUPLE() -> tuple[int, ...]:
-    return tuple(MAP())
-
-def LISTS(n: int) -> list[list[int]]:
-    return [LIST() for _ in range(n)]
-
-def TUPLES(n: int) -> list[tuple[int, ...]]:
-    return [TUPLE() for _ in range(n)]
-
-def LISTSI(n: int) -> list[int]:
-    return [INT() for _ in range(n)]
-
-def STR() -> str:
-    return input()
-
-def STRS(n: int) -> list[str]:
-    return [STR() for _ in range(n)]
-
-def CHARS() -> list[str]:
-    return list(STR())
-
-def CHARSL(n: int) -> list[list[str]]:
-    return [list(STR()) for _ in range(n)]
+input = lambda: sys.stdin.readline().rstrip()
+INT = lambda: int(input())
+INT0 = lambda: int(input()) - 1
+MAP = lambda: map(int, input().split())
+MAP0 = lambda: map(lambda x: int(x) - 1, input().split())
+LIST = lambda: list(map(int, input().split()))
+LIST0 = lambda: list(map(lambda x: int(x) - 1, input().split()))
+TUPLE = lambda: tuple(map(int, input().split()))
+LISTS = lambda n: [list(map(int, input().split())) for _ in range(n)]
+TUPLES = lambda n: [tuple(map(int, input().split())) for _ in range(n)]
+LISTSI = lambda n: [int(input()) for _ in range(n)]
+STR = lambda: input()
+STRS = lambda n: [input() for _ in range(n)]
+CHARS = lambda: list(input())
+CHARSL = lambda n: [list(input()) for _ in range(n)]
+CHARSLI = lambda n: [list(map(int, list(input()))) for _ in range(n)]
 
 # ===== 定数 =====
 INF = 10 ** 18
@@ -69,10 +50,10 @@ bil = bisect_left
 bir = bisect_right
 dedict = defaultdict
 
-# ===== 方向ベクトル =====
-DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
-DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
+# ===== 方向ベクトル(上(負)から時計回り) =====
+DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1))
+DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
+DIR9 = DIR8 + ((0, 0),) # 中央は最後
 
 # ===== 文字列のリスト =====
 LOWER = list(string.ascii_lowercase) # 小文字 a-z の文字列リスト
@@ -80,16 +61,15 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
-pr = print # ただのさぼり。
-def Yes(): print("Yes")
-def No(): print("No")
-def yes(): print("yes")
-def no(): print("no")
-def YES(): print("YES")
-def NO(): print("NO")
-def yn(cond: bool) -> None:
+Yes = lambda: print("Yes")
+No = lambda: print("No")
+yes = lambda: print("yes")
+no = lambda: print("no")
+YES = lambda: print("YES")
+NO = lambda: print("NO")
+def yn(cond: bool, yes: str = "Yes", no: str = "No") -> None:
     """条件に応じてYes/No出力"""
-    print("Yes" if cond else "No")
+    print(yes if cond else no)
 
 # ============================================================
 # 数学・整数論
