@@ -1,5 +1,5 @@
 # coding: utf-8
-# AtCoder Competition Template v2.2.1 ALL (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.2 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/template.py
 
 import os
@@ -16,7 +16,7 @@ from copy import deepcopy
 import operator
 import string
 
-sys.setrecursionlimit(2*10**6)
+sys.setrecursionlimit(2 * 10 ** 6)
 
 # ===== 入出力ヘルパ =====
 input = lambda: sys.stdin.readline().rstrip()

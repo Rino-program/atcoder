@@ -1,5 +1,5 @@
 # coding: utf-8
-# AtCoder Competition Template v2.2.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.2 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py &template.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 
@@ -14,25 +14,44 @@ import heapq
 import math
 import string
 
-sys.setrecursionlimit(2*10**6)
+sys.setrecursionlimit(10 ** 6)
 
 # ===== 入出力ヘルパ =====
-input = lambda: sys.stdin.readline().rstrip()
-INT = lambda: int(input())
-INT0 = lambda: int(input()) - 1
-MAP = lambda: map(int, input().split())
-MAP0 = lambda: map(lambda x: int(x) - 1, input().split())
-LIST = lambda: list(map(int, input().split()))
-LIST0 = lambda: list(map(lambda x: int(x) - 1, input().split()))
-TUPLE = lambda: tuple(map(int, input().split()))
-LISTS = lambda n: [list(map(int, input().split())) for _ in range(n)]
-TUPLES = lambda n: [tuple(map(int, input().split())) for _ in range(n)]
-LISTSI = lambda n: [int(input()) for _ in range(n)]
-STR = lambda: input()
-STRS = lambda n: [input() for _ in range(n)]
-CHARS = lambda: list(input())
-CHARSL = lambda n: [list(input()) for _ in range(n)]
-CHARSLI = lambda n: [list(map(int, list(input()))) for _ in range(n)]
+def input() -> str:
+    return sys.stdin.readline().rstrip()
+
+def INT() -> int:
+    return int(input())
+
+def MAP():
+    return map(int, input().split())
+
+def LIST() -> list[int]:
+    return list(MAP())
+
+def TUPLE() -> tuple[int, ...]:
+    return tuple(MAP())
+
+def LISTS(n: int) -> list[list[int]]:
+    return [LIST() for _ in range(n)]
+
+def TUPLES(n: int) -> list[tuple[int, ...]]:
+    return [TUPLE() for _ in range(n)]
+
+def LISTSI(n: int) -> list[int]:
+    return [INT() for _ in range(n)]
+
+def STR() -> str:
+    return input()
+
+def STRS(n: int) -> list[str]:
+    return [STR() for _ in range(n)]
+
+def CHARS() -> list[str]:
+    return list(STR())
+
+def CHARSL(n: int) -> list[list[str]]:
+    return [list(STR()) for _ in range(n)]
 
 # ===== 定数 =====
 INF = 10 ** 18
@@ -59,15 +78,15 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
-Yes = lambda: print("Yes")
-No = lambda: print("No")
-yes = lambda: print("yes")
-no = lambda: print("no")
-YES = lambda: print("YES")
-NO = lambda: print("NO")
-def yn(cond: bool, yes: str = "Yes", no: str = "No") -> None:
+def Yes(): print("Yes")
+def No(): print("No")
+def yes(): print("yes")
+def no(): print("no")
+def YES(): print("YES")
+def NO(): print("NO")
+def yn(cond: bool) -> None:
     """条件に応じてYes/No出力"""
-    print(yes if cond else no)
+    print("Yes" if cond else "No")
 
 # ===== デバッグ =====
 def debug(*args, **kwargs) -> None:
@@ -88,6 +107,9 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    A = LIST()
+    ma = max(A)
+    
     print(ans)
 
 
