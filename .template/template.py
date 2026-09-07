@@ -1,6 +1,5 @@
-# coding: utf-8
-# AtCoder Competition Template v2.2.1 ALL (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/template.py
+# AtCoder Competition Template v2.2.2 ALL (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os
 import sys
@@ -16,7 +15,10 @@ from copy import deepcopy
 import operator
 import string
 
+# ===== 設定・制限解除 =====
 sys.setrecursionlimit(2*10**6)
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(0)
 
 # ===== 入出力ヘルパ =====
 _input = iter(sys.stdin.buffer.read().splitlines())
@@ -36,7 +38,7 @@ STR = lambda: input()
 STRS = lambda n: [input() for _ in range(n)]
 CHARS = lambda: list(input())
 CHARSL = lambda n: [list(input()) for _ in range(n)]
-CHARSLI = lambda n: [list(map(int, list(input()))) for _ in range(n)]
+CHARSLI = lambda n: [list(map(int, input())) for _ in range(n)]
 
 # ===== 定数 =====
 INF = 10 ** 18
@@ -4329,10 +4331,14 @@ class Output:
 # ============================================================
 # デバッグ
 # ============================================================
-
-def debug(*args, **kwargs) -> None:
-    """デバッグ出力（標準エラー）"""
-    print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+# AtCoder提出時は自動で無力化
+if "ATCODER" not in os.environ and "ONLINE_JUDGE" not in os.environ:
+    def debug(*args, **kwargs) -> None:
+        """デバッグ出力（標準エラー）"""
+        print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+else:
+    def debug(*args, **kwargs) -> None:
+        pass
 
 def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""

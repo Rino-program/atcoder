@@ -1,9 +1,8 @@
-# coding: utf-8
-# AtCoder Competition Template v2.2.1 SHORT (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/main.py &template.py
+# AtCoder Competition Template v2.2.2 SHORT (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py &template.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 
-import sys
+import os, sys
 from collections import deque, defaultdict, Counter
 from itertools import permutations, combinations, accumulate, product, chain
 from sortedcontainers import SortedSet, SortedList, SortedDict
@@ -14,7 +13,10 @@ import heapq
 import math
 import string
 
+# ===== 設定・制限解除 =====
 sys.setrecursionlimit(2*10**6)
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(0)
 
 # ===== 入出力ヘルパ =====
 _input = iter(sys.stdin.buffer.read().splitlines())
@@ -34,7 +36,7 @@ STR = lambda: input()
 STRS = lambda n: [input() for _ in range(n)]
 CHARS = lambda: list(input())
 CHARSL = lambda n: [list(input()) for _ in range(n)]
-CHARSLI = lambda n: [list(map(int, list(input()))) for _ in range(n)]
+CHARSLI = lambda n: [list(map(int, input())) for _ in range(n)]
 
 # ===== 定数 =====
 INF = 10 ** 18
@@ -72,9 +74,14 @@ def yn(cond: bool, yes: str = "Yes", no: str = "No") -> None:
     print(yes if cond else no)
 
 # ===== デバッグ =====
-def debug(*args, **kwargs) -> None:
-    """デバッグ出力（標準エラー）"""
-    print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+# AtCoder提出時は自動で無力化
+if "ATCODER" not in os.environ and "ONLINE_JUDGE" not in os.environ:
+    def debug(*args, **kwargs) -> None:
+        """デバッグ出力（標準エラー）"""
+        print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+else:
+    def debug(*args, **kwargs) -> None:
+        pass
 
 def print_grid(grid: list[list], sep: str = '') -> None:
     """グリッド表示"""
