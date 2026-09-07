@@ -259,7 +259,9 @@ class Combination:
         catalan(n): n 番目のカタラン数を返す。
 
     計算量:
-        初期化 O(n)、各クエリ O(1)。
+        初期化 O(n + √mod + log mod)。nCr/nPr/nHr は O(1)、
+        catalan は O(log mod)。mod を固定定数とみなせば、初期化 O(n)、
+        catalan 以外の各クエリ O(1)。
 
     使用例:
         comb = Combination(200000)
@@ -318,7 +320,8 @@ def fast_mod_nCr(n: int, r: int, MOD: int = MOD) -> int:
         int: C(n, r) mod MOD
     補足:
         反復回数を少なくするため、r と n-r の小さい方を使う。
-        計算量は O(min(r, n-r))
+        計算量は O(√MOD + min(r, n-r) + log MOD)。
+        MOD を固定定数とみなせば O(min(r, n-r))。
     """
     if MOD <= 1 or not is_prime(MOD) or n >= MOD:
         raise ValueError("requires a prime MOD and 0 <= n < MOD")
@@ -776,18 +779,22 @@ def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     出力:
         list[int]: 各頂点への最短距離（未到達は INF）。
     補足:
-        計算量は O((V+E)logV)。負辺は非対応。
+        計算量は O((V+E)logE)。単純グラフなど E = O(V^2) の場合は
+        O((V+E)logV) と書ける。負辺は非対応。
     """
     dist = [INF] * len(g)
     dist[s] = 0
     pq = [(0, s)]
+    heappop = heapq.heappop
+    heappush = heapq.heappush
     while pq:
-        d, v = heapq.heappop(pq)
+        d, v = heappop(pq)
         if d > dist[v]: continue
         for to, w in g[v]:
-            if dist[v] + w < dist[to]:
-                dist[to] = dist[v] + w
-                heapq.heappush(pq, (dist[to], to))
+            nd = d + w
+            if nd < dist[to]:
+                dist[to] = nd
+                heappush(pq, (nd, to))
     return dist
 
 def dijkstra_multi(
@@ -814,7 +821,9 @@ def dijkstra_multi(
     補足:
         主コストは非負で最小化する。better を指定すると、同じ主コストを
         含む状態の採否をカスタマイズできる。副基準の順序はヒープに依存せず、
-        数値の単項マイナスも要求しない。計算量は O((V+E)logV * n_criteria)。
+        数値の単項マイナスも要求しない。任意の better に対する計算量と停止性は
+        保証されない。better が Dijkstra 法の単調性を満たし、各頂点が高々 K 回
+        更新される場合は、概ね O(K(V+E)log(KV) * n_criteria)。
 
     使用例（距離最小・木の数最大の2基準）:
         # g[v] = [(to, cost, tree_count), ...]
@@ -875,7 +884,8 @@ def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, 
             (最短距離, s から t への頂点列)。
             到達不能なら (INF, None)。
     補足:
-        計算量は O((V+E)logV)。負辺は非対応。
+        計算量は O((V+E)logE + V)。単純グラフなど E = O(V^2) の場合は
+        O((V+E)logV) と書ける。負辺は非対応。
         経路が複数ある場合は最短の1つを返す。
     """
     n = len(g)
@@ -883,15 +893,18 @@ def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, 
     parent = [-1] * n
     dist[s] = 0
     pq = [(0, s)]
+    heappop = heapq.heappop
+    heappush = heapq.heappush
     while pq:
-        d, v = heapq.heappop(pq)
+        d, v = heappop(pq)
         if d > dist[v]:
             continue
         for to, w in g[v]:
-            if dist[v] + w < dist[to]:
-                dist[to] = dist[v] + w
+            nd = d + w
+            if nd < dist[to]:
+                dist[to] = nd
                 parent[to] = v
-                heapq.heappush(pq, (dist[to], to))
+                heappush(pq, (nd, to))
 
     if dist[t] == INF:
         return INF, None
@@ -1178,7 +1191,9 @@ class LowerBoundFlow:
         is_feasible(): 実行可能かどうかを判定する。
         min_flow(s, t): s から t への実行可能な最小流量を求める。
     計算量:
-        add_circulation/add_edge は O(1)、is_feasible は内部最大流1回で O(V^2E)。
+        add_circulation/add_edge は O(1)。V を元の頂点数、E' を補助辺を含む
+        ネットワークの辺数とすると、is_feasible は O(V^2 E')、
+        min_flow は O((log U + 1)V^2 E')。U は探索する流量上限。
 
     補足:
         循環フロー (T→S) が必要な場合は add_circulation() を先に呼ぶ。
@@ -2232,7 +2247,9 @@ class Mo:
            を呼ぶと、クエリ順に query_func の結果が返る。
 
     計算量:
-        O((N + Q) * sqrt(N)) × 各操作コスト
+        区間移動を M 回、各コールバックのコストを C とすると、
+        _order は O(Q log N + Q log Q)、run 全体は O(Q log N + Q log Q + M C)。
+        ブロック順を採用する通常の Mo では M = O((N + Q)√N) と評価できる。
 
     制約:
         オフライン処理のみ（クエリを事前に全部受け取れる場合のみ使用可能）。
@@ -2258,19 +2275,34 @@ class Mo:
         answers = mo.run(add, add, remove, remove, lambda: distinct[0])
     """
 
-    def __init__(self, n: int, queries: list[tuple[int, int]]):
+    def __init__(self, n: int, queries: list[tuple[int, int]], order: str = "block"):
         """
         入力:
             n (int): 配列長
             queries (list[tuple[int, int]]): (l, r) のクエリリスト（半開区間 [l, r)）
+            order (str): クエリ順。"block" または "hilbert"。
         """
+        if order not in ("block", "hilbert"):
+            raise ValueError("order must be 'block' or 'hilbert'")
         self.n = n
         self.queries = queries
         self.q = len(queries)
         self.block = max(1, int(n ** 0.5))
+        self.order = order
 
     def _order(self) -> list[int]:
         """ヒルベルト曲線順でクエリをソートしたインデックスを返す（定数倍改善）"""
+        if self.order == "block":
+            return sorted(
+                range(self.q),
+                key=lambda i: (
+                    self.queries[i][0] // self.block,
+                    self.queries[i][1]
+                    if (self.queries[i][0] // self.block) % 2 == 0
+                    else -self.queries[i][1],
+                ),
+            )
+
         def hilbert_order(x: int, y: int, pow_: int, rotate: int) -> int:
             if pow_ == 0:
                 return 0
@@ -2382,8 +2414,9 @@ class ImplicitTreap:
     - query(l, r) は (区間和, 区間最小値, 区間最大値) のタプル。
     - pop系, get系は該当する要素の値を返す。
 
-    計算量:
-    - 時間計算量: 各クエリ O(log N) (buildは O(N log N) )
+        計算量:
+        - 時間計算量: 各操作は期待 O(log N)、最悪 O(N)。build は期待 O(N log N)、
+            最悪 O(N^2)、to_list は O(N)。
     - 空間計算量: O(capacity)
 
     補足:
@@ -2510,6 +2543,33 @@ class ImplicitTreap:
 
     def build(self, arr: list):
         """配列から木を構築"""
+        if not arr:
+            return
+        if self.root == 0:
+            stack = []
+            for value in arr:
+                u = self._create_node(value)
+                last = 0
+                while stack and self.pri[stack[-1]] < self.pri[u]:
+                    last = stack.pop()
+                if stack:
+                    self.right[stack[-1]] = u
+                self.left[u] = last
+                stack.append(u)
+            self.root = stack[0]
+
+            order = []
+            todo = [self.root]
+            while todo:
+                u = todo.pop()
+                order.append(u)
+                if self.left[u]:
+                    todo.append(self.left[u])
+                if self.right[u]:
+                    todo.append(self.right[u])
+            for u in reversed(order):
+                self._push_up(u)
+            return
         for val in arr:
             self.insert(self.size[self.root], val)
 
@@ -2953,7 +3013,8 @@ def gen_palindromes_d_digits(d: int):
     出力:
         Iterator[int]: d 桁の回文数を昇順に yield する。
     補足:
-        前半部（⌈d/2⌉桁）を走査して回文を構成する。計算量は O(10^(d/2)) 個生成。
+        前半部（⌈d/2⌉桁）を走査して回文を構成する。生成個数は Θ(10^(d/2))、
+        全生成の時間計算量は O(d * 10^(d/2))、追加メモリは O(d)。
         d=1: 1〜9、d=2: 11,22,...,99、d=3: 101,111,...,999 など。
     使用例:
         for p in gen_palindromes_d_digits(3):
@@ -3612,7 +3673,8 @@ def doubling_query(
         int: y ステップ後の頂点（0-indexed）。
 
     計算量:
-        O(log y)
+        L = len(doubling) とすると O(L)。y のビット数ではなく、
+        テーブルの全段数を走査する。
     """
     log = len(doubling)
     for k in range(log):
@@ -3644,7 +3706,8 @@ def doubling_query_with_weight(
         tuple[int, any]: (y ステップ後の頂点, 累積重み)。
 
     計算量:
-        O(log y)
+        L = len(doubling) とすると O(L)（op のコストを O(1) と仮定）。
+        y のビット数ではなく、テーブルの全段数を走査する。
     """
     log = len(doubling)
     total = e
@@ -4051,7 +4114,7 @@ def floor_sum(n: int, m: int, a: int, b: int) -> int:
     出力:
         int: 総和値。
     補足:
-        ACL由来の再帰的変形を使い O(log m + log a) 程度で処理する。
+        ACL由来の再帰的変形を使い O(log m) 程度で処理する（整数演算を O(1) と仮定）。
     """
     if n < 0 or m <= 0:
         raise ValueError("requires n >= 0 and m > 0")
@@ -4156,7 +4219,8 @@ def ternary_full_search(n: int):
     出力:
         Iterator[list[int]]: 各要素の選択（0,1,2）を表すリスト。
     補足:
-        全列挙の計算量は O(3^n)。n <= 15 程度が実用範囲。
+        生成個数は 3^n、各結果の構築に O(n) かかるため、全生成の時間計算量は
+        O(n * 3^n)、追加メモリは O(n)。n <= 15 程度が実用範囲。
     使用例:
         for choices in ternary_full_search(n):
             group = [[], [], []]
@@ -4217,8 +4281,7 @@ class Output:
         get(sep='\n'): 現在バッファを文字列として取得する。
 
     計算量:
-        add は引数個数を k として O(k)、extend は要素数を m として O(m)、
-        grid は要素総数を HW として O(HW)、yes は O(1)、
+        add/extend/grid は生成する総文字数を S として O(S)、yes は O(1)、
         flush/get はバッファ総文字数を S として O(S)、__len__ は O(1)。
 
     補足:
