@@ -88,7 +88,7 @@ def is_prime(n: int) -> bool:
     if n < 2: return False
     if n == 2: return True
     if n % 2 == 0: return False
-    for i in range(3, int(n**0.5) + 1, 2):
+    for i in range(3, math.isqrt(n) + 1, 2):
         if n % i == 0: return False
     return True
 
@@ -102,13 +102,19 @@ def prime_factors(n: int) -> dict[int, int]:
     補足:
         計算量は O(√n)。n <= 1 の場合は空辞書を返す。
     """
+    if n <= 1:
+        return {}
     factors = defaultdict(int)
     d = 2
+    while n % d == 0:
+        factors[d] += 1
+        n //= d
+    d = 3
     while d * d <= n:
         while n % d == 0:
             factors[d] += 1
             n //= d
-        d += 1
+        d += 2
     if n > 1:
         factors[n] += 1
     return dict(factors)
@@ -123,13 +129,14 @@ def divisors(n: int) -> list[int]:
     補足:
         計算量は O(√n)。
     """
-    divs = []
-    for i in range(1, int(n**0.5) + 1):
+    small = []
+    large = []
+    for i in range(1, math.isqrt(n) + 1):
         if n % i == 0:
-            divs.append(i)
+            small.append(i)
             if i != n // i:
-                divs.append(n // i)
-    return sorted(divs)
+                large.append(n // i)
+    return small + large[::-1]
 
 def sieve(n: int) -> tuple[list[bool], list[int]]:
     """概要:
@@ -144,10 +151,9 @@ def sieve(n: int) -> tuple[list[bool], list[int]]:
     is_prime_arr = [True] * (n + 1)
     if n >= 0: is_prime_arr[0] = False
     if n >= 1: is_prime_arr[1] = False
-    for p in range(2, int(n ** 0.5) + 1):
+    for p in range(2, math.isqrt(n) + 1):
         if is_prime_arr[p]:
-            for q in range(p * p, n + 1, p):
-                is_prime_arr[q] = False
+            is_prime_arr[p * p : n + 1 : p] = [False] * (((n - p * p) // p) + 1)
     primes = [i for i in range(2, n + 1) if is_prime_arr[i]]
     return is_prime_arr, primes
 
@@ -161,9 +167,7 @@ def gcd(a: int, b: int) -> int:
     補足:
         ユークリッドの互除法を使用する。計算量は O(log(min(a, b)))。
     """
-    while b:
-        a, b = b, a % b
-    return a
+    return math.gcd(a, b)
 
 def lcm(a: int, b: int) -> int:
     """概要:
@@ -175,7 +179,7 @@ def lcm(a: int, b: int) -> int:
     補足:
         gcd を使って a // gcd(a, b) * b で計算する。計算量は O(log(min(a, b)))。
     """
-    return a // gcd(a, b) * b
+    return math.lcm(a, b)
 
 def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     """概要:
@@ -187,10 +191,15 @@ def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     補足:
         逆元計算や一次不定方程式で利用できる。計算量は O(log(min(a, b)))。
     """
-    if b == 0:
-        return a, 1, 0
-    g, x, y = ext_gcd(b, a % b)
-    return g, y, x - (a // b) * y
+    sign_a = -1 if a < 0 else 1
+    sign_b = -1 if b < 0 else 1
+    aa, bb = abs(a), abs(b)
+    x0, y0, x1, y1 = 1, 0, 0, 1
+    while bb:
+        q, aa, bb = aa // bb, bb, aa % bb
+        x0, x1 = x1, x0 - q * x1
+        y0, y1 = y1, y0 - q * y1
+    return aa, x0 * sign_a, y0 * sign_b
 
 def pow_fast(x: int, n: int) -> int:
     """概要:
@@ -203,13 +212,7 @@ def pow_fast(x: int, n: int) -> int:
     補足:
         二分累乗法（繰り返し二乗法）を用い、計算量は O(log n)。
     """
-    res = 1
-    while n > 0:
-        if n & 1:
-            res = res * x
-        x = x * x
-        n >>= 1
-    return res
+    return pow(x, n)
 
 def pow_mod(x: int, n: int, mod: int = MOD) -> int:
     """概要:
@@ -223,14 +226,7 @@ def pow_mod(x: int, n: int, mod: int = MOD) -> int:
     補足:
         二分累乗法を用い、計算量は O(log n)。
     """
-    res = 1
-    x %= mod
-    while n > 0:
-        if n & 1:
-            res = res * x % mod
-        x = x * x % mod
-        n >>= 1
-    return res
+    return pow(x, n, mod)
 
 def mod_inverse(a: int, mod: int = MOD) -> int:
     """概要:
@@ -244,7 +240,7 @@ def mod_inverse(a: int, mod: int = MOD) -> int:
         mod が素数で a と mod が互いに素である前提（フェルマーの小定理）。
         計算量は O(log mod)。
     """
-    return pow_mod(a, mod - 2, mod)
+    return pow(a, -1, mod)
 
 
 # ============================================================
@@ -270,6 +266,10 @@ class Combination:
         print(comb.nCr(10, 3))  # 120
     """
     def __init__(self, n: int, mod: int = MOD):
+        if n < 0:
+            raise ValueError("n must be non-negative")
+        if mod <= 1 or not is_prime(mod) or n >= mod:
+            raise ValueError("requires a prime mod and 0 <= n < mod")
         self.mod = mod
         self.fact = [1] * (n + 1)
         self.inv_fact = [1] * (n + 1)
@@ -277,29 +277,37 @@ class Combination:
         for i in range(1, n + 1):
             self.fact[i] = self.fact[i - 1] * i % mod
 
-        self.inv_fact[n] = pow_mod(self.fact[n], mod - 2, mod)
+        self.inv_fact[n] = pow(self.fact[n], mod - 2, mod)
         for i in range(n - 1, -1, -1):
             self.inv_fact[i] = self.inv_fact[i + 1] * (i + 1) % mod
 
     def nCr(self, n: int, r: int) -> int:
         """組み合わせ nCr"""
-        if r < 0 or r > n: return 0
+        if n < 0 or r < 0 or r > n: return 0
+        if n >= len(self.fact):
+            raise ValueError("n exceeds the initialized limit")
         return self.fact[n] * self.inv_fact[r] % self.mod * self.inv_fact[n - r] % self.mod
 
     def nPr(self, n: int, r: int) -> int:
         """順列 nPr"""
-        if r < 0 or r > n: return 0
+        if n < 0 or r < 0 or r > n: return 0
+        if n >= len(self.fact):
+            raise ValueError("n exceeds the initialized limit")
         return self.fact[n] * self.inv_fact[n - r] % self.mod
 
     def nHr(self, n: int, r: int) -> int:
         """重複組み合わせ nHr = C(n+r-1, r)"""
+        if n == 0 and r == 0: return 1
+        if n <= 0 or r < 0: return 0
         return self.nCr(n + r - 1, r)
 
     def catalan(self, n: int) -> int:
         """カタラン数 C_n"""
-        return self.nCr(2 * n, n) * pow_mod(n + 1, self.mod - 2, self.mod) % self.mod
+        if n < 0 or 2 * n >= len(self.fact):
+            raise ValueError("catalan(n) requires 0 <= 2*n <= initialized limit")
+        return self.nCr(2 * n, n) * pow(n + 1, self.mod - 2, self.mod) % self.mod
 
-def fast_mod_nCr(n, r, MOD=MOD):
+def fast_mod_nCr(n: int, r: int, MOD: int = MOD) -> int:
     """概要:
         逐次積で組み合わせ nCr を求める。
     入力:
@@ -312,8 +320,12 @@ def fast_mod_nCr(n, r, MOD=MOD):
         反復回数を少なくするため、r と n-r の小さい方を使う。
         計算量は O(min(r, n-r))
     """
-    if n < r:
+    if MOD <= 1 or not is_prime(MOD) or n >= MOD:
+        raise ValueError("requires a prime MOD and 0 <= n < MOD")
+    if n < 0 or r < 0 or n < r:
         return 0
+    if r == 0 or r == n:
+        return 1
     if n-r < r:
         r = n-r
     comb = 1
@@ -340,10 +352,7 @@ def prefix_sum(arr: list[int]) -> list[int]:
     補足:
         区間和は ps[r] - ps[l]（半開区間 [l, r)）。計算量は O(n)。
     """
-    ps = [0]
-    for x in arr:
-        ps.append(ps[-1] + x)
-    return ps
+    return list(accumulate(arr, initial=0))
 
 def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     """概要:
@@ -355,7 +364,10 @@ def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     補足:
         構築計算量は O(HW)。矩形和は inclusion-exclusion で O(1) 取得できる。
     """
-    H, W = len(grid), len(grid[0])
+    H = len(grid)
+    if H == 0:
+        return [[0]]
+    W = len(grid[0])
     ps = [[0] * (W + 1) for _ in range(H + 1)]
     for i in range(H):
         for j in range(W):
@@ -452,15 +464,15 @@ class Imos2D:
 
     def build(self) -> list[list[int]]:
         """累積和を計算して結果を返す"""
-        # 横方向
+        result = [row[:self.w] for row in self.diff[:self.h]]
         for i in range(self.h):
             for j in range(self.w):
-                self.diff[i][j + 1] += self.diff[i][j]
-        # 縦方向
+                if j:
+                    result[i][j] += result[i][j - 1]
         for j in range(self.w):
-            for i in range(self.h):
-                self.diff[i + 1][j] += self.diff[i][j]
-        return [row[:self.w] for row in self.diff[:self.h]]
+            for i in range(1, self.h):
+                result[i][j] += result[i - 1][j]
+        return result
 
 
 # ============================================================
@@ -578,6 +590,8 @@ class WeightedDSU:
 
     def merge(self, x: int, y: int, w: int) -> bool:
         """weight[x] - weight[y] = w となるよう併合"""
+        if self.same(x, y):
+            return self.diff(x, y) == w
         w += self.get_weight(y) - self.get_weight(x)
         x, y = self.leader(x), self.leader(y)
         if x == y: return False
@@ -615,12 +629,12 @@ def build_graph(n: int, edges: list[tuple[int, int]], idx: bool = True, directed
         if idx:
             a -= 1
             b -= 1
-        g[a]. append(b)
+        g[a].append(b)
         if not directed:
             g[b].append(a)
     return g
 
-def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: int = True, directed: bool = False) -> list[list[tuple[int, int]]]:
+def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: bool = True, directed: bool = False) -> list[list[tuple[int, int]]]:
     """概要:
         辺集合から重み付きグラフの隣接リストを構築する。
     入力:
@@ -740,6 +754,8 @@ def bfs_grid(grid: list[list[str]], sy: int, sx: int, wall: str = '#') -> list[l
     """
     H, W = len(grid), len(grid[0])
     dist = [[-1] * W for _ in range(H)]
+    if grid[sy][sx] == wall:
+        return dist
     dist[sy][sx] = 0
     q = deque([(sy, sx)])
     while q:
@@ -796,9 +812,9 @@ def dijkstra_multi(
                      未到達は (INF, 0, 0, ...) 相当。
 
     補足:
-        ヒープのキーは (primary, -secondary, ..., vertex) の形。
-        better 関数を自分で定義すれば任意の多基準に対応可能。
-        計算量は O((V+E)logV * n_criteria)。
+        主コストは非負で最小化する。better を指定すると、同じ主コストを
+        含む状態の採否をカスタマイズできる。副基準の順序はヒープに依存せず、
+        数値の単項マイナスも要求しない。計算量は O((V+E)logV * n_criteria)。
 
     使用例（距離最小・木の数最大の2基準）:
         # g[v] = [(to, cost, tree_count), ...]
@@ -807,6 +823,10 @@ def dijkstra_multi(
     """
     INF_VAL = 10 ** 18
     n = len(g)
+    if n_criteria < 1:
+        raise ValueError("n_criteria must be at least 1")
+    if not (0 <= s < n):
+        raise ValueError("source must be a valid vertex")
     init = tuple([INF_VAL] + [0] * (n_criteria - 1))
     dist = [init] * n
     start = tuple([0] * n_criteria)
@@ -822,18 +842,12 @@ def dijkstra_multi(
 
     _better = better if better else default_better
 
-    # ヒープキー: (primary, -secondary, vertex)
-    def to_heap_key(state: tuple, v: int) -> tuple:
-        return (state[0],) + tuple(-x for x in state[1:]) + (v,)
-
-    pq = [to_heap_key(start, s)]
+    # 主コストだけをヒープ順に使い、副基準の比較は better に委ねる。
+    sequence = 0
+    pq = [(start[0], sequence, s, start)]
 
     while pq:
-        entry = heapq.heappop(pq)
-        v = entry[-1]
-        cur_primary = entry[0]
-        cur_rest = tuple(-x for x in entry[1:-1])
-        cur_state = (cur_primary,) + cur_rest
+        _, _, v, cur_state = heapq.heappop(pq)
 
         if not _better(cur_state, dist[v]) and cur_state != dist[v]:
             continue
@@ -844,7 +858,8 @@ def dijkstra_multi(
             new_state = tuple(cur_state[i] + values[i] for i in range(n_criteria))
             if _better(new_state, dist[to]):
                 dist[to] = new_state
-                heapq.heappush(pq, to_heap_key(new_state, to))
+                sequence += 1
+                heapq.heappush(pq, (new_state[0], sequence, to, new_state))
 
     return dist
 
@@ -906,6 +921,8 @@ def zero_one_bfs(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     while q:
         v = q.popleft()
         for to, w in g[v]:
+            if w not in (0, 1):
+                raise ValueError("zero_one_bfs requires edge weights 0 or 1")
             nd = dist[v] + w
             if nd < dist[to]:
                 dist[to] = nd
@@ -1100,6 +1117,8 @@ class MaxFlow:
 
     def add_edge(self, u: int, v: int, cap: int) -> None:
         """u→v に容量 cap の有向辺を追加（逆辺も自動追加）"""
+        if cap < 0:
+            raise ValueError("capacity must be non-negative")
         self.graph[u].append([v, cap, len(self.graph[v])])
         self.graph[v].append([u, 0, len(self.graph[u]) - 1])
 
@@ -1134,6 +1153,10 @@ class MaxFlow:
 
     def max_flow(self, s: int, t: int) -> int:
         """s→t の最大流量を返す"""
+        if not (0 <= s < self.n and 0 <= t < self.n):
+            raise ValueError("source and sink must be valid vertices")
+        if s == t:
+            raise ValueError("source and sink must be distinct")
         flow = 0
         while True:
             level = self._bfs(s)
@@ -1153,8 +1176,7 @@ class LowerBoundFlow:
     メソッド:
         add_edge(u, v, lo, hi): 下限 lo, 上限 hi の辺を追加する。
         is_feasible(): 実行可能かどうかを判定する。
-        min_flow(s, t): 追加の最小流量（実行可能かつ最小）を求める。
-
+        min_flow(s, t): s から t への実行可能な最小流量を求める。
     計算量:
         add_circulation/add_edge は O(1)、is_feasible は内部最大流1回で O(V^2E)。
 
@@ -1173,24 +1195,97 @@ class LowerBoundFlow:
         self.TT = n + 1  # 超終点
         self.mf = MaxFlow(n + 2)
         self.required = 0
+        self.edges = []
+        self.circulations = []
 
     def add_circulation(self, t: int, s: int) -> None:
         """T → S の循環辺（∞容量）を追加"""
-        self.mf.add_edge(t, s, INF)
+        self.circulations.append((t, s, 0, INF))
 
     def add_edge(self, u: int, v: int, lo: int, hi: int) -> None:
         """下限 lo、上限 hi の辺を追加"""
-        self.mf.add_edge(u, v, hi - lo)
-        if lo > 0:
-            self.mf.add_edge(self.SS, v, lo)
-            self.mf.add_edge(u, self.TT, lo)
-            self.required += lo
+        if lo < 0 or hi < lo:
+            raise ValueError("requires 0 <= lo <= hi")
+        self.edges.append((u, v, lo, hi))
 
     def is_feasible(self) -> bool:
         """実行可能かどうかを返す"""
-        return self.mf.max_flow(self.SS, self.TT) == self.required
+        network = MaxFlow(self.n + 2)
+        demand = [0] * self.n
+        for u, v, lo, hi in self.edges + self.circulations:
+            network.add_edge(u, v, hi - lo)
+            demand[u] -= lo
+            demand[v] += lo
+        required = 0
+        for v, value in enumerate(demand):
+            if value > 0:
+                network.add_edge(self.SS, v, value)
+                required += value
+            elif value < 0:
+                network.add_edge(v, self.TT, -value)
+        self.mf = network
+        self.required = required
+        return network.max_flow(self.SS, self.TT) == required
 
-def bipartite_matching(n: int, m: int, adj: list[list[int]]) -> int:
+    def min_flow(self, s: int, t: int) -> int | None:
+        """s から t への実行可能な最小流量を返す。
+
+        下限・上限付き辺を使って s から t へ流す問題として扱う。
+        実行不可能な場合は `None` を返す。既に `add_circulation` で
+        追加した辺も制約の一部として含める。
+        """
+        if not (0 <= s < self.n and 0 <= t < self.n) or s == t:
+            raise ValueError("requires distinct vertices in range")
+
+        constraints = self.edges + self.circulations
+
+        def build(upper: int, lower: int = 0):
+            if lower < 0 or upper < lower:
+                return None
+            network = MaxFlow(self.n + 2)
+            demand = [0] * self.n
+            for u, v, lo, hi in constraints:
+                network.add_edge(u, v, hi - lo)
+                demand[u] -= lo
+                demand[v] += lo
+
+            artificial_index = len(network.graph[t])
+            network.add_edge(t, s, upper - lower)
+            demand[t] -= lower
+            demand[s] += lower
+
+            required = 0
+            for v, value in enumerate(demand):
+                if value > 0:
+                    network.add_edge(self.SS, v, value)
+                    required += value
+                elif value < 0:
+                    network.add_edge(v, self.TT, -value)
+
+            return network, artificial_index, required
+
+        network, artificial_index, required = build(INF)
+        if network.max_flow(self.SS, self.TT) != required:
+            return None
+        artificial = network.graph[t][artificial_index]
+        upper = network.graph[s][artificial[2]][1]
+
+        def feasible(value: int) -> bool:
+            network, _, required = build(value, value)
+            return network.max_flow(self.SS, self.TT) == required
+
+        low, high = -1, upper
+        while high - low > 1:
+            middle = (low + high) // 2
+            if feasible(middle):
+                high = middle
+            else:
+                low = middle
+        return high
+
+def bipartite_matching(
+    n: int, m: int, adj: list[list[int]], return_matching: bool = False
+) -> int | tuple[int, list[int]]:
     """概要:
         二部グラフの最大マッチング数を増加路DFSで求める。
     入力:
@@ -1198,7 +1293,8 @@ def bipartite_matching(n: int, m: int, adj: list[list[int]]) -> int:
         m   (int)            : 右側頂点数（例: 席数）。0-indexed。
         adj (list[list[int]]): adj[i] = 左i から行ける右頂点リスト。
     出力:
-        int: 最大マッチング数。
+        int | tuple[int, list[int]]: 最大マッチング数。`return_matching=True` の場合は
+        (最大マッチング数, 右側から左側への対応) を返す。
     補足:
         計算量 O(V * E)。N≦数百程度なら十分高速。
         match_r[j] に最終的なマッチング結果が入る（右jに割り当てた左頂点）。
@@ -1227,11 +1323,32 @@ def bipartite_matching(n: int, m: int, adj: list[list[int]]) -> int:
         visited = [False] * m
         if dfs(i, visited):
             ans += 1
-    return ans
+    return (ans, match_r) if return_matching else ans
 
 # ============================================================
 # 木アルゴリズム
 # ============================================================
+
+def _validate_tree_input(g: list[list[int]], root: int = 0) -> None:
+    """木アルゴリズム共通の空グラフ・根・連結性を検証する。"""
+    n = len(g)
+    if n == 0 or not (0 <= root < n):
+        raise ValueError("requires a non-empty graph and a valid root")
+    visited = [False] * n
+    visited[root] = True
+    q = deque([root])
+    count = 0
+    while q:
+        v = q.popleft()
+        count += 1
+        for to in g[v]:
+            if not (0 <= to < n):
+                raise ValueError("tree edge contains an invalid vertex")
+            if not visited[to]:
+                visited[to] = True
+                q.append(to)
+    if count != n:
+        raise ValueError("tree graph must be connected")
 
 def tree_diameter(g: list[list[int]]) -> tuple[int, int, int]:
     """概要:
@@ -1243,6 +1360,8 @@ def tree_diameter(g: list[list[int]]) -> tuple[int, int, int]:
     補足:
         BFS を2回行う定番手法を用いる。計算量は O(V)。
     """
+    _validate_tree_input(g)
+
     def bfs_farthest(s: int) -> tuple[int, int]:
         dist = bfs(g, s)
         farthest = max(range(len(g)), key=lambda x: dist[x])
@@ -1263,6 +1382,7 @@ def tree_depth(g: list[list[int]], root: int = 0) -> list[int]:
     補足:
         実装は `bfs` を利用している。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     return bfs(g, root)
 
 def tree_parent(g: list[list[int]], root: int = 0) -> list[int]:
@@ -1276,6 +1396,7 @@ def tree_parent(g: list[list[int]], root: int = 0) -> list[int]:
     補足:
         BFS で訪問順に親を設定する。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     n = len(g)
     parent = [-1] * n
     visited = [False] * n
@@ -1299,13 +1420,23 @@ def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
     出力:
         list[int]: size[v] = v を根とする部分木サイズ。
     補足:
-        深い頂点から親へサイズを集約する。計算量は O(VlogV)。
+        深い頂点から親へサイズを集約する。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     n = len(g)
     size = [1] * n
-    parent = tree_parent(g, root)
-    depth = tree_depth(g, root)
-    order = sorted(range(n), key=lambda x: -depth[x])
+    parent = [-1] * n
+    order = [root]
+    q = deque([root])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if to == root or parent[to] != -1:
+                continue
+            parent[to] = v
+            order.append(to)
+            q.append(to)
+    order.reverse()
     for v in order:
         if parent[v] != -1:
             size[parent[v]] += size[v]
@@ -1321,13 +1452,23 @@ def subtree_height(g: list[list[int]], root: int = 0) -> list[int]:
         list[int]: height[v] = v を根とする部分木の高さ。
                    葉は 0、それ以外は直属の子の高さの最大値 + 1。
     補足:
-        深い頂点から親へ max(子の高さ) + 1 を伝播する。計算量は O(VlogV)。
+        深い頂点から親へ max(子の高さ) + 1 を伝播する。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     n = len(g)
     height = [0] * n
-    parent = tree_parent(g, root)
-    depth = tree_depth(g, root)
-    order = sorted(range(n), key=lambda x: -depth[x])
+    parent = [-1] * n
+    order = [root]
+    q = deque([root])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if to == root or parent[to] != -1:
+                continue
+            parent[to] = v
+            order.append(to)
+            q.append(to)
+    order.reverse()
     for v in order:
         if parent[v] != -1:
             height[parent[v]] = max(height[parent[v]], height[v] + 1)
@@ -1353,6 +1494,7 @@ class LCA:
         print(lca.dist(u, v))
     """
     def __init__(self, g: list[list[int]], root: int = 0):
+        _validate_tree_input(g, root)
         self.n = len(g)
         self.log = max(1, (self.n - 1).bit_length())
         self.depth = [-1] * self.n
@@ -1469,9 +1611,9 @@ class BIT:
         """
         if w <= 0:
             return 0
-        x, k = 0, 1
-        while k * 2 <= self.n:
-            k *= 2
+        if self.n == 0:
+            return 0
+        x, k = 0, 1 << (self.n.bit_length() - 1)
         while k > 0:
             if x + k <= self.n and self.data[x + k] < w:
                 w -= self.data[x + k]
@@ -2791,11 +2933,14 @@ def to_base(n: int, base: int) -> str:
         to_base(414, 8)  # "636"
         to_base(10, 2)   # "1010"
     """
+    if n < 0 or base < 2 or base > 36:
+        raise ValueError("requires n >= 0 and 2 <= base <= 36")
     if n == 0:
         return "0"
+    symbols = string.digits + string.ascii_uppercase
     digits = []
     while n > 0:
-        digits.append(str(n % base))
+        digits.append(symbols[n % base])
         n //= base
     return ''.join(reversed(digits))
 
@@ -2814,6 +2959,8 @@ def gen_palindromes_d_digits(d: int):
         for p in gen_palindromes_d_digits(3):
             print(p)  # 101, 111, 121, ..., 999
     """
+    if d < 1:
+        raise ValueError("d must be at least 1")
     half = (d + 1) // 2
     start = 10 ** (half - 1)
     end   = 10 ** half
@@ -3735,6 +3882,8 @@ def sliding_window_max(arr: list[int], k: int) -> list[int]:
         print(sliding_window_max(arr, 3))  # [3, 3, 4]
     """
     n = len(arr)
+    if k <= 0 or k > n:
+        raise ValueError("requires 1 <= k <= len(arr)")
     dq = deque()
     result = []
     for i in range(n):
@@ -3762,6 +3911,8 @@ def sliding_window_min(arr: list[int], k: int) -> list[int]:
         print(sliding_window_min(arr, 3))  # [0, 0, 0]
     """
     n = len(arr)
+    if k <= 0 or k > n:
+        raise ValueError("requires 1 <= k <= len(arr)")
     dq = deque()
     result = []
     for i in range(n):
@@ -3902,20 +4053,28 @@ def floor_sum(n: int, m: int, a: int, b: int) -> int:
     補足:
         ACL由来の再帰的変形を使い O(log m + log a) 程度で処理する。
     """
+    if n < 0 or m <= 0:
+        raise ValueError("requires n >= 0 and m > 0")
     ans = 0
-    if a >= m:
-        ans += (n - 1) * n * (a // m) // 2
-        a %= m
-    if b >= m:
-        ans += n * (b // m)
-        b %= m
-    y_max = (a * n + b) // m
-    x_max = y_max * m - b
-    if y_max == 0:
-        return ans
-    ans += (n - (x_max + a - 1) // a) * y_max
-    ans += floor_sum(y_max, a, m, (a - x_max % a) % a)
-    return ans
+    if a < 0:
+        a_mod = a % m
+        ans -= n * (n - 1) // 2 * ((a_mod - a) // m)
+        a = a_mod
+    if b < 0:
+        b_mod = b % m
+        ans -= n * ((b_mod - b) // m)
+        b = b_mod
+    while True:
+        if a >= m:
+            ans += n * (n - 1) // 2 * (a // m)
+            a %= m
+        if b >= m:
+            ans += n * (b // m)
+            b %= m
+        y_max = a * n + b
+        if y_max < m:
+            return ans
+        n, b, m, a = y_max // m, y_max % m, a, m
 
 def rotate_90(grid: list[list]) -> list[list]:
     """概要:
