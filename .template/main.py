@@ -17,13 +17,15 @@ import string
 sys.setrecursionlimit(2*10**6)
 
 # ===== 入出力ヘルパ =====
-input = lambda: sys.stdin.readline().rstrip()
+_input = iter(sys.stdin.buffer.read().splitlines())
+input = lambda: next(_input).decode()
+# input = lambda: sys.stdin.readline().rstrip() # インタラクティブ問題用
 INT = lambda: int(input())
 INT0 = lambda: int(input()) - 1
 MAP = lambda: map(int, input().split())
-MAP0 = lambda: map(lambda x: int(x) - 1, input().split())
+MAP0 = lambda: (int(x) - 1 for x in input().split())
 LIST = lambda: list(map(int, input().split()))
-LIST0 = lambda: list(map(lambda x: int(x) - 1, input().split()))
+LIST0 = lambda: [int(x) - 1 for x in input().split()]
 TUPLE = lambda: tuple(map(int, input().split()))
 LISTS = lambda n: [list(map(int, input().split())) for _ in range(n)]
 TUPLES = lambda n: [tuple(map(int, input().split())) for _ in range(n)]
