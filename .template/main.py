@@ -93,6 +93,9 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N = INT()
+    
+    
+    
     print(ans)
 
 
