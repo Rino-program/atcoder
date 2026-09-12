@@ -4356,8 +4356,8 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    A, B, C = MAP()
+    print(A * B + C)
 
 
 if __name__ == "__main__":

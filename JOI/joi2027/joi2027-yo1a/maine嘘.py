@@ -92,11 +92,19 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    
-    
-    
-    print(ans)
+    # 要はSが3つのどれかを使って構成されているか見ればいいだけ
+    S = STR()
+    i = 0
+    while i < len(S)-1:
+        S3 = S[i:i+3]
+        if i < len(S)-3 and S3 + S[i+3] == "JOIG":
+            i += 4
+        elif S3 in {"JOI", "IOI"}:
+            i += 3
+        else:
+            No()
+            return
+    Yes()
 
 
 

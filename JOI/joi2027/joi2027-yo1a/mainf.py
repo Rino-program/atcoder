@@ -92,10 +92,28 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    
-    
-    
+    # いい方からやっていけばいい
+    N, X, Y = MAP()
+    A = LIST()
+    B = LIST()
+    li = [(A[i] - B[i], i) for i in range(N)]
+    li.sort()
+    d = deque(li)
+    ans = 0
+    for i in range(N):
+        if -d[0][0] > d[-1][0] and Y:
+            now = d.popleft()[1]
+            ans += B[now]
+            Y -= 1
+        else:
+            if X:
+                now = d.pop()[1]
+                ans += A[now]
+                X -= 1
+            else: # これか？
+                now = d.popleft()[1]
+                ans += B[now]
+                Y -= 1
     print(ans)
 
 

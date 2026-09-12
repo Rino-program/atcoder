@@ -92,10 +92,14 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
+    # 考えようとしたら1000だったから愚直だった笑
+    # chrome固まった～びくともしない、かなりの時間ロス
     N = INT()
-    
-    
-    
+    A = LIST()
+    ans = 0
+    for i in range(N-1):
+        for j in range(i+1, N):
+            if A[i] % A[j] == 0: ans += 1
     print(ans)
 
 

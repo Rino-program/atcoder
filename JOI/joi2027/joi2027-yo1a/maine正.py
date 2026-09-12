@@ -92,11 +92,19 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    A, B = MAP()
-    for i in range(3):
-        if i not in {A, B}:
-            print(i)
+    # 要はSが3つのどれかを使って構成されているか見ればいいだけ
+    S = STR()
+    i = 0
+    while i < len(S): # ここが一番良くなかった
+        S3 = S[i:i+3]
+        if i < len(S)-3 and S3 + S[i+3] == "JOIG":
+            i += 4
+        elif i < len(S)-2 and S3 in {"JOI", "IOI"}: # ここに制限を追加 いらないかも
+            i += 3
+        else:
+            No()
             return
+    Yes()
 
 
 

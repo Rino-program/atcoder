@@ -92,11 +92,9 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    
-    
-    
-    print(ans)
+    # 要は前半と後半で見ればいいってことか
+    A = LIST()
+    print(A.index(min(max(A[:16]), max(A[16:])))+1)
 
 
 
