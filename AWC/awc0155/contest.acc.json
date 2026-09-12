@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0155",
+    "title": "AtCoder Weekday Contest 0155 Beta",
+    "url": "https://atcoder.jp/contests/awc0155"
+  },
+  "tasks": [
+    {
+      "id": "awc0155_a",
+      "label": "A",
+      "title": "Lyrics Search",
+      "url": "https://atcoder.jp/contests/awc0155/tasks/awc0155_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0155_b",
+      "label": "B",
+      "title": "Watering Duty",
+      "url": "https://atcoder.jp/contests/awc0155/tasks/awc0155_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0155_c",
+      "label": "C",
+      "title": "Assignment of Delivery Workers",
+      "url": "https://atcoder.jp/contests/awc0155/tasks/awc0155_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0155_d",
+      "label": "D",
+      "title": "Summer Festival Booth Planning",
+      "url": "https://atcoder.jp/contests/awc0155/tasks/awc0155_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0155_e",
+      "label": "E",
+      "title": "Hiking Course on a Mountain Trail",
+      "url": "https://atcoder.jp/contests/awc0155/tasks/awc0155_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
