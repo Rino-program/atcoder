@@ -78,6 +78,7 @@ def yn(cond: bool, yes: str = "Yes", no: str = "No") -> None:
 def is_prime(n: int) -> bool:
     """
     整数 n が素数かどうかを判定する（完全汎用・高速決定論的版）。
+    
     対応範囲:
         任意の非負整数 (n < 2^64 は100%決定論的に判定、それ以上も高精度に判定)
     計算量:
