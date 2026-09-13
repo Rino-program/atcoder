@@ -105,11 +105,116 @@ def sieve(n: int) -> tuple[list[bool], list[int]]:
     primes = [i for i in range(2, n + 1) if is_prime_arr[i]]
     return is_prime_arr, primes
 
+import random
+def is_prime(n: int, k_random: int = 15) -> bool:
+    """
+    整数 n が素数かどうかを判定する (ミラー-ラビン素数判定法)。
+
+    対応範囲:
+        - n < 2^64: 100% 決定論的判定 (反例が存在しない底を選択、完全AC保証)
+        - n >= 2^64: 確率的判定 (固定12底 + ランダム k_random 底によるHack完全耐性)
+
+    計算量:
+        【時間計算量】(テストする基底の合計個数を K とする)
+        - 最悪ケース (素数の場合):
+            - n < 2^64  : O(K log n)  (K <= 7, 約450演算, 数μs〜数十μs)
+            - n >= 2^64 : O(K log^3 n) [K = 12 + k_random, 2^1024 規模でも約 0.1 秒]
+        - 平均ケース (合成数の場合):
+            - 99.9% 以上の合成数は「最初の1基底」で脱出するため、素数の 1/5〜1/10 以下の時間で終了
+
+        【空間計算量】
+        - n < 2^64  : O(1)
+        - n >= 2^64 : O(log n) (n のビット長を保持するメモリのみ)
+
+    引数:
+        n (int): 判定対象の整数
+        k_random (int, optional):
+            n >= 2^64 の場合に追加するランダム基底の個数 (デフォルト: 15)。
+            最悪誤判定確率は ≦ (1/4)^k_random。(実際に使用する場合はさらに低くなります)
+            [目安]
+            5: 高速優先 (誤判定率 ≦ 10^-3, 約 80ms @ 2^1024)
+            15: 競プロ推奨 (誤判定率 ≦ 10^-9, 約 124ms @ 2^1024, Hack完全防御)
+            40: 暗号標準水準 (誤判定率 ≦ 10^-24, 約 270ms @ 2^1024)
+
+    戻り値:
+        bool: 素数なら True, 合成数または 1 以下なら False
+    """
+    if n < 2:
+        return False
+
+    # 1. 小さな素数の事前判定 (37以下の素数での試し割り)
+    small_primes = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
+    for p in small_primes:
+        if n == p:
+            return True
+        if n % p == 0:
+            return False
+
+    # 37^2 = 1369 未満の合成数は上記で全て弾かれているため素数確定
+    if n < 1369:
+        return True
+
+    # 2. n - 1 = 2^s * d (d は奇数) の形に分解
+    d = n - 1
+    s = (d & -d).bit_length() - 1
+    d >>= s
+
+    # 3. サイズに応じた基底の選択
+    if n < 4759123141:
+        # 3基底で決定論的 (Jaeschke, 1993)
+        bases = (2, 7, 61)
+    elif n < 18446744073709551616:  # 2^64
+        # 7基底で決定論的 (Jim Sinclair, 2011)
+        bases = (2, 325, 9375, 28178, 450775, 9780504, 1795265022)
+    else:
+        # 2^64 以上の場合は固定12底 + 指定個数のランダム底
+        bases = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+        bases += [random.randrange(41, n - 1) for _ in range(k_random)]
+
+    # 4. ミラー-ラビン判定メインループ
+    for a in bases:
+        x = pow(a, d, n)
+        if x == 1 or x == n - 1:
+            continue
+
+        for _ in range(s - 1):
+            x = (x * x) % n
+            if x == n - 1:
+                break
+        else:
+            return False
+
+    return True
+
 # ==============================================
 # =================== main =====================
 # ==============================================
 
-def main() -> None:
+def main_isprime() -> None:
+    # ここに解答を書く
+    S = STR()
+    se = set(list(S))
+    for i in range(10**7):
+        if not is_prime(i): continue
+        T = str(i)
+        if len(T) != len(S):
+            continue
+        f = 0
+        di = dedict(set)
+        se2 = set()
+        for i, t in en(T):
+            di[S[i]].add(t)
+            se2.add(t)
+        for i in di.values():
+            if len(i) > 1:
+                f = 1
+        if f == 0 and len(se2) == len(se):
+            print(T)
+            return
+    print(-1)
+
+
+def main_sieve() -> None:
     # ここに解答を書く
     S = STR()
     se = set(list(S))
@@ -149,8 +254,6 @@ def main() -> None:
 
 
 
-
-
-
 if __name__ == "__main__":
-    main()
+    # main_sieve()
+    main_isprime()
