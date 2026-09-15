@@ -127,7 +127,7 @@ def main() -> None:
     Map = [row[::-1] for row in Map]
     #print_grid(Map)
     # 1つを3つにまとめる
-    ans_now = []
+    """ans_now = []
     i = 0
     j = 0
     while i < H:
@@ -143,7 +143,8 @@ def main() -> None:
                     ans_now.append((j, i, 1))
                 j += 1
         i += 1
-        j = 0
+        j = 0"""
+    ans_now = ans[:]
     # 3でなくてもいい所を1にする
     ans = []
     Map = [[0 for _ in range(W)] for _ in range(H)]
@@ -176,7 +177,7 @@ def main() -> None:
         if k == 1: Map[j][i] = 1
         else:
             Map[j][i] = 3
-            Map[j][i+1] = 100
+            Map[j][i+1] = INF
             Map[j][i+2] = INF
     Map = Map[::-1]
     #print_grid(Map)
@@ -203,60 +204,89 @@ def main() -> None:
                     y += 1
     del d
     # 長いやつを設置してまとめる
-    # まずは3つのやつに何個乗ってるかを調べる
+    """# まずは3つのやつに何個乗ってるかを調べる
     Map3 = [[0 for _ in range(W)] for _ in range(H)]
     for i in range(H):
         for j in range(W):
             if Map[i][j] == 3:
                 tmp = 0
                 for k in range(3):
-                    if Map[i][j+k] in {3, 100}:
+                    if Map[i][j+k] in {3, 4}:
                         tmp += 1
                         break
                     if Map[i][j+k] == 1:
                         tmp += 1
                 Map3[i][j] = tmp
                 Map3[i][j+1] = tmp
-                Map3[i][j+2] = tmp
+                Map3[i][j+2] = tmp"""
     #print_grid(Map)
-    line = [27, 15, 5]
+    # 15 と 45 に寄るような走査順を作成
+    # (0->14, 29->15, 30->44, 59->45 の順に内側へ寄せていく)
+    b_order = []
+    b_order += list(range(0, 15))
+    b_order += list(range(29, 14, -1))
+    b_order += list(range(30, 45))
+    b_order += list(range(59, 44, -1))
+
+    line = [i for i in range(1, H)][::-1]
     for l in line:
-        for i in range(6):
-            z = i*10
+        for b in b_order:
+            z = b
             f = 0
             tmp = 0
             left = INF
-            right = 0
+            right = -1
             ma = 0
             for j in range(9):
-                if Map[H-1-l][j+z] not in {0, 1}:
+                pos = j + z
+                if pos >= W: break
+                if Map[H-1-l][pos] not in {0, 1}:
                     f = 1
-                if Map[H-1-l][j+z] == 1:
+                if Map[H-1-l][pos] == 1:
                     tmp += 1
-                    left = min(left, j+z)
-                    right = max(right, j+z)
-                ma = max(ma, j+z)
-            if right != 0 and left != INF and (right - left + 1) % 2 == 0:
-                if right == ma:
-                    left -= 1
+                    left = min(left, pos)
+                    right = max(right, pos)
+                ma = max(ma, pos)
+
+            # 奇数長に調整するとき、近い方の目標(15 or 45)に center が近づく側へ伸ばす
+            if right != -1 and left != INF and ((right - left + 1) % 2 == 0):
+                cur_center = (left + right) / 2
+                target = 15 if cur_center < 30 else 45
+                
+                # target より左なら右へ伸ばし、target より右なら左へ伸ばす
+                if cur_center < target:
+                    if right + 1 < W and Map[H-1-l][right + 1] in {0, 1}:
+                        right += 1
+                    elif left - 1 >= 0 and Map[H-1-l][left - 1] in {0, 1}:
+                        left -= 1
+                    else:
+                        f = 1
                 else:
-                    right += 1
+                    if left - 1 >= 0 and Map[H-1-l][left - 1] in {0, 1}:
+                        left -= 1
+                    elif right + 1 < W and Map[H-1-l][right + 1] in {0, 1}:
+                        right += 1
+                    else:
+                        f = 1
+
             if f == 0 and tmp > 1:
                 # 削除と設置
-                for i in range(left, right+1):
-                    Map[H-1-l][i] = INF
-                Map[H-1-l][left] = right-left+1
-                # 下側についてる1の削除
-                for i in range(left, right+1):
-                    # 中央のみ柱を追加
-                    if i == (left+right+1)//2:
-                        x, y = i, H-1-(l-1)
+                for col in range(left, right + 1):
+                    Map[H-1-l][col] = INF
+                Map[H-1-l][left] = right - left + 1
+
+                # 下側についてる1の削除・柱の追加
+                center = (left + right) // 2  # 中央の座標
+                for col in range(left, right + 1):
+                    if col == center:
+                        x, y = col, H-1-(l-1)
                         while y < H and Map[y][x] == 0:
                             Map[y][x] = 1
                             y += 1
                         continue
-                    if Map[H-1-(l-1)][i] == 1:
-                        x, y = i, H-1-(l-1)
+
+                    if Map[H-1-(l-1)][col] == 1:
+                        x, y = col, H-1-(l-1)
                         while y < H and Map[y][x] == 1 and dot[H-1-y][x] == 0:
                             Map[y][x] = 0
                             y += 1
