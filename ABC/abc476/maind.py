@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.3.0 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.3.1 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py &template.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 
@@ -21,9 +21,9 @@ input = lambda: sys.stdin.readline().rstrip()
 INT = lambda: int(input())
 INT0 = lambda: int(input()) - 1
 MAP = lambda: map(int, input().split())
-MAP0 = lambda: map(lambda x: int(x) - 1, input().split())
+MAP0 = lambda: (int(x) - 1 for x in input().split())
 LIST = lambda: list(map(int, input().split()))
-LIST0 = lambda: list(map(lambda x: int(x) - 1, input().split()))
+LIST0 = lambda: [int(x) - 1 for x in input().split()]
 TUPLE = lambda: tuple(map(int, input().split()))
 LISTS = lambda n: [list(map(int, input().split())) for _ in range(n)]
 TUPLES = lambda n: [tuple(map(int, input().split())) for _ in range(n)]
@@ -34,8 +34,16 @@ CHARS = lambda: list(input())
 CHARSL = lambda n: [list(input()) for _ in range(n)]
 CHARSLI = lambda n: [list(map(int, input())) for _ in range(n)]
 
+# ===== 高速 print =====
+def print(*args, sep=' ', end='\n', file=None, flush=False):
+    file = file or sys.stdout
+    sep = ' ' if sep is None else sep
+    end = '\n' if end is None else end
+    file.write(sep.join(map(str, args)) + end)
+    flush and file.flush()
+
 # ===== 定数 =====
-INF = float('inf')
+INF = 10 ** 18
 MOD = 998244353
 # MOD = 10**9 + 7
 
@@ -59,30 +67,30 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
-Yes = lambda: print("Yes")
-No = lambda: print("No")
-yes = lambda: print("yes")
-no = lambda: print("no")
-YES = lambda: print("YES")
-NO = lambda: print("NO")
-def yn(cond: bool, yes: str = "Yes", no: str = "No") -> None:
+Yes = lambda **kwargs: print("Yes", **kwargs)
+No = lambda **kwargs: print("No", **kwargs)
+yes = lambda **kwargs: print("yes", **kwargs)
+no = lambda **kwargs: print("no", **kwargs)
+YES = lambda **kwargs: print("YES", **kwargs)
+NO = lambda **kwargs: print("NO", **kwargs)
+
+def yn(cond: bool, yes: str = "Yes", no: str = "No", **kwargs) -> None:
     """条件に応じてYes/No出力"""
-    print(yes if cond else no)
+    print(yes if cond else no, **kwargs)
+
+def print_grid(grid: list[list], sep: str = '') -> None:
+    """グリッド表示"""
+    print('\n'.join(sep.join(map(str, row)) for row in grid))
 
 # ===== デバッグ =====
 # AtCoder提出時は自動で無力化
 if "ATCODER" not in os.environ and "ONLINE_JUDGE" not in os.environ:
-    def debug(*args, **kwargs) -> None:
+    def debug(*args, sep=' ', end='\n', flush=False) -> None:
         """デバッグ出力（標準エラー）"""
-        print("[DEBUG]", *args, **kwargs, file=sys.stderr)
+        print("[DEBUG]", *args, sep=sep, end=end, file=sys.stderr, flush=flush)
 else:
     def debug(*args, **kwargs) -> None:
         pass
-
-def print_grid(grid: list[list], sep: str = '') -> None:
-    """グリッド表示"""
-    for row in grid:
-        print(sep.join(map(str, row)))
 
 # ===== template.py =====
 
@@ -94,57 +102,23 @@ def main() -> None:
     # ここに解答を書く
     N, M, K = MAP()
     X, Y = MAP()
-    A = LIST()+[INF]
-    B = LIST()+[INF]
+    A = LIST()
+    B = LIST()
     ans = 0
-
-    # X
-    A.sort(reverse=True)
-    while X - A[-1] >= 0:
-        X -= A.pop()
-        ans += 1
-    A[-1] -= X
-
-    # Y
-    z = 0
-    now = 0
-    A.reverse()
-    B.sort(reverse=True)
+    
+    A.sort()
+    B.sort()
     As = [0] + list(accumulate(A))
-    As[-1] = 0
-    while now < len(A) and K*Y >= B[-1] or K*Y >= A[now]:
-        tmp = min(Y, (B[-1]+(K-1))//K)
-        idx1 = bir(As, tmp*K + z + As[now]) - 1
-        idx2 = bir(As, tmp*K - B[-1] + z + A[now]) - 1 + (1 if tmp*K - B[-1] >= 0 else 0)
-        if idx1 == idx2 == -1:
-            # もう買えないよ～
-            print(ans)
-            return
-        if idx1 == idx2:
-            # 同じ分だけ買えるから1ドルの多い方を
-            idx2 -= 1
-            tmp1 = K*tmp - (As[idx1] - z - As[now])
-            tmp2 = K*tmp - B[-1] - As[idx2]
-            if tmp1 < tmp2:
-                ans += 1 + idx2 - now
-                B.pop()
-                z = tmp2
-                now = idx2
-            else:
-                ans += idx1 - now
-                now = idx1
-        if idx1 < idx2:
-            idx2 -= 1
-            tmp2 = K*tmp - B[-1] - As[idx2]
-            ans += 1 + idx2 - now
-            B.pop()
-            z = tmp2
-            now = idx2
-        else:
-            tmp1 = K*tmp - (As[idx1] - z - As[now])
-            ans += idx1 - now
-            now = idx1
-        Y -= tmp
+    Bs = [0] + list(accumulate(B))
+    Cs = [0] + list(accumulate((b + K - 1) // K for b in B))
+    
+    total = X + Y * K
+    
+    for t in range(M + 1):
+        if Cs[t] > Y:
+            break
+        idx = bir(As, total - Bs[t])
+        ans = max(ans, idx + t - 1)
     print(ans)
 
 

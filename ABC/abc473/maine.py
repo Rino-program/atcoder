@@ -104,8 +104,28 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 
 def main() -> None:
     # ここに解答を書く
-    N = INT()
-    print(ans)
+    N, K = MAP()
+    A = LIST()
+    
+    # dp: ここまでの分割で得られるスコアの最大値
+    dp = 0
+    
+    # max_dp[r]: 累積和の余りが r だった時点における dp の最大値
+    max_dp = defaultdict(lambda: -INF)
+    max_dp[0] = 0  # 累積和が 0 (初期状態) のスコアは 0
+    
+    cur_sum = 0
+    for a in A:
+        cur_sum = (cur_sum + a) % K
+        
+        # 1. 区間を切らない（直前の dp を引き継ぐ）
+        # 2. 同じ余り cur_sum を持つ過去の位置で区間を切る (max_dp[cur_sum] + 1)
+        dp = max(dp, max_dp[cur_sum] + 1)
+        
+        # 現在の余りにおける max_dp を更新
+        max_dp[cur_sum] = max(max_dp[cur_sum], dp)
+        
+    print(dp)
 
 
 

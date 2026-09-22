@@ -105,20 +105,25 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N, K = MAP()
-    A = LIST()
-    As = [0] + list(accumulate(A))
-    ans = 0
-    f = [0] * N
-    for i in range(N):
-        if f[i]:
-            continue
-        for j in range(i, (tmp := bir(As, As[i]+K))):
-            if j == N and (As[min(N, tmp)] - As[i]) % K == 0:
-                break
-            f[j] = 1
-            if (As[min(N-1, tmp)] - As[i]) % K == 0: ans += 1
-    print(ans)
+    now = []
+    ans = []
+    
+    def f(i, R):
+        if i == N:
+            if R % N == 0:
+                now.append(R // N)
+                ans.append(" ".join(map(str, now)))
+                now.pop()
+            return
+        ma = R // i
+        for j in range(ma + 1):
+            now.append(j)
+            f(i + 1, R - j * i)
+            now.pop()
+    
+    f(1, K)
 
+    print(*ans)
 
 
 

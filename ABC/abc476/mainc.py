@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.3.0 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.3.1 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py &template.py
 # oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 

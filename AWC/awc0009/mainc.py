@@ -2,6 +2,7 @@
 # AtCoder Competition Template v2 SHORT (PyPy 7.3.20 / Python 3.11)
 import sys
 from collections import deque, defaultdict, Counter
+from itertools import accumulate, permutations, combinations, product
 from bisect import bisect_left, bisect_right
 import heapq
 import math
@@ -86,15 +87,11 @@ def print_grid(grid:  list[list], sep: str = '') -> None:
 def main() -> None:
     # ここに解答を書く
     N, T, K = MAP()
-    H = [0] + sorted(LIST())
+    H = LIST()
+    H.sort()
     T += K
-    ans = 0
-    for i, j in enumerate(H):
-        kosu1 = (tmp := bisect_right(H, (tmp2 := j+T))-(i+1))
-        kosu2 = (tmp3 := bisect_right(H, (tmp2 := j+T-1))-i)
-        if i == 0:kosu2 -= 1
-        ans = max(ans, kosu1, kosu2)
-        #debug(i, tmp, tmp2, tmp3)
+    tmp = H[0] - 1
+    ans = bisect_right(H, T + tmp)
     print(ans)
 
 
