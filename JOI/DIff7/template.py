@@ -1,6 +1,5 @@
-# coding: utf-8
-# AtCoder Competition Template v2.2 ALL (PyPy 7.3.20 / Python 3.11)
-# ↑ https://github.com/Rino-program/atcoder/blob/main/contests/.template/template.py
+# AtCoder Competition Template v2.3.1 ALL (PyPy 7.3.20 / Python 3.11)
+# ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os
 import sys
@@ -16,44 +15,34 @@ from copy import deepcopy
 import operator
 import string
 
-sys.setrecursionlimit(10 ** 6)
+# ===== 設定・制限解除 =====
+sys.setrecursionlimit(2*10**6)
 
-# ===== 入出力ヘルパ =====
-def input() -> str:
-    return sys.stdin.readline().rstrip()
+# ===== 入力ヘルパ =====
+input = lambda: sys.stdin.readline().rstrip()
+INT = lambda: int(input())
+INT0 = lambda: int(input()) - 1
+MAP = lambda: map(int, input().split())
+MAP0 = lambda: (int(x) - 1 for x in input().split())
+LIST = lambda: list(map(int, input().split()))
+LIST0 = lambda: [int(x) - 1 for x in input().split()]
+TUPLE = lambda: tuple(map(int, input().split()))
+LISTS = lambda n: [list(map(int, input().split())) for _ in range(n)]
+TUPLES = lambda n: [tuple(map(int, input().split())) for _ in range(n)]
+LISTSI = lambda n: [int(input()) for _ in range(n)]
+STR = lambda: input()
+STRS = lambda n: [input() for _ in range(n)]
+CHARS = lambda: list(input())
+CHARSL = lambda n: [list(input()) for _ in range(n)]
+CHARSLI = lambda n: [list(map(int, input())) for _ in range(n)]
 
-def INT() -> int:
-    return int(input())
-
-def MAP():
-    return map(int, input().split())
-
-def LIST() -> list[int]:
-    return list(MAP())
-
-def TUPLE() -> tuple[int, ...]:
-    return tuple(MAP())
-
-def LISTS(n: int) -> list[list[int]]:
-    return [LIST() for _ in range(n)]
-
-def TUPLES(n: int) -> list[tuple[int, ...]]:
-    return [TUPLE() for _ in range(n)]
-
-def LISTSI(n: int) -> list[int]:
-    return [INT() for _ in range(n)]
-
-def STR() -> str:
-    return input()
-
-def STRS(n: int) -> list[str]:
-    return [STR() for _ in range(n)]
-
-def CHARS() -> list[str]:
-    return list(STR())
-
-def CHARSL(n: int) -> list[list[str]]:
-    return [list(STR()) for _ in range(n)]
+# ===== 高速 print =====
+def print(*args, sep=' ', end='\n', file=None, flush=False):
+    file = file or sys.stdout
+    sep = ' ' if sep is None else sep
+    end = '\n' if end is None else end
+    file.write(sep.join(map(str, args)) + end)
+    flush and file.flush()
 
 # ===== 定数 =====
 INF = 10 ** 18
@@ -69,10 +58,10 @@ bil = bisect_left
 bir = bisect_right
 dedict = defaultdict
 
-# ===== 方向ベクトル =====
-DIR4 = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-DIR8 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
-DIR9 = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (0, 0)]
+# ===== 方向ベクトル(上(負)から時計回り) =====
+DIR4 = ((-1, 0), (0, 1), (1, 0), (0, -1))
+DIR8 = ((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1))
+DIR9 = DIR8 + ((0, 0),) # 中央は最後
 
 # ===== 文字列のリスト =====
 LOWER = list(string.ascii_lowercase) # 小文字 a-z の文字列リスト
@@ -80,58 +69,248 @@ UPPER = list(string.ascii_uppercase) # 大文字 A-Z の文字列リスト
 DIGITS = list(string.digits) # 数字 0-9 の文字列リスト
 
 # ===== よく使う出力関数 =====
-pr = print # ただのさぼり。
-def Yes(): print("Yes")
-def No(): print("No")
-def yes(): print("yes")
-def no(): print("no")
-def YES(): print("YES")
-def NO(): print("NO")
-def yn(cond: bool) -> None:
+Yes = lambda **kwargs: print("Yes", **kwargs)
+No = lambda **kwargs: print("No", **kwargs)
+yes = lambda **kwargs: print("yes", **kwargs)
+no = lambda **kwargs: print("no", **kwargs)
+YES = lambda **kwargs: print("YES", **kwargs)
+NO = lambda **kwargs: print("NO", **kwargs)
+
+def yn(cond: bool, yes: str = "Yes", no: str = "No", **kwargs) -> None:
     """条件に応じてYes/No出力"""
-    print("Yes" if cond else "No")
+    print(yes if cond else no, **kwargs)
+
+def print_grid(grid: list[list], sep: str = '') -> None:
+    """グリッド表示"""
+    print('\n'.join(sep.join(map(str, row)) for row in grid))
 
 # ============================================================
 # 数学・整数論
 # ============================================================
 
-def is_prime(n: int) -> bool:
-    """概要:
-        整数 n が素数かどうかを判定する。
-    入力:
-        n (int): 判定対象の整数。
-    出力:
-        bool: n が素数なら True、そうでなければ False。
-    補足:
-        計算量は O(√n)。n < 2 は素数ではない。
+import random
+def is_prime(n: int, k_random: int = 15) -> bool:
     """
-    if n < 2: return False
-    if n == 2: return True
-    if n % 2 == 0: return False
-    for i in range(3, int(n**0.5) + 1, 2):
-        if n % i == 0: return False
+    整数 n が素数かどうかを判定する (ミラー-ラビン素数判定法)。
+
+    対応範囲:
+        - n < 2^64: 100% 決定論的判定 (反例が存在しない底を選択、完全AC保証)
+        - n >= 2^64: 確率的判定 (固定12底 + ランダム k_random 底によるHack完全耐性)
+
+    計算量:
+        【時間計算量】(テストする基底の合計個数を K とする)
+        - 最悪ケース (素数の場合):
+            - n < 2^64  : O(K log n)  (K <= 7, 約450演算, 数μs〜数十μs)
+            - n >= 2^64 : O(K log^3 n) [K = 12 + k_random, 2^1024 規模でも約 0.1 秒]
+        - 平均ケース (合成数の場合):
+            - 99.9% 以上の合成数は「最初の1基底」で脱出するため、素数の 1/5〜1/10 以下の時間で終了
+
+        【空間計算量】
+        - n < 2^64  : O(1)
+        - n >= 2^64 : O(log n) (n のビット長を保持するメモリのみ)
+
+    引数:
+        n (int): 判定対象の整数
+        k_random (int, optional):
+            n >= 2^64 の場合に追加するランダム基底の個数 (デフォルト: 15)。
+            最悪誤判定確率は ≦ (1/4)^k_random。(実際に使用する場合はさらに低くなります)
+            [目安]
+            5: 高速優先 (誤判定率 ≦ 10^-3, 約 80ms @ 2^1024)
+            15: 競プロ推奨 (誤判定率 ≦ 10^-9, 約 124ms @ 2^1024, Hack完全防御)
+            40: 暗号標準水準 (誤判定率 ≦ 10^-24, 約 270ms @ 2^1024)
+
+    戻り値:
+        bool: 素数なら True, 合成数または 1 以下なら False
+    """
+    if n < 2:
+        return False
+
+    # 1. 小さな素数の事前判定 (37以下の素数での試し割り)
+    small_primes = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
+    for p in small_primes:
+        if n == p:
+            return True
+        if n % p == 0:
+            return False
+
+    # 37^2 = 1369 未満の合成数は上記で全て弾かれているため素数確定
+    if n < 1369:
+        return True
+
+    # 2. n - 1 = 2^s * d (d は奇数) の形に分解
+    d = n - 1
+    s = (d & -d).bit_length() - 1
+    d >>= s
+
+    # 3. サイズに応じた基底の選択
+    if n < 4759123141:
+        # 3基底で決定論的 (Jaeschke, 1993)
+        bases = (2, 7, 61)
+    elif n < 18446744073709551616:  # 2^64
+        # 7基底で決定論的 (Jim Sinclair, 2011)
+        bases = (2, 325, 9375, 28178, 450775, 9780504, 1795265022)
+    else:
+        # 2^64 以上の場合は固定12底 + 指定個数のランダム底
+        bases = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+        bases += [random.randrange(41, n - 1) for _ in range(k_random)]
+
+    # 4. ミラー-ラビン判定メインループ
+    for a in bases:
+        x = pow(a, d, n)
+        if x == 1 or x == n - 1:
+            continue
+
+        for _ in range(s - 1):
+            x = (x * x) % n
+            if x == n - 1:
+                break
+        else:
+            return False
+
     return True
 
-def prime_factors(n: int) -> dict[int, int]:
-    """概要:
-        整数 n を素因数分解し、素因数ごとの指数を返す。
-    入力:
-        n (int): 2 以上を想定した分解対象の整数。
-    出力:
-        dict[int, int]: {素因数: 指数} の辞書。
-    補足:
-        計算量は O(√n)。n <= 1 の場合は空辞書を返す。
+
+import random
+def pollard_rho(n: int) -> int:
     """
-    factors = defaultdict(int)
-    d = 2
-    while d * d <= n:
-        while n % d == 0:
-            factors[d] += 1
-            n //= d
-        d += 1
-    if n > 1:
-        factors[n] += 1
-    return dict(factors)
+    合成数 n の非自明な約数 (1 と n 以外の約数) を 1 つ見つける (ポラード・ロー法)。
+
+    アルゴリズム:
+        - Brent の循環検出法 + GCD バッチ処理 (128 ステップごとにまとめて gcd 計算)
+        - 誕生日のパラドックスを利用し、最小素因数 p に対して O(√p) で衝突を検出
+
+    計算量:
+        【時間計算量】
+        - 期待値: O(n^(1/4))
+            - n ≦ 10^18 に対し、最大でも約 3×10^4 ステップ (数ms〜数十ms)
+            - n が偶数または素数の場合は O(1) または O(log n) で即座に返却
+        【空間計算量】
+        - O(1)
+
+    引数:
+        n (int): 約数を探索する整数
+
+    戻り値:
+        int: n の非自明な約数 (n が素数の場合は n 自身、偶数の場合は 2)
+    """
+    if n % 2 == 0:
+        return 2
+    if is_prime(n):
+        return n
+
+    # 高速化: 最初の試行は固定値 (x=2, c=1) から開始して乱数生成オーバーヘッドを削減
+    step_count = 0
+    c = 1
+    x = 2
+
+    while True:
+        if step_count > 0:
+            c = random.randrange(1, n)
+            x = random.randrange(1, n)
+        step_count += 1
+
+        y = x
+        d = 1
+        q = 1
+        r = 1
+        m = 128
+        while d == 1:
+            y = x
+            for _ in range(r):
+                x = (x * x + c) % n  # pow(x, 2, n) より高速
+            k = 0
+            while k < r and d == 1:
+                ys = x
+                limit = min(m, r - k)
+                for _ in range(limit):
+                    x = (x * x + c) % n
+                    q = (q * abs(y - x)) % n
+                d = math.gcd(q, n)
+                k += m
+            r *= 2
+
+        if d == n:
+            d = 1
+            x = ys
+            while d == 1:
+                x = (x * x + c) % n
+                d = math.gcd(abs(y - x), n)
+
+        if d != 1 and d != n:
+            return d
+
+
+def prime_factors(n: int) -> dict[int, int]:
+    """
+    整数 n を高速に完全素因数分解し、{素因数: 指数} の昇順辞書を返す。
+
+    アルゴリズム:
+        - ポラード・ロー法 (pollard_rho) とミラー-ラビン法 (is_prime) の分割統治
+        - 2 のべき乗は LSB ビット演算により O(1) で事前除去
+        - 100 以下の小さな素因数を事前に試し割りで高速除去
+
+    計算量:
+        【時間計算量】
+        - 期待値: O(n^(1/4))
+            - n ≦ 10^18 に対して 0.01 秒以内 (AtCoder の 2.0s 制限で余裕で AC)
+            - n 自体が素数の場合は is_prime により O(log n) (約 0.1 ms) で即答
+        【空間計算量】
+        - O(log n) (分割用のスタックおよび素因数格納辞書のみ)
+
+    引数:
+        n (int): 素因数分解する整数 (n >= 1)
+
+    戻り値:
+        dict[int, int]: {素因数: 指数} の昇順辞書 (例: 60 -> {2: 2, 3: 1, 5: 1})
+                        n <= 1 の場合は空辞書 {}
+    """
+    if n <= 1:
+        return {}
+
+    factors = {}
+
+    # 1. 2 で割れる回数を高速処理 (LSB ビット演算)
+    s = (n & -n).bit_length() - 1
+    if s > 0:
+        factors[2] = s
+        n >>= s
+    if n == 1:
+        return factors
+
+    # 2. 小さな奇素数 (3〜97) の事前試し割り (ポラード・ロー法の呼び出し回数を大幅削減)
+    small_primes = (
+        3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41,
+        43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+    )
+    for p in small_primes:
+        if p * p > n:
+            break
+        if n % p == 0:
+            count = 0
+            while n % p == 0:
+                count += 1
+                n //= p
+            factors[p] = count
+            if n == 1:
+                return dict(sorted(factors.items()))
+
+    if n == 1:
+        return dict(sorted(factors.items()))
+
+    # 3. ポラード・ロー法 + ミラー-ラビン法で残りの素因数を分解
+    stack = [n]
+    while stack:
+        cur = stack.pop()
+        if cur == 1:
+            continue
+        if is_prime(cur):
+            factors[cur] = factors.get(cur, 0) + 1
+            continue
+        d = pollard_rho(cur)
+        stack.append(d)
+        stack.append(cur // d)
+
+    return dict(sorted(factors.items()))
 
 def divisors(n: int) -> list[int]:
     """概要:
@@ -143,13 +322,14 @@ def divisors(n: int) -> list[int]:
     補足:
         計算量は O(√n)。
     """
-    divs = []
-    for i in range(1, int(n**0.5) + 1):
+    small = []
+    large = []
+    for i in range(1, math.isqrt(n) + 1):
         if n % i == 0:
-            divs.append(i)
+            small.append(i)
             if i != n // i:
-                divs.append(n // i)
-    return sorted(divs)
+                large.append(n // i)
+    return small + large[::-1]
 
 def sieve(n: int) -> tuple[list[bool], list[int]]:
     """概要:
@@ -159,43 +339,17 @@ def sieve(n: int) -> tuple[list[bool], list[int]]:
     出力:
         tuple[list[bool], list[int]]: (is_prime配列, 素数リスト)。
     補足:
-        計算量は O(n log log n)。
+        計算量は O(n log log n)。偶数スキップにより高速化。
     """
     is_prime_arr = [True] * (n + 1)
     if n >= 0: is_prime_arr[0] = False
     if n >= 1: is_prime_arr[1] = False
-    for p in range(2, int(n ** 0.5) + 1):
+    if n >= 4: is_prime_arr[4::2] = [False] * (((n - 4) // 2) + 1)
+    for p in range(3, math.isqrt(n) + 1, 2):
         if is_prime_arr[p]:
-            for q in range(p * p, n + 1, p):
-                is_prime_arr[q] = False
-    primes = [i for i in range(2, n + 1) if is_prime_arr[i]]
+            is_prime_arr[p * p : n + 1 : 2 * p] = [False] * (((n - p * p) // (2 * p)) + 1)
+    primes = ([2] if n >= 2 else []) + [i for i in range(3, n + 1, 2) if is_prime_arr[i]]
     return is_prime_arr, primes
-
-def gcd(a: int, b: int) -> int:
-    """概要:
-        2整数 a, b の最大公約数を返す。
-    入力:
-        a (int), b (int): 対象整数。
-    出力:
-        int: gcd(a, b)。
-    補足:
-        ユークリッドの互除法を使用する。計算量は O(log(min(a, b)))。
-    """
-    while b:
-        a, b = b, a % b
-    return a
-
-def lcm(a: int, b: int) -> int:
-    """概要:
-        2整数 a, b の最小公倍数を返す。
-    入力:
-        a (int), b (int): 対象整数。
-    出力:
-        int: lcm(a, b)。
-    補足:
-        gcd を使って a // gcd(a, b) * b で計算する。計算量は O(log(min(a, b)))。
-    """
-    return a // gcd(a, b) * b
 
 def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     """概要:
@@ -207,50 +361,15 @@ def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     補足:
         逆元計算や一次不定方程式で利用できる。計算量は O(log(min(a, b)))。
     """
-    if b == 0:
-        return a, 1, 0
-    g, x, y = ext_gcd(b, a % b)
-    return g, y, x - (a // b) * y
-
-def pow_fast(x: int, n: int) -> int:
-    """概要:
-        x^n を高速に計算する（繰り返し二乗法）。
-    入力:
-        x (int): 底。
-        n (int): 非負整数の指数。
-    出力:
-        int: x^n。
-    補足:
-        二分累乗法（繰り返し二乗法）を用い、計算量は O(log n)。
-    """
-    res = 1
-    while n > 0:
-        if n & 1:
-            res = res * x
-        x = x * x
-        n >>= 1
-    return res
-
-def pow_mod(x: int, n: int, mod: int = MOD) -> int:
-    """概要:
-        x^n を mod で割った余りを高速に計算する。
-    入力:
-        x (int): 底。
-        n (int): 非負整数の指数。
-        mod (int): 法。
-    出力:
-        int: x^n mod mod。
-    補足:
-        二分累乗法を用い、計算量は O(log n)。
-    """
-    res = 1
-    x %= mod
-    while n > 0:
-        if n & 1:
-            res = res * x % mod
-        x = x * x % mod
-        n >>= 1
-    return res
+    sign_a = -1 if a < 0 else 1
+    sign_b = -1 if b < 0 else 1
+    aa, bb = abs(a), abs(b)
+    x0, y0, x1, y1 = 1, 0, 0, 1
+    while bb:
+        q, aa, bb = aa // bb, bb, aa % bb
+        x0, x1 = x1, x0 - q * x1
+        y0, y1 = y1, y0 - q * y1
+    return aa, x0 * sign_a, y0 * sign_b
 
 def mod_inverse(a: int, mod: int = MOD) -> int:
     """概要:
@@ -264,7 +383,7 @@ def mod_inverse(a: int, mod: int = MOD) -> int:
         mod が素数で a と mod が互いに素である前提（フェルマーの小定理）。
         計算量は O(log mod)。
     """
-    return pow_mod(a, mod - 2, mod)
+    return pow(a, -1, mod)
 
 
 # ============================================================
@@ -283,13 +402,19 @@ class Combination:
         catalan(n): n 番目のカタラン数を返す。
 
     計算量:
-        初期化 O(n)、各クエリ O(1)。
+        初期化 O(n + √mod + log mod)。nCr/nPr/nHr は O(1)、
+        catalan は O(log mod)。mod を固定定数とみなせば、初期化 O(n)、
+        catalan 以外の各クエリ O(1)。
 
     使用例:
         comb = Combination(200000)
         print(comb.nCr(10, 3))  # 120
     """
     def __init__(self, n: int, mod: int = MOD):
+        if n < 0:
+            raise ValueError("n must be non-negative")
+        if mod <= 1 or not is_prime(mod) or n >= mod:
+            raise ValueError("requires a prime mod and 0 <= n < mod")
         self.mod = mod
         self.fact = [1] * (n + 1)
         self.inv_fact = [1] * (n + 1)
@@ -297,29 +422,37 @@ class Combination:
         for i in range(1, n + 1):
             self.fact[i] = self.fact[i - 1] * i % mod
 
-        self.inv_fact[n] = pow_mod(self.fact[n], mod - 2, mod)
+        self.inv_fact[n] = pow(self.fact[n], mod - 2, mod)
         for i in range(n - 1, -1, -1):
             self.inv_fact[i] = self.inv_fact[i + 1] * (i + 1) % mod
 
     def nCr(self, n: int, r: int) -> int:
         """組み合わせ nCr"""
-        if r < 0 or r > n: return 0
+        if n < 0 or r < 0 or r > n: return 0
+        if n >= len(self.fact):
+            raise ValueError("n exceeds the initialized limit")
         return self.fact[n] * self.inv_fact[r] % self.mod * self.inv_fact[n - r] % self.mod
 
     def nPr(self, n: int, r: int) -> int:
         """順列 nPr"""
-        if r < 0 or r > n: return 0
+        if n < 0 or r < 0 or r > n: return 0
+        if n >= len(self.fact):
+            raise ValueError("n exceeds the initialized limit")
         return self.fact[n] * self.inv_fact[n - r] % self.mod
 
     def nHr(self, n: int, r: int) -> int:
         """重複組み合わせ nHr = C(n+r-1, r)"""
+        if n == 0 and r == 0: return 1
+        if n <= 0 or r < 0: return 0
         return self.nCr(n + r - 1, r)
 
     def catalan(self, n: int) -> int:
         """カタラン数 C_n"""
-        return self.nCr(2 * n, n) * pow_mod(n + 1, self.mod - 2, self.mod) % self.mod
+        if n < 0 or 2 * n >= len(self.fact):
+            raise ValueError("catalan(n) requires 0 <= 2*n <= initialized limit")
+        return self.nCr(2 * n, n) * pow(n + 1, self.mod - 2, self.mod) % self.mod
 
-def fast_mod_nCr(n, r, MOD=MOD):
+def fast_mod_nCr(n: int, r: int, MOD: int = MOD) -> int:
     """概要:
         逐次積で組み合わせ nCr を求める。
     入力:
@@ -330,10 +463,15 @@ def fast_mod_nCr(n, r, MOD=MOD):
         int: C(n, r) mod MOD
     補足:
         反復回数を少なくするため、r と n-r の小さい方を使う。
-        計算量は O(min(r, n-r))
+        計算量は O(√MOD + min(r, n-r) + log MOD)。
+        MOD を固定定数とみなせば O(min(r, n-r))。
     """
-    if n < r:
+    if MOD <= 1 or not is_prime(MOD) or n >= MOD:
+        raise ValueError("requires a prime MOD and 0 <= n < MOD")
+    if n < 0 or r < 0 or n < r:
         return 0
+    if r == 0 or r == n:
+        return 1
     if n-r < r:
         r = n-r
     comb = 1
@@ -350,21 +488,6 @@ def fast_mod_nCr(n, r, MOD=MOD):
 # 累積和
 # ============================================================
 
-def prefix_sum(arr: list[int]) -> list[int]:
-    """概要:
-        1次元配列の累積和配列を構築する。
-    入力:
-        arr (list[int]): 元配列。
-    出力:
-        list[int]: 先頭に 0 を持つ累積和配列 ps。
-    補足:
-        区間和は ps[r] - ps[l]（半開区間 [l, r)）。計算量は O(n)。
-    """
-    ps = [0]
-    for x in arr:
-        ps.append(ps[-1] + x)
-    return ps
-
 def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     """概要:
         2次元配列の累積和テーブルを構築する。
@@ -375,7 +498,10 @@ def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     補足:
         構築計算量は O(HW)。矩形和は inclusion-exclusion で O(1) 取得できる。
     """
-    H, W = len(grid), len(grid[0])
+    H = len(grid)
+    if H == 0:
+        return [[0]]
+    W = len(grid[0])
     ps = [[0] * (W + 1) for _ in range(H + 1)]
     for i in range(H):
         for j in range(W):
@@ -472,15 +598,15 @@ class Imos2D:
 
     def build(self) -> list[list[int]]:
         """累積和を計算して結果を返す"""
-        # 横方向
+        result = [row[:self.w] for row in self.diff[:self.h]]
         for i in range(self.h):
             for j in range(self.w):
-                self.diff[i][j + 1] += self.diff[i][j]
-        # 縦方向
+                if j:
+                    result[i][j] += result[i][j - 1]
         for j in range(self.w):
-            for i in range(self.h):
-                self.diff[i + 1][j] += self.diff[i][j]
-        return [row[:self.w] for row in self.diff[:self.h]]
+            for i in range(1, self.h):
+                result[i][j] += result[i - 1][j]
+        return result
 
 
 # ============================================================
@@ -598,6 +724,8 @@ class WeightedDSU:
 
     def merge(self, x: int, y: int, w: int) -> bool:
         """weight[x] - weight[y] = w となるよう併合"""
+        if self.same(x, y):
+            return self.diff(x, y) == w
         w += self.get_weight(y) - self.get_weight(x)
         x, y = self.leader(x), self.leader(y)
         if x == y: return False
@@ -635,12 +763,12 @@ def build_graph(n: int, edges: list[tuple[int, int]], idx: bool = True, directed
         if idx:
             a -= 1
             b -= 1
-        g[a]. append(b)
+        g[a].append(b)
         if not directed:
             g[b].append(a)
     return g
 
-def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: int = True, directed: bool = False) -> list[list[tuple[int, int]]]:
+def build_weighted_graph(n: int, edges: list[tuple[int, int, int]], idx: bool = True, directed: bool = False) -> list[list[tuple[int, int]]]:
     """概要:
         辺集合から重み付きグラフの隣接リストを構築する。
     入力:
@@ -760,6 +888,8 @@ def bfs_grid(grid: list[list[str]], sy: int, sx: int, wall: str = '#') -> list[l
     """
     H, W = len(grid), len(grid[0])
     dist = [[-1] * W for _ in range(H)]
+    if grid[sy][sx] == wall:
+        return dist
     dist[sy][sx] = 0
     q = deque([(sy, sx)])
     while q:
@@ -780,18 +910,22 @@ def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     出力:
         list[int]: 各頂点への最短距離（未到達は INF）。
     補足:
-        計算量は O((V+E)logV)。負辺は非対応。
+        計算量は O((V+E)logE)。単純グラフなど E = O(V^2) の場合は
+        O((V+E)logV) と書ける。負辺は非対応。
     """
     dist = [INF] * len(g)
     dist[s] = 0
     pq = [(0, s)]
+    heappop = heapq.heappop
+    heappush = heapq.heappush
     while pq:
-        d, v = heapq.heappop(pq)
+        d, v = heappop(pq)
         if d > dist[v]: continue
         for to, w in g[v]:
-            if dist[v] + w < dist[to]:
-                dist[to] = dist[v] + w
-                heapq.heappush(pq, (dist[to], to))
+            nd = d + w
+            if nd < dist[to]:
+                dist[to] = nd
+                heappush(pq, (nd, to))
     return dist
 
 def dijkstra_multi(
@@ -816,9 +950,11 @@ def dijkstra_multi(
                      未到達は (INF, 0, 0, ...) 相当。
 
     補足:
-        ヒープのキーは (primary, -secondary, ..., vertex) の形。
-        better 関数を自分で定義すれば任意の多基準に対応可能。
-        計算量は O((V+E)logV * n_criteria)。
+        主コストは非負で最小化する。better を指定すると、同じ主コストを
+        含む状態の採否をカスタマイズできる。副基準の順序はヒープに依存せず、
+        数値の単項マイナスも要求しない。任意の better に対する計算量と停止性は
+        保証されない。better が Dijkstra 法の単調性を満たし、各頂点が高々 K 回
+        更新される場合は、概ね O(K(V+E)log(KV) * n_criteria)。
 
     使用例（距離最小・木の数最大の2基準）:
         # g[v] = [(to, cost, tree_count), ...]
@@ -827,6 +963,10 @@ def dijkstra_multi(
     """
     INF_VAL = 10 ** 18
     n = len(g)
+    if n_criteria < 1:
+        raise ValueError("n_criteria must be at least 1")
+    if not (0 <= s < n):
+        raise ValueError("source must be a valid vertex")
     init = tuple([INF_VAL] + [0] * (n_criteria - 1))
     dist = [init] * n
     start = tuple([0] * n_criteria)
@@ -842,18 +982,12 @@ def dijkstra_multi(
 
     _better = better if better else default_better
 
-    # ヒープキー: (primary, -secondary, vertex)
-    def to_heap_key(state: tuple, v: int) -> tuple:
-        return (state[0],) + tuple(-x for x in state[1:]) + (v,)
-
-    pq = [to_heap_key(start, s)]
+    # 主コストだけをヒープ順に使い、副基準の比較は better に委ねる。
+    sequence = 0
+    pq = [(start[0], sequence, s, start)]
 
     while pq:
-        entry = heapq.heappop(pq)
-        v = entry[-1]
-        cur_primary = entry[0]
-        cur_rest = tuple(-x for x in entry[1:-1])
-        cur_state = (cur_primary,) + cur_rest
+        _, _, v, cur_state = heapq.heappop(pq)
 
         if not _better(cur_state, dist[v]) and cur_state != dist[v]:
             continue
@@ -864,7 +998,8 @@ def dijkstra_multi(
             new_state = tuple(cur_state[i] + values[i] for i in range(n_criteria))
             if _better(new_state, dist[to]):
                 dist[to] = new_state
-                heapq.heappush(pq, to_heap_key(new_state, to))
+                sequence += 1
+                heapq.heappush(pq, (new_state[0], sequence, to, new_state))
 
     return dist
 
@@ -880,7 +1015,8 @@ def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, 
             (最短距離, s から t への頂点列)。
             到達不能なら (INF, None)。
     補足:
-        計算量は O((V+E)logV)。負辺は非対応。
+        計算量は O((V+E)logE + V)。単純グラフなど E = O(V^2) の場合は
+        O((V+E)logV) と書ける。負辺は非対応。
         経路が複数ある場合は最短の1つを返す。
     """
     n = len(g)
@@ -888,15 +1024,18 @@ def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, 
     parent = [-1] * n
     dist[s] = 0
     pq = [(0, s)]
+    heappop = heapq.heappop
+    heappush = heapq.heappush
     while pq:
-        d, v = heapq.heappop(pq)
+        d, v = heappop(pq)
         if d > dist[v]:
             continue
         for to, w in g[v]:
-            if dist[v] + w < dist[to]:
-                dist[to] = dist[v] + w
+            nd = d + w
+            if nd < dist[to]:
+                dist[to] = nd
                 parent[to] = v
-                heapq.heappush(pq, (dist[to], to))
+                heappush(pq, (nd, to))
 
     if dist[t] == INF:
         return INF, None
@@ -926,6 +1065,8 @@ def zero_one_bfs(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     while q:
         v = q.popleft()
         for to, w in g[v]:
+            if w not in (0, 1):
+                raise ValueError("zero_one_bfs requires edge weights 0 or 1")
             nd = dist[v] + w
             if nd < dist[to]:
                 dist[to] = nd
@@ -1120,6 +1261,8 @@ class MaxFlow:
 
     def add_edge(self, u: int, v: int, cap: int) -> None:
         """u→v に容量 cap の有向辺を追加（逆辺も自動追加）"""
+        if cap < 0:
+            raise ValueError("capacity must be non-negative")
         self.graph[u].append([v, cap, len(self.graph[v])])
         self.graph[v].append([u, 0, len(self.graph[u]) - 1])
 
@@ -1154,6 +1297,10 @@ class MaxFlow:
 
     def max_flow(self, s: int, t: int) -> int:
         """s→t の最大流量を返す"""
+        if not (0 <= s < self.n and 0 <= t < self.n):
+            raise ValueError("source and sink must be valid vertices")
+        if s == t:
+            raise ValueError("source and sink must be distinct")
         flow = 0
         while True:
             level = self._bfs(s)
@@ -1173,10 +1320,11 @@ class LowerBoundFlow:
     メソッド:
         add_edge(u, v, lo, hi): 下限 lo, 上限 hi の辺を追加する。
         is_feasible(): 実行可能かどうかを判定する。
-        min_flow(s, t): 追加の最小流量（実行可能かつ最小）を求める。
-
+        min_flow(s, t): s から t への実行可能な最小流量を求める。
     計算量:
-        add_circulation/add_edge は O(1)、is_feasible は内部最大流1回で O(V^2E)。
+        add_circulation/add_edge は O(1)。V を元の頂点数、E' を補助辺を含む
+        ネットワークの辺数とすると、is_feasible は O(V^2 E')、
+        min_flow は O((log U + 1)V^2 E')。U は探索する流量上限。
 
     補足:
         循環フロー (T→S) が必要な場合は add_circulation() を先に呼ぶ。
@@ -1193,24 +1341,97 @@ class LowerBoundFlow:
         self.TT = n + 1  # 超終点
         self.mf = MaxFlow(n + 2)
         self.required = 0
+        self.edges = []
+        self.circulations = []
 
     def add_circulation(self, t: int, s: int) -> None:
         """T → S の循環辺（∞容量）を追加"""
-        self.mf.add_edge(t, s, INF)
+        self.circulations.append((t, s, 0, INF))
 
     def add_edge(self, u: int, v: int, lo: int, hi: int) -> None:
         """下限 lo、上限 hi の辺を追加"""
-        self.mf.add_edge(u, v, hi - lo)
-        if lo > 0:
-            self.mf.add_edge(self.SS, v, lo)
-            self.mf.add_edge(u, self.TT, lo)
-            self.required += lo
+        if lo < 0 or hi < lo:
+            raise ValueError("requires 0 <= lo <= hi")
+        self.edges.append((u, v, lo, hi))
 
     def is_feasible(self) -> bool:
         """実行可能かどうかを返す"""
-        return self.mf.max_flow(self.SS, self.TT) == self.required
+        network = MaxFlow(self.n + 2)
+        demand = [0] * self.n
+        for u, v, lo, hi in self.edges + self.circulations:
+            network.add_edge(u, v, hi - lo)
+            demand[u] -= lo
+            demand[v] += lo
+        required = 0
+        for v, value in enumerate(demand):
+            if value > 0:
+                network.add_edge(self.SS, v, value)
+                required += value
+            elif value < 0:
+                network.add_edge(v, self.TT, -value)
+        self.mf = network
+        self.required = required
+        return network.max_flow(self.SS, self.TT) == required
 
-def bipartite_matching(n: int, m: int, adj: list[list[int]]) -> int:
+    def min_flow(self, s: int, t: int) -> int | None:
+        """s から t への実行可能な最小流量を返す。
+
+        下限・上限付き辺を使って s から t へ流す問題として扱う。
+        実行不可能な場合は `None` を返す。既に `add_circulation` で
+        追加した辺も制約の一部として含める。
+        """
+        if not (0 <= s < self.n and 0 <= t < self.n) or s == t:
+            raise ValueError("requires distinct vertices in range")
+
+        constraints = self.edges + self.circulations
+
+        def build(upper: int, lower: int = 0):
+            if lower < 0 or upper < lower:
+                return None
+            network = MaxFlow(self.n + 2)
+            demand = [0] * self.n
+            for u, v, lo, hi in constraints:
+                network.add_edge(u, v, hi - lo)
+                demand[u] -= lo
+                demand[v] += lo
+
+            artificial_index = len(network.graph[t])
+            network.add_edge(t, s, upper - lower)
+            demand[t] -= lower
+            demand[s] += lower
+
+            required = 0
+            for v, value in enumerate(demand):
+                if value > 0:
+                    network.add_edge(self.SS, v, value)
+                    required += value
+                elif value < 0:
+                    network.add_edge(v, self.TT, -value)
+
+            return network, artificial_index, required
+
+        network, artificial_index, required = build(INF)
+        if network.max_flow(self.SS, self.TT) != required:
+            return None
+        artificial = network.graph[t][artificial_index]
+        upper = network.graph[s][artificial[2]][1]
+
+        def feasible(value: int) -> bool:
+            network, _, required = build(value, value)
+            return network.max_flow(self.SS, self.TT) == required
+
+        low, high = -1, upper
+        while high - low > 1:
+            middle = (low + high) // 2
+            if feasible(middle):
+                high = middle
+            else:
+                low = middle
+        return high
+
+def bipartite_matching(
+    n: int, m: int, adj: list[list[int]], return_matching: bool = False
+) -> int | tuple[int, list[int]]:
     """概要:
         二部グラフの最大マッチング数を増加路DFSで求める。
     入力:
@@ -1218,7 +1439,8 @@ def bipartite_matching(n: int, m: int, adj: list[list[int]]) -> int:
         m   (int)            : 右側頂点数（例: 席数）。0-indexed。
         adj (list[list[int]]): adj[i] = 左i から行ける右頂点リスト。
     出力:
-        int: 最大マッチング数。
+        int | tuple[int, list[int]]: 最大マッチング数。`return_matching=True` の場合は
+        (最大マッチング数, 右側から左側への対応) を返す。
     補足:
         計算量 O(V * E)。N≦数百程度なら十分高速。
         match_r[j] に最終的なマッチング結果が入る（右jに割り当てた左頂点）。
@@ -1247,11 +1469,32 @@ def bipartite_matching(n: int, m: int, adj: list[list[int]]) -> int:
         visited = [False] * m
         if dfs(i, visited):
             ans += 1
-    return ans
+    return (ans, match_r) if return_matching else ans
 
 # ============================================================
 # 木アルゴリズム
 # ============================================================
+
+def _validate_tree_input(g: list[list[int]], root: int = 0) -> None:
+    """木アルゴリズム共通の空グラフ・根・連結性を検証する。"""
+    n = len(g)
+    if n == 0 or not (0 <= root < n):
+        raise ValueError("requires a non-empty graph and a valid root")
+    visited = [False] * n
+    visited[root] = True
+    q = deque([root])
+    count = 0
+    while q:
+        v = q.popleft()
+        count += 1
+        for to in g[v]:
+            if not (0 <= to < n):
+                raise ValueError("tree edge contains an invalid vertex")
+            if not visited[to]:
+                visited[to] = True
+                q.append(to)
+    if count != n:
+        raise ValueError("tree graph must be connected")
 
 def tree_diameter(g: list[list[int]]) -> tuple[int, int, int]:
     """概要:
@@ -1263,6 +1506,8 @@ def tree_diameter(g: list[list[int]]) -> tuple[int, int, int]:
     補足:
         BFS を2回行う定番手法を用いる。計算量は O(V)。
     """
+    _validate_tree_input(g)
+
     def bfs_farthest(s: int) -> tuple[int, int]:
         dist = bfs(g, s)
         farthest = max(range(len(g)), key=lambda x: dist[x])
@@ -1283,6 +1528,7 @@ def tree_depth(g: list[list[int]], root: int = 0) -> list[int]:
     補足:
         実装は `bfs` を利用している。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     return bfs(g, root)
 
 def tree_parent(g: list[list[int]], root: int = 0) -> list[int]:
@@ -1296,6 +1542,7 @@ def tree_parent(g: list[list[int]], root: int = 0) -> list[int]:
     補足:
         BFS で訪問順に親を設定する。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     n = len(g)
     parent = [-1] * n
     visited = [False] * n
@@ -1319,13 +1566,23 @@ def subtree_size(g: list[list[int]], root: int = 0) -> list[int]:
     出力:
         list[int]: size[v] = v を根とする部分木サイズ。
     補足:
-        深い頂点から親へサイズを集約する。計算量は O(VlogV)。
+        深い頂点から親へサイズを集約する。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     n = len(g)
     size = [1] * n
-    parent = tree_parent(g, root)
-    depth = tree_depth(g, root)
-    order = sorted(range(n), key=lambda x: -depth[x])
+    parent = [-1] * n
+    order = [root]
+    q = deque([root])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if to == root or parent[to] != -1:
+                continue
+            parent[to] = v
+            order.append(to)
+            q.append(to)
+    order.reverse()
     for v in order:
         if parent[v] != -1:
             size[parent[v]] += size[v]
@@ -1341,13 +1598,23 @@ def subtree_height(g: list[list[int]], root: int = 0) -> list[int]:
         list[int]: height[v] = v を根とする部分木の高さ。
                    葉は 0、それ以外は直属の子の高さの最大値 + 1。
     補足:
-        深い頂点から親へ max(子の高さ) + 1 を伝播する。計算量は O(VlogV)。
+        深い頂点から親へ max(子の高さ) + 1 を伝播する。計算量は O(V)。
     """
+    _validate_tree_input(g, root)
     n = len(g)
     height = [0] * n
-    parent = tree_parent(g, root)
-    depth = tree_depth(g, root)
-    order = sorted(range(n), key=lambda x: -depth[x])
+    parent = [-1] * n
+    order = [root]
+    q = deque([root])
+    while q:
+        v = q.popleft()
+        for to in g[v]:
+            if to == root or parent[to] != -1:
+                continue
+            parent[to] = v
+            order.append(to)
+            q.append(to)
+    order.reverse()
     for v in order:
         if parent[v] != -1:
             height[parent[v]] = max(height[parent[v]], height[v] + 1)
@@ -1373,6 +1640,7 @@ class LCA:
         print(lca.dist(u, v))
     """
     def __init__(self, g: list[list[int]], root: int = 0):
+        _validate_tree_input(g, root)
         self.n = len(g)
         self.log = max(1, (self.n - 1).bit_length())
         self.depth = [-1] * self.n
@@ -1489,9 +1757,9 @@ class BIT:
         """
         if w <= 0:
             return 0
-        x, k = 0, 1
-        while k * 2 <= self.n:
-            k *= 2
+        if self.n == 0:
+            return 0
+        x, k = 0, 1 << (self.n.bit_length() - 1)
         while k > 0:
             if x + k <= self.n and self.data[x + k] < w:
                 w -= self.data[x + k]
@@ -2110,7 +2378,9 @@ class Mo:
            を呼ぶと、クエリ順に query_func の結果が返る。
 
     計算量:
-        O((N + Q) * sqrt(N)) × 各操作コスト
+        区間移動を M 回、各コールバックのコストを C とすると、
+        _order は O(Q log N + Q log Q)、run 全体は O(Q log N + Q log Q + M C)。
+        ブロック順を採用する通常の Mo では M = O((N + Q)√N) と評価できる。
 
     制約:
         オフライン処理のみ（クエリを事前に全部受け取れる場合のみ使用可能）。
@@ -2136,19 +2406,34 @@ class Mo:
         answers = mo.run(add, add, remove, remove, lambda: distinct[0])
     """
 
-    def __init__(self, n: int, queries: list[tuple[int, int]]):
+    def __init__(self, n: int, queries: list[tuple[int, int]], order: str = "block"):
         """
         入力:
             n (int): 配列長
             queries (list[tuple[int, int]]): (l, r) のクエリリスト（半開区間 [l, r)）
+            order (str): クエリ順。"block" または "hilbert"。
         """
+        if order not in ("block", "hilbert"):
+            raise ValueError("order must be 'block' or 'hilbert'")
         self.n = n
         self.queries = queries
         self.q = len(queries)
         self.block = max(1, int(n ** 0.5))
+        self.order = order
 
     def _order(self) -> list[int]:
         """ヒルベルト曲線順でクエリをソートしたインデックスを返す（定数倍改善）"""
+        if self.order == "block":
+            return sorted(
+                range(self.q),
+                key=lambda i: (
+                    self.queries[i][0] // self.block,
+                    self.queries[i][1]
+                    if (self.queries[i][0] // self.block) % 2 == 0
+                    else -self.queries[i][1],
+                ),
+            )
+
         def hilbert_order(x: int, y: int, pow_: int, rotate: int) -> int:
             if pow_ == 0:
                 return 0
@@ -2260,8 +2545,9 @@ class ImplicitTreap:
     - query(l, r) は (区間和, 区間最小値, 区間最大値) のタプル。
     - pop系, get系は該当する要素の値を返す。
 
-    計算量:
-    - 時間計算量: 各クエリ O(log N) (buildは O(N log N) )
+        計算量:
+        - 時間計算量: 各操作は期待 O(log N)、最悪 O(N)。build は期待 O(N log N)、
+            最悪 O(N^2)、to_list は O(N)。
     - 空間計算量: O(capacity)
 
     補足:
@@ -2388,6 +2674,33 @@ class ImplicitTreap:
 
     def build(self, arr: list):
         """配列から木を構築"""
+        if not arr:
+            return
+        if self.root == 0:
+            stack = []
+            for value in arr:
+                u = self._create_node(value)
+                last = 0
+                while stack and self.pri[stack[-1]] < self.pri[u]:
+                    last = stack.pop()
+                if stack:
+                    self.right[stack[-1]] = u
+                self.left[u] = last
+                stack.append(u)
+            self.root = stack[0]
+
+            order = []
+            todo = [self.root]
+            while todo:
+                u = todo.pop()
+                order.append(u)
+                if self.left[u]:
+                    todo.append(self.left[u])
+                if self.right[u]:
+                    todo.append(self.right[u])
+            for u in reversed(order):
+                self._push_up(u)
+            return
         for val in arr:
             self.insert(self.size[self.root], val)
 
@@ -2811,11 +3124,14 @@ def to_base(n: int, base: int) -> str:
         to_base(414, 8)  # "636"
         to_base(10, 2)   # "1010"
     """
+    if n < 0 or base < 2 or base > 36:
+        raise ValueError("requires n >= 0 and 2 <= base <= 36")
     if n == 0:
         return "0"
+    symbols = string.digits + string.ascii_uppercase
     digits = []
     while n > 0:
-        digits.append(str(n % base))
+        digits.append(symbols[n % base])
         n //= base
     return ''.join(reversed(digits))
 
@@ -2828,12 +3144,15 @@ def gen_palindromes_d_digits(d: int):
     出力:
         Iterator[int]: d 桁の回文数を昇順に yield する。
     補足:
-        前半部（⌈d/2⌉桁）を走査して回文を構成する。計算量は O(10^(d/2)) 個生成。
+        前半部（⌈d/2⌉桁）を走査して回文を構成する。生成個数は Θ(10^(d/2))、
+        全生成の時間計算量は O(d * 10^(d/2))、追加メモリは O(d)。
         d=1: 1〜9、d=2: 11,22,...,99、d=3: 101,111,...,999 など。
     使用例:
         for p in gen_palindromes_d_digits(3):
             print(p)  # 101, 111, 121, ..., 999
     """
+    if d < 1:
+        raise ValueError("d must be at least 1")
     half = (d + 1) // 2
     start = 10 ** (half - 1)
     end   = 10 ** half
@@ -2938,7 +3257,7 @@ def lis(arr: list[int], strict: bool = True) -> int:
     return len(dp)
 
 # ============================================================
-# 三分探索・黄金分割探索
+# 三分探索・黄金分割探索・フィボナッチ探索
 # ============================================================
 
 def ternary_search_int_max(f, lo: int, hi: int) -> tuple[int, int]:
@@ -3156,6 +3475,161 @@ def golden_section_search_min(f, lo: float, hi: float, eps: float = 1e-9) -> tup
     x = (lo + hi) / 2
     return x, f(x)
 
+def fibonacci_search_int_max(f, lo: int, hi: int) -> tuple[int, int]:
+    """概要:
+        整数域の単峰関数（上に凸）に対してフィボナッチ探索で最大値を求める。
+        黄金分割探索の離散（整数）版であり、前ステップの関数評価値を再利用する
+        ことで、通常の三分探索に比べて関数評価回数を大幅に削減する。
+    入力:
+        f   : 探索対象の関数（int -> 比較可能な値）。
+        lo  (int): 探索区間の左端（inclusive）。
+        hi  (int): 探索区間の右端（inclusive）。
+    出力:
+        tuple[int, int]: (最大値を取るx, f(x)の最大値)。
+    制約:
+        f が lo..hi 上で単峰（上に凸）であること。
+    補足:
+        初回の2点評価以降は各ステップ1回の関数評価で区間を約 0.618 倍に縮小する。
+        三分探索（毎回2回評価、縮小率 0.667）に比べ、評価回数は半分以下になる。
+    計算量:
+        O(log_{φ}(hi - lo)) 回の関数評価（φ ≈ 1.618）。
+    使用例:
+        # f(x) = -(x-3)^2 + 9  (x=3 で最大値 9)
+        x, v = fibonacci_search_int_max(lambda x: -(x-3)**2 + 9, 0, 10)
+        print(x, v)  # 3 9
+    """
+    if lo >= hi:
+        return lo, f(lo)
+
+    # 仮想境界値: 区間外 (x > hi) の評価要求に対しては -inf を返す番兵
+    _INF = float("inf")
+
+    def eval_f(x: int):
+        return -_INF if x > hi else f(x)
+
+    # fib[k] >= hi - lo を満たす最小のフィボナッチ数を生成
+    fib = [0, 1]
+    while fib[-1] < hi - lo:
+        fib.append(fib[-1] + fib[-2])
+    while len(fib) < 5:
+        fib.append(fib[-1] + fib[-2])
+
+    k = len(fib) - 1
+    offset = lo
+
+    # 初期の2つの内分点とその評価
+    m1 = offset + fib[k - 2]
+    m2 = offset + fib[k - 1]
+    f1 = eval_f(m1)
+    f2 = eval_f(m2)
+
+    # フィボナッチ数の自己相似性を利用した区間縮小
+    while k > 2:
+        if f1 < f2:
+            # 最大値は [m1, offset + fib[k]] に存在
+            offset = m1
+            m1, f1 = m2, f2
+            k -= 1
+            m2 = offset + fib[k - 1]
+            f2 = eval_f(m2)
+        else:
+            # 最大値は [offset, m2] に存在
+            m2, f2 = m1, f1
+            k -= 1
+            m1 = offset + fib[k - 2]
+            f1 = eval_f(m1)
+
+    # 残った候補点から真の最大値を特定
+    candidates = [lo, hi, offset, m1, m2]
+    best_x = lo
+    best_v = f(lo)
+    for x in set(candidates):
+        if lo <= x <= hi:
+            v = f(x)
+            if v > best_v:
+                best_v = v
+                best_x = x
+
+    return best_x, best_v
+
+
+def fibonacci_search_int_min(f, lo: int, hi: int) -> tuple[int, int]:
+    """概要:
+        整数域の単峰関数（下に凸）に対してフィボナッチ探索で最小値を求める。
+        黄金分割探索の離散（整数）版であり、前ステップの関数評価値を再利用する
+        ことで、通常の三分探索に比べて関数評価回数を大幅に削減する。
+    入力:
+        f   : 探索対象の関数（int -> 比較可能な値）。
+        lo  (int): 探索区間の左端（inclusive）。
+        hi  (int): 探索区間の右端（inclusive）。
+    出力:
+        tuple[int, int]: (最小値を取るx, f(x)の最小値)。
+    制約:
+        f が lo..hi 上で単峰（下に凸）であること。
+    補足:
+        初回の2点評価以降は各ステップ1回の関数評価で区間を約 0.618 倍に縮小する。
+        三分探索（毎回2回評価、縮小率 0.667）に比べ、評価回数は半分以下になる。
+    計算量:
+        O(log_{φ}(hi - lo)) 回の関数評価（φ ≈ 1.618）。
+    使用例:
+        # f(x) = (x-3)^2  (x=3 で最小値 0)
+        x, v = fibonacci_search_int_min(lambda x: (x-3)**2, 0, 10)
+        print(x, v)  # 3 0
+    """
+    if lo >= hi:
+        return lo, f(lo)
+
+    # 仮想境界値: 区間外 (x > hi) の評価要求に対しては +inf を返す番兵
+    _INF = float("inf")
+
+    def eval_f(x: int):
+        return _INF if x > hi else f(x)
+
+    # fib[k] >= hi - lo を満たす最小のフィボナッチ数を生成
+    fib = [0, 1]
+    while fib[-1] < hi - lo:
+        fib.append(fib[-1] + fib[-2])
+    while len(fib) < 5:
+        fib.append(fib[-1] + fib[-2])
+
+    k = len(fib) - 1
+    offset = lo
+
+    # 初期の2つの内分点とその評価
+    m1 = offset + fib[k - 2]
+    m2 = offset + fib[k - 1]
+    f1 = eval_f(m1)
+    f2 = eval_f(m2)
+
+    # フィボナッチ数の自己相似性を利用した区間縮小
+    while k > 2:
+        if f1 > f2:
+            # 最小値は [m1, offset + fib[k]] に存在
+            offset = m1
+            m1, f1 = m2, f2
+            k -= 1
+            m2 = offset + fib[k - 1]
+            f2 = eval_f(m2)
+        else:
+            # 最小値は [offset, m2] に存在
+            m2, f2 = m1, f1
+            k -= 1
+            m1 = offset + fib[k - 2]
+            f1 = eval_f(m1)
+
+    # 残った候補点から真の最小値を特定
+    candidates = [lo, hi, offset, m1, m2]
+    best_x = lo
+    best_v = f(lo)
+    for x in set(candidates):
+        if lo <= x <= hi:
+            v = f(x)
+            if v < best_v:
+                best_v = v
+                best_x = x
+
+    return best_x, best_v
+
 # ============================================================
 # 区間マージ
 # ============================================================
@@ -3330,7 +3804,8 @@ def doubling_query(
         int: y ステップ後の頂点（0-indexed）。
 
     計算量:
-        O(log y)
+        L = len(doubling) とすると O(L)。y のビット数ではなく、
+        テーブルの全段数を走査する。
     """
     log = len(doubling)
     for k in range(log):
@@ -3362,7 +3837,8 @@ def doubling_query_with_weight(
         tuple[int, any]: (y ステップ後の頂点, 累積重み)。
 
     計算量:
-        O(log y)
+        L = len(doubling) とすると O(L)（op のコストを O(1) と仮定）。
+        y のビット数ではなく、テーブルの全段数を走査する。
     """
     log = len(doubling)
     total = e
@@ -3600,6 +4076,8 @@ def sliding_window_max(arr: list[int], k: int) -> list[int]:
         print(sliding_window_max(arr, 3))  # [3, 3, 4]
     """
     n = len(arr)
+    if k <= 0 or k > n:
+        raise ValueError("requires 1 <= k <= len(arr)")
     dq = deque()
     result = []
     for i in range(n):
@@ -3627,6 +4105,8 @@ def sliding_window_min(arr: list[int], k: int) -> list[int]:
         print(sliding_window_min(arr, 3))  # [0, 0, 0]
     """
     n = len(arr)
+    if k <= 0 or k > n:
+        raise ValueError("requires 1 <= k <= len(arr)")
     dq = deque()
     result = []
     for i in range(n):
@@ -3765,22 +4245,30 @@ def floor_sum(n: int, m: int, a: int, b: int) -> int:
     出力:
         int: 総和値。
     補足:
-        ACL由来の再帰的変形を使い O(log m + log a) 程度で処理する。
+        ACL由来の再帰的変形を使い O(log m) 程度で処理する（整数演算を O(1) と仮定）。
     """
+    if n < 0 or m <= 0:
+        raise ValueError("requires n >= 0 and m > 0")
     ans = 0
-    if a >= m:
-        ans += (n - 1) * n * (a // m) // 2
-        a %= m
-    if b >= m:
-        ans += n * (b // m)
-        b %= m
-    y_max = (a * n + b) // m
-    x_max = y_max * m - b
-    if y_max == 0:
-        return ans
-    ans += (n - (x_max + a - 1) // a) * y_max
-    ans += floor_sum(y_max, a, m, (a - x_max % a) % a)
-    return ans
+    if a < 0:
+        a_mod = a % m
+        ans -= n * (n - 1) // 2 * ((a_mod - a) // m)
+        a = a_mod
+    if b < 0:
+        b_mod = b % m
+        ans -= n * ((b_mod - b) // m)
+        b = b_mod
+    while True:
+        if a >= m:
+            ans += n * (n - 1) // 2 * (a // m)
+            a %= m
+        if b >= m:
+            ans += n * (b // m)
+            b %= m
+        y_max = a * n + b
+        if y_max < m:
+            return ans
+        n, b, m, a = y_max // m, y_max % m, a, m
 
 def rotate_90(grid: list[list]) -> list[list]:
     """概要:
@@ -3862,7 +4350,8 @@ def ternary_full_search(n: int):
     出力:
         Iterator[list[int]]: 各要素の選択（0,1,2）を表すリスト。
     補足:
-        全列挙の計算量は O(3^n)。n <= 15 程度が実用範囲。
+        生成個数は 3^n、各結果の構築に O(n) かかるため、全生成の時間計算量は
+        O(n * 3^n)、追加メモリは O(n)。n <= 15 程度が実用範囲。
     使用例:
         for choices in ternary_full_search(n):
             group = [[], [], []]
@@ -3912,6 +4401,7 @@ def euclidean_dist2(x1: int, y1: int, x2: int, y2: int) -> int:
 
 class Output:
     """概要:
+        !! 高速 print が存在する為非推奨 !!
         出力文字列をバッファリングして最後にまとめて出力する補助クラス。
 
     メソッド:
@@ -3923,8 +4413,7 @@ class Output:
         get(sep='\n'): 現在バッファを文字列として取得する。
 
     計算量:
-        add は引数個数を k として O(k)、extend は要素数を m として O(m)、
-        grid は要素総数を HW として O(HW)、yes は O(1)、
+        add/extend/grid は生成する総文字数を S として O(S)、yes は O(1)、
         flush/get はバッファ総文字数を S として O(S)、__len__ は O(1)。
 
     補足:
@@ -3970,15 +4459,14 @@ class Output:
 # ============================================================
 # デバッグ
 # ============================================================
-
-def debug(*args, **kwargs) -> None:
-    """デバッグ出力（標準エラー）"""
-    print("[DEBUG]", *args, **kwargs, file=sys.stderr)
-
-def print_grid(grid: list[list], sep: str = '') -> None:
-    """グリッド表示"""
-    for row in grid:
-        print(sep.join(map(str, row)))
+# AtCoder提出時は自動で無力化
+if "ATCODER" not in os.environ and "ONLINE_JUDGE" not in os.environ:
+    def debug(*args, sep=' ', end='\n', flush=False) -> None:
+        """デバッグ出力（標準エラー）"""
+        print("[DEBUG]", *args, sep=sep, end=end, file=sys.stderr, flush=flush)
+else:
+    def debug(*args, **kwargs) -> None:
+        pass
 
 # ============================================================
 # main

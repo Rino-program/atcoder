@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0173",
+    "title": "AtCoder Weekday Contest 0173 Beta",
+    "url": "https://atcoder.jp/contests/awc0173"
+  },
+  "tasks": [
+    {
+      "id": "awc0173_a",
+      "label": "A",
+      "title": "Expense Claims",
+      "url": "https://atcoder.jp/contests/awc0173/tasks/awc0173_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0173_b",
+      "label": "B",
+      "title": "Sea Chart Lanes",
+      "url": "https://atcoder.jp/contests/awc0173/tasks/awc0173_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0173_c",
+      "label": "C",
+      "title": "Loading the Luggage",
+      "url": "https://atcoder.jp/contests/awc0173/tasks/awc0173_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0173_d",
+      "label": "D",
+      "title": "Monster Subjugation",
+      "url": "https://atcoder.jp/contests/awc0173/tasks/awc0173_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0173_e",
+      "label": "E",
+      "title": "Clay Crafting Contest",
+      "url": "https://atcoder.jp/contests/awc0173/tasks/awc0173_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}

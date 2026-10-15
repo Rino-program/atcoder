@@ -1,0 +1,163 @@
+{
+  "contest": {
+    "id": "bogosortcontest_div2",
+    "title": "bogosort Programming Contest (Div. 2)",
+    "url": "https://atcoder.jp/contests/bogosortcontest_div2"
+  },
+  "tasks": [
+    {
+      "id": "bogosortcontest_div2_a",
+      "label": "A",
+      "title": "Help bogosort",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_b",
+      "label": "B",
+      "title": "Erase Mountain",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_c",
+      "label": "C",
+      "title": "tatesoto string",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_d",
+      "label": "D",
+      "title": "Circulating Ball",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_e",
+      "label": "E",
+      "title": "Delete Sad Faces (Easy)",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_f",
+      "label": "F",
+      "title": "Test Chamber",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_f",
+      "directory": {
+        "path": "f",
+        "testdir": "../input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_g",
+      "label": "G",
+      "title": "Fair Problem Set",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_g",
+      "directory": {
+        "path": "g",
+        "testdir": "../input/g",
+        "submit": "maing.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_h",
+      "label": "H",
+      "title": "Go Robots",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_h",
+      "directory": {
+        "path": "h",
+        "testdir": "../input/h",
+        "submit": "mainh.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_i",
+      "label": "I",
+      "title": "Moving Super King",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_i",
+      "directory": {
+        "path": "i",
+        "testdir": "../input/i",
+        "submit": "maini.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_j",
+      "label": "J",
+      "title": "RTA Strategy",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_j",
+      "directory": {
+        "path": "j",
+        "testdir": "../input/j",
+        "submit": "mainj.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_k",
+      "label": "K",
+      "title": "Consecutive Pairs",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_k",
+      "directory": {
+        "path": "k",
+        "testdir": "../input/k",
+        "submit": "maink.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_l",
+      "label": "L",
+      "title": "K-Independent Matrix",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_l",
+      "directory": {
+        "path": "l",
+        "testdir": "../input/l",
+        "submit": "mainl.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_m",
+      "label": "M",
+      "title": "Dynamic Range Edge MST",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_m",
+      "directory": {
+        "path": "m",
+        "testdir": "../input/m",
+        "submit": "mainm.py"
+      }
+    },
+    {
+      "id": "bogosortcontest_div2_n",
+      "label": "N",
+      "title": "Optimal Search",
+      "url": "https://atcoder.jp/contests/bogosortcontest_div2/tasks/bogosortcontest_div2_n",
+      "directory": {
+        "path": "n",
+        "testdir": "../input/n",
+        "submit": "mainn.py"
+      }
+    }
+  ]
+}
