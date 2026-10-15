@@ -1,6 +1,5 @@
-# AtCoder Competition Template v2.3.1 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.3.2 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py &template.py
-# oj test -c 'C:\Rino-program\AtCoder\.venv-pypy311\Scripts\python.exe maina.py' -d input/a
 
 import os, sys
 from collections import deque, defaultdict, Counter
@@ -25,9 +24,13 @@ MAP0 = lambda: (int(x) - 1 for x in input().split())
 LIST = lambda: list(map(int, input().split()))
 LIST0 = lambda: [int(x) - 1 for x in input().split()]
 TUPLE = lambda: tuple(map(int, input().split()))
+TUPLE0 = lambda: tuple(int(x) - 1 for x in input().split())
 LISTS = lambda n: [list(map(int, input().split())) for _ in range(n)]
+LISTS0 = lambda n: [[int(x) - 1 for x in input().split()] for _ in range(n)]
 TUPLES = lambda n: [tuple(map(int, input().split())) for _ in range(n)]
+TUPLES0 = lambda n: [tuple(int(x) - 1 for x in input().split()) for _ in range(n)]
 LISTSI = lambda n: [int(input()) for _ in range(n)]
+LISTSI0 = lambda n: [int(input()) - 1 for _ in range(n)]
 STR = lambda: input()
 STRS = lambda n: [input() for _ in range(n)]
 CHARS = lambda: list(input())
@@ -92,7 +95,7 @@ else:
     def debug(*args, **kwargs) -> None:
         pass
 
-# ===== template.py =====
+# ===== template.py より引用コード =====
 
 # ==============================================
 # =================== main =====================
