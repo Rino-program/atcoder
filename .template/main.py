@@ -1,5 +1,6 @@
 # AtCoder Competition Template v2.3.2 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py &template.py
+# ALL: https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os, sys
 from collections import deque, defaultdict, Counter
