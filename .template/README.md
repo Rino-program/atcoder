@@ -2,7 +2,7 @@
 
 仕様書: 現在作成中
 
-SHORT版 -> main.py
+SHORT版 -> main.py<br>
 ALL版 -> template.py
 
 注意:
