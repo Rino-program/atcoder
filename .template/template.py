@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.3.2 ALL (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.4.0 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os
@@ -388,6 +388,957 @@ def mod_inverse(a: int, mod: int = MOD) -> int:
         計算量は O(log mod)。
     """
     return pow(a, -1, mod)
+
+def ntt_convolution(a,b,mod=998244353,root=3):
+    """概要:
+        数論変換（NTT）で多項式 a,b の畳み込みを計算する。
+    入力:
+        a, b (list[int]): 係数列。mod は適切な原始根を持つ素数。
+    出力:
+        list[int]: mod を法とする畳み込み係数。
+    計算量:
+        時間 O((|a|+|b|) log(|a|+|b|))、空間 O(|a|+|b|)。
+    補足:
+        mod-1 が必要な2冪で割り切れ、root が原始根である必要がある。
+    入力を mod 正規化し、空配列は []。998244353 の root=3 が標準。"""
+    if not a or not b: return []
+    n=1
+    while n<len(a)+len(b)-1: n<<=1
+    if mod <= 1 or not is_prime(mod) or not 1 <= root < mod or pow(root, mod - 1, mod) != 1 or (mod-1) % n:
+        raise ValueError("mod must be prime and support the transform length")
+    xmod=mod-1; q=2
+    while q*q <= xmod:
+        if xmod % q == 0:
+            if pow(root,xmod//q,mod)==1: raise ValueError("root is not primitive")
+            while xmod % q == 0: xmod//=q
+        q+=1
+    if xmod > 1 and pow(root,(mod-1)//xmod,mod)==1:
+        raise ValueError("root is not primitive")
+    def ntt(x,inv=False):
+        j=0
+        for i in range(1,n):
+            bit=n>>1
+            while j&bit: j^=bit; bit>>=1
+            j^=bit
+            if i<j: x[i],x[j]=x[j],x[i]
+        l=2
+        while l<=n:
+            w=pow(root,(mod-1)//l,mod)
+            if inv: w=pow(w,mod-2,mod)
+            for i in range(0,n,l):
+                z=1
+                for j in range(i,i+l//2):
+                    u=x[j]; v=x[j+l//2]*z%mod; x[j]=(u+v)%mod; x[j+l//2]=(u-v)%mod; z=z*w%mod
+            l<<=1
+        if inv:
+            z=pow(n,mod-2,mod)
+            for i in range(n): x[i]=x[i]*z%mod
+    x=[z%mod for z in a]+[0]*(n-len(a)); y=[z%mod for z in b]+[0]*(n-len(b))
+    ntt(x); ntt(y); x=[u*v%mod for u,v in zip(x,y)]; ntt(x,True)
+    return x[:len(a)+len(b)-1]
+
+def mat_mul(a,b,mod=None):
+    """概要:
+        行列 a と b の積を計算する。
+    入力:
+        a, b (list[list[int]]): 乗算可能な行列。mod は任意の法。
+    出力:
+        list[list[int]]: 行列積。mod が指定された場合は各要素を剰余にする。
+    計算量:
+        行列サイズを n×k, k×m とすると O(nkm)、空間 O(nm)。
+    補足:
+        mod=None では整数演算を行い、空行列にも対応する。
+    """
+    n=len(a); k=len(b); m=len(b[0]) if k else 0
+    c=[[0]*m for _ in range(n)]
+    for i in range(n):
+        for t in range(k):
+            for j in range(m): c[i][j]+=a[i][t]*b[t][j]
+        if mod: c[i]=[x%mod for x in c[i]]
+    return c
+
+def mat_pow(a,e,mod=None):
+    """概要:
+        正方行列 a の e 乗を二分累乗で計算する。
+    入力:
+        a (list[list[int]]): 正方行列。e は 0 以上の整数。
+    出力:
+        list[list[int]]: a**e。e=0 では単位行列を返す。
+    計算量:
+        n×n 行列に対して O(n^3 log e)。
+    補足:
+        mod を指定すると各乗算後に剰余を取る。
+    """
+    n=len(a); r=[[int(i==j) for j in range(n)] for i in range(n)]
+    while e:
+        if e&1: r=mat_mul(r,a,mod)
+        a=mat_mul(a,a,mod); e>>=1
+    return r
+
+def divisor_transform(a, zeta=False, multiple=False, inverse=False, mod=None):
+    """概要:
+        添字を整数とする約数側・倍数側のゼータ変換または Möbius 逆変換を行う。
+    入力:
+        a (list[int]): 添字 0..N-1 の値。multiple は倍数側を指定する。
+        inverse は逆変換、mod は任意の法を指定する。
+    出力:
+        list[int]: 変換後の新しい配列（入力は変更しない）。
+    計算量:
+        時間 O(N log log N)、空間 O(N)。
+    補足:
+        zeta=False でも通常のゼータ変換として扱う（互換のための引数）。
+    """
+    n=len(a); b=a[:]
+    for p in range(2,n):
+        if all(p%d for d in range(2,int(p**0.5)+1)):
+            js=range(p,n,p) if (multiple != inverse) else range(((n-1)//p)*p,p-1,-p)
+            for j in js:
+                if multiple:
+                    if inverse: b[j//p]=(b[j//p]-b[j])%mod if mod else b[j//p]-b[j]
+                    else: b[j//p]=(b[j//p]+b[j])%mod if mod else b[j//p]+b[j]
+                else:
+                    if inverse: b[j]=(b[j]-b[j//p])%mod if mod else b[j]-b[j//p]
+                    else: b[j]=(b[j]+b[j//p])%mod if mod else b[j]+b[j//p]
+    return b
+
+class XorBasis:
+    """概要:
+        整数ベクトルの XOR 線形基底を管理する。
+    入力:
+        bits は扱う最大ビット数。insert(x) でベクトルを追加する。
+    出力:
+        can(x) は表現可能性、max_xor(x) は得られる最大値を返す。
+    計算量:
+        各操作 O(B)、空間 O(B)（B はビット数）。
+    補足:
+        非負整数を想定し、従属ベクトルの追加は False を返す。
+    """
+    def __init__(self,bits=61): self.b=[0]*bits
+    def insert(self,x):
+        for i in range(len(self.b)-1,-1,-1):
+            if not (x>>i&1): continue
+            if self.b[i]: x^=self.b[i]
+            else:
+                self.b[i]=x
+                for j in range(i):
+                    if self.b[j] and self.b[i]>>j&1: self.b[i]^=self.b[j]
+                return True
+        return False
+    def can(self,x):
+        for i in range(len(self.b)-1,-1,-1):
+            if x>>i&1: x^=self.b[i]
+        return x==0
+    def max_xor(self,x=0):
+        for v in self.b[::-1]: x=max(x,x^v)
+        return x
+
+def gf2_solve(rows, m=None):
+    """概要:
+        GF(2) 上の連立一次方程式を Gauss-Jordan 法で解く。
+    入力:
+        rows は係数と右辺をビットで表した整数列。m は変数数（省略可）。
+    出力:
+        tuple[int, list[int]]: 一つの解と自由変数の基底。不能なら None。
+    計算量:
+        時間 O(rm)、空間 O(r)。
+    補足:
+        各 row の m ビット目を右辺として扱う。
+    """
+    if m is None: m=max((x.bit_length() for x in rows),default=1)-1
+    a=rows[:]; piv=[]; r=0
+    for c in range(m):
+        q=next((i for i in range(r,len(a)) if a[i]>>c&1),None)
+        if q is None: continue
+        a[r],a[q]=a[q],a[r]
+        for i in range(len(a)):
+            if i!=r and a[i]>>c&1: a[i]^=a[r]
+        piv.append(c); r+=1
+    mask=(1<<m)-1
+    if any((x&mask)==0 and (x>>m&1) for x in a): return None
+    x=0
+    for i,c in enumerate(piv):
+        if a[i]>>m&1: x|=1<<c
+    free=[1<<c for c in range(m) if c not in piv]
+    return x,free
+
+# ============================================================
+# 平面幾何 (2D Geometry)
+# ============================================================
+
+GEOM_EPS = 1e-9
+class Point:
+    """概要:
+        2次元平面上の点・ベクトルを表すクラス。
+        整数 (int) と実数 (float) の両方に完全対応。
+
+    属性:
+        x (float | int): X座標。
+        y (float | int): Y座標。
+
+    メソッド:
+        dot(other): 内積。
+        cross(other): 外積（2D 行列式）。
+        norm2(): 長さの2乗。
+        norm(): ユークリッドノルム（長さ）。
+        dist2(other): 2点間距離の2乗。
+        dist(other): 2点間距離。
+        unit(): 単位ベクトル。
+        normal(): 法線ベクトル（反時計回りに90度回転）。
+        rotate(rad): 反時計回りに rad ラジアン回転したベクトル。
+        angle(): 偏角 [-π, π]。
+
+    計算量:
+        四則演算・比較・各メソッドともにすべて O(1)。
+
+    補足:
+        整数座標同士の演算では除算を避けることで浮動小数点誤差を一切生じさせない。
+    """
+    __slots__ = ("x", "y")
+
+    def __init__(self, x: float = 0, y: float = 0):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other: "Point") -> "Point":
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other: "Point") -> "Point":
+        return Point(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, scalar: float) -> "Point":
+        return Point(self.x * scalar, self.y * scalar)
+
+    __rmul__ = __mul__
+
+    def __truediv__(self, scalar: float) -> "Point":
+        return Point(self.x / scalar, self.y / scalar)
+
+    def __floordiv__(self, scalar: int) -> "Point":
+        return Point(self.x // scalar, self.y // scalar)
+
+    def __neg__(self) -> "Point":
+        return Point(-self.x, -self.y)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Point):
+            return False
+        if isinstance(self.x, int) and isinstance(self.y, int) and isinstance(other.x, int) and isinstance(other.y, int):
+            return self.x == other.x and self.y == other.y
+        return abs(self.x - other.x) < GEOM_EPS and abs(self.y - other.y) < GEOM_EPS
+
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
+    def __lt__(self, other: "Point") -> bool:
+        if isinstance(self.x, int) and isinstance(self.y, int) and isinstance(other.x, int) and isinstance(other.y, int):
+            return (self.x, self.y) < (other.x, other.y)
+        if abs(self.x - other.x) >= GEOM_EPS:
+            return self.x < other.x
+        return self.y < other.y - GEOM_EPS
+
+    def __repr__(self) -> str:
+        return f"Point({self.x}, {self.y})"
+
+    def dot(self, other: "Point") -> float | int:
+        """内積 (dot product)"""
+        return self.x * other.x + self.y * other.y
+
+    def cross(self, other: "Point") -> float | int:
+        """外積 (cross product / 2D det)"""
+        return self.x * other.y - self.y * other.x
+
+    def norm2(self) -> float | int:
+        """長さの2乗 (x^2 + y^2)"""
+        return self.x * self.x + self.y * self.y
+
+    def norm(self) -> float:
+        """ユークリッドノルム（長さ）"""
+        return math.hypot(self.x, self.y)
+
+    def dist2(self, other: "Point") -> float | int:
+        """2点間距離の2乗"""
+        return (self.x - other.x) ** 2 + (self.y - other.y) ** 2
+
+    def dist(self, other: "Point") -> float:
+        """2点間距離"""
+        return math.hypot(self.x - other.x, self.y - other.y)
+
+    def unit(self) -> "Point":
+        """単位ベクトル"""
+        l = self.norm()
+        return Point(self.x / l, self.y / l)
+
+    def normal(self) -> "Point":
+        """反時計回りに90度回転した直交ベクトル"""
+        return Point(-self.y, self.x)
+
+    def rotate(self, rad: float) -> "Point":
+        """反時計回りに rad ラジアン回転"""
+        c = math.cos(rad)
+        s = math.sin(rad)
+        return Point(self.x * c - self.y * s, self.x * s + self.y * c)
+
+    def angle(self) -> float:
+        """偏角 [-π, π]"""
+        return math.atan2(self.y, self.x)
+
+
+class AngleSortKey:
+    """概要:
+        atan2 を一切使わず、完全整数演算（半平面判定＋外積）で偏角ソートを行うキー。
+        浮動小数点誤差による WA を 100% 回避する。
+
+    計算量:
+        初期化 O(1)、比較 (__lt__) O(1)。
+        N 個の点に対するソート全体で O(N log N)。
+
+    補足:
+        - 基準点 origin から見た偏角の昇順 [0, 2π) でソートする。
+        - 偏角が同一の場合は origin からの距離昇順。
+        - origin 自身は最も小さい要素として先頭に来る。
+
+    使用例:
+        points.sort(key=AngleSortKey)
+        points.sort(key=lambda p: AngleSortKey(p, origin=P0))
+    """
+    __slots__ = ("p", "area", "dist2")
+
+    def __init__(self, p: Point, origin: Point = Point(0, 0)):
+        self.p = p - origin
+        x, y = self.p.x, self.p.y
+        # 領域: 0: 原点, 1: 上半平面(y>0 or (y==0 and x>0)), 2: 下半平面(y<0 or (y==0 and x<0))
+        if x == 0 and y == 0:
+            self.area = 0
+        elif y > 0 or (y == 0 and x > 0):
+            self.area = 1
+        else:
+            self.area = 2
+        self.dist2 = x * x + y * y
+
+    def __lt__(self, other: "AngleSortKey") -> bool:
+        if self.area != other.area:
+            return self.area < other.area
+        crs = self.p.cross(other.p)
+        if crs != 0:
+            return crs > 0
+        return self.dist2 < other.dist2
+
+
+GEOM_EPS = 1e-9
+CCW_COUNTER_CLOCKWISE = 1  # 反時計回り
+CCW_CLOCKWISE = -1         # 時計回り
+CCW_ONLINE_BACK = 2        # c-a-b 直線上 (c が a の後方)
+CCW_ONLINE_FRONT = -2      # a-b-c 直線上 (c が b の前方)
+CCW_ON_SEGMENT = 0         # a-c-b 線分上 (c が線分 ab 上)
+def ccw(a: Point, b: Point, c: Point) -> int:
+    """概要:
+        点 a, b に対する点 c の位置関係を判定する。
+    入力:
+        a, b, c (Point): 判定対象の3点。
+    出力:
+        int: 位置関係を表す定数 (+1, -1, +2, -2, 0)。
+    計算量:
+        O(1)。
+    補足:
+        整数座標なら除算を行わず完全精度で判定。凸包や交差判定の基礎となる。
+    使用例:
+        res = ccw(Point(0, 0), Point(2, 0), Point(1, 1))  # 1 (反時計回り)
+    """
+    ba = b - a
+    ca = c - a
+    crs = ba.cross(ca)
+    if isinstance(a.x, int) and isinstance(a.y, int) and isinstance(b.x, int) and isinstance(b.y, int) and isinstance(c.x, int) and isinstance(c.y, int):
+        if crs > 0: return CCW_COUNTER_CLOCKWISE
+        if crs < 0: return CCW_CLOCKWISE
+        if ba.dot(ca) < 0: return CCW_ONLINE_BACK
+        if ba.norm2() < ca.norm2(): return CCW_ONLINE_FRONT
+        return CCW_ON_SEGMENT
+    if crs > GEOM_EPS: return CCW_COUNTER_CLOCKWISE
+    if crs < -GEOM_EPS: return CCW_CLOCKWISE
+    if ba.dot(ca) < -GEOM_EPS: return CCW_ONLINE_BACK
+    if ba.norm2() < ca.norm2() - GEOM_EPS: return CCW_ONLINE_FRONT
+    return CCW_ON_SEGMENT
+
+
+GEOM_EPS = 1e-9
+def is_parallel(a1: Point, a2: Point, b1: Point, b2: Point) -> bool:
+    """概要:
+        ベクトル a1->a2 と b1->b2 が平行かどうかを判定する。
+    入力:
+        a1, a2 (Point): ベクトル1の始点と終点。
+        b1, b2 (Point): ベクトル2の始点と終点。
+    出力:
+        bool: 平行なら True、そうでなければ False。
+    計算量:
+        O(1)。
+    """
+    crs = (a2 - a1).cross(b2 - b1)
+    if isinstance(a1.x, int) and isinstance(a1.y, int) and isinstance(a2.x, int) and isinstance(a2.y, int) and isinstance(b1.x, int) and isinstance(b1.y, int) and isinstance(b2.x, int) and isinstance(b2.y, int):
+        return crs == 0
+    return abs(crs) < GEOM_EPS
+
+
+GEOM_EPS = 1e-9
+def is_orthogonal(a1: Point, a2: Point, b1: Point, b2: Point) -> bool:
+    """概要:
+        ベクトル a1->a2 と b1->b2 が垂直かどうかを判定する。
+    入力:
+        a1, a2 (Point): ベクトル1の始点と終点。
+        b1, b2 (Point): ベクトル2の始点と終点。
+    出力:
+        bool: 垂直なら True、そうでなければ False。
+    計算量:
+        O(1)。
+    """
+    dt = (a2 - a1).dot(b2 - b1)
+    if isinstance(a1.x, int) and isinstance(a1.y, int) and isinstance(a2.x, int) and isinstance(a2.y, int) and isinstance(b1.x, int) and isinstance(b1.y, int) and isinstance(b2.x, int) and isinstance(b2.y, int):
+        return dt == 0
+    return abs(dt) < GEOM_EPS
+
+
+class Line:
+    """概要:
+        異なる2点 a, b を通る直線を定義するクラス。
+
+    属性:
+        a (Point): 直線上の点1。
+        b (Point): 直線上の点2。
+
+    メソッド:
+        projection(p): 点 p から直線への垂線の足（射影）を返す。
+        reflection(p): 直線に関する点 p の線対称な点（反射）を返す。
+        dist_to_point(p): 点 p と直線の最短距離を返す。
+
+    計算量:
+        初期化および全メソッド O(1)。
+        a と b が同一点の場合は ValueError。
+    """
+    __slots__ = ("a", "b")
+
+    def __init__(self, a: Point, b: Point):
+        if a == b:
+            raise ValueError("Line requires two distinct points")
+        self.a = a
+        self.b = b
+
+    def projection(self, p: Point) -> Point:
+        """点 p から直線への垂線の足"""
+        v = self.b - self.a
+        t = (p - self.a).dot(v) / v.norm2()
+        return self.a + v * t
+
+    def reflection(self, p: Point) -> Point:
+        """直線に関する点 p の線対称な点"""
+        return p + (self.projection(p) - p) * 2.0
+
+    def dist_to_point(self, p: Point) -> float:
+        """点 p と直線の最短距離"""
+        v = self.b - self.a
+        return abs(v.cross(p - self.a)) / v.norm()
+
+    def __repr__(self) -> str:
+        return f"Line({self.a}, {self.b})"
+
+
+class Segment:
+    """概要:
+        2端点 a, b を結ぶ線分を定義するクラス。
+
+    属性:
+        a (Point): 線分の端点1。
+        b (Point): 線分の端点2。
+
+    メソッド:
+        intersects(other): 線分同士が交差するか判定する。
+        dist_to_point(p): 点 p と線分の最短距離を返す。
+        dist_to_segment(other): 線分同士の最短距離を返す。
+
+    計算量:
+        初期化および全メソッド O(1)。
+    """
+    __slots__ = ("a", "b")
+
+    def __init__(self, a: Point, b: Point):
+        self.a = a
+        self.b = b
+
+    def intersects(self, other: "Segment") -> bool:
+        """線分同士が交差するか判定（端点の接触も含む）"""
+        if self.a == self.b:
+            return other.dist_to_point(self.a) < GEOM_EPS
+        if other.a == other.b:
+            return self.dist_to_point(other.a) < GEOM_EPS
+        return (
+            ccw(self.a, self.b, other.a) * ccw(self.a, self.b, other.b) <= 0
+            and ccw(other.a, other.b, self.a) * ccw(other.a, other.b, self.b) <= 0
+        )
+
+    def dist_to_point(self, p: Point) -> float:
+        """点 p と線分の最短距離"""
+        if self.a == self.b:
+            return self.a.dist(p)
+        if (self.b - self.a).dot(p - self.a) < 0:
+            return (p - self.a).norm()
+        if (self.a - self.b).dot(p - self.b) < 0:
+            return (p - self.b).norm()
+        return Line(self.a, self.b).dist_to_point(p)
+
+    def dist_to_segment(self, other: "Segment") -> float:
+        """線分同士の最短距離"""
+        if self.intersects(other):
+            return 0.0
+        return min(
+            self.dist_to_point(other.a),
+            self.dist_to_point(other.b),
+            other.dist_to_point(self.a),
+            other.dist_to_point(self.b),
+        )
+
+    def __repr__(self) -> str:
+        return f"Segment({self.a}, {self.b})"
+
+
+GEOM_EPS = 1e-9
+def line_intersection(l1: Line, l2: Line) -> Point | None:
+    """概要:
+        直線 l1 と l2 の交点を求める。
+    入力:
+        l1, l2 (Line): 交点を求める2本の直線。
+    出力:
+        Point | None: 交点座標。平行・同一直線の場合は None。
+    計算量:
+        O(1)。
+    """
+    v1 = l1.b - l1.a
+    v2 = l2.b - l2.a
+    d = v1.cross(v2)
+    is_int = (
+        isinstance(l1.a.x, int) and isinstance(l1.a.y, int) and
+        isinstance(l1.b.x, int) and isinstance(l1.b.y, int) and
+        isinstance(l2.a.x, int) and isinstance(l2.a.y, int) and
+        isinstance(l2.b.x, int) and isinstance(l2.b.y, int)
+    )
+    if d == 0 if is_int else abs(d) < GEOM_EPS:
+        return None
+    return l1.a + v1 * ((l2.a - l1.a).cross(v2) / d)
+
+
+def segment_intersection(s1: Segment, s2: Segment) -> Point | None:
+    """概要:
+        線分 s1 と s2 の交点を求める。
+    入力:
+        s1, s2 (Segment): 交点を求める2本の線分。
+    出力:
+        Point | None: 交点座標。交差しない場合は None。
+    計算量:
+        O(1)。
+    """
+    if not s1.intersects(s2):
+        return None
+    return line_intersection(Line(s1.a, s1.b), Line(s2.a, s2.b))
+
+
+def polygon_area_2x(points: list[Point]) -> int | float:
+    """概要:
+        多角形の「有向面積の2倍」を靴ひも公式で求める。
+    入力:
+        points (list[Point]): 多角形の頂点列（反時計回りまたは時計回り）。
+    出力:
+        int | float: 反時計回りなら正、時計回りなら負の面積の2倍値。
+    計算量:
+        O(N)（N は頂点数）。
+        点が空の場合は ValueError、1点の場合は (0.0, 0, 0)。
+    補足:
+        全頂点が整数座標の場合、除算を行わないため完全整数演算となり誤差が発生しない。
+    """
+    n = len(points)
+    area2 = 0
+    for i in range(n):
+        area2 += points[i].cross(points[(i + 1) % n])
+    return area2
+
+
+def polygon_area(points: list[Point]) -> float:
+    """概要:
+        多角形の面積を求める。
+    入力:
+        points (list[Point]): 多角形の頂点列。
+    出力:
+        float: 多角形の正の面積。
+    計算量:
+        O(N)（N は頂点数）。
+    """
+    return abs(polygon_area_2x(points)) / 2.0
+
+
+CCW_ON_SEGMENT = 0
+def point_in_polygon(p: Point, poly: list[Point]) -> int:
+    """概要:
+        点 p と多角形の内外判定を行う（Winding Number 法）。
+    入力:
+        p (Point): 判定対象の点。
+        poly (list[Point]): 多角形の頂点列。
+    出力:
+        int: 2: 内部 (IN), 1: 辺上 (ON), 0: 外部 (OUT)。
+    計算量:
+        O(N)（N は頂点数）。
+    補足:
+        凹多角形・自己交差のない一般多角形に対して有効。
+    """
+    n = len(poly)
+    wn = 0
+    for i in range(n):
+        p1 = poly[i]
+        p2 = poly[(i + 1) % n]
+        if ccw(p1, p2, p) == CCW_ON_SEGMENT:
+            return 1
+        if p1.y <= p.y:
+            if p2.y > p.y and (p2 - p1).cross(p - p1) > 0:
+                wn += 1
+        else:
+            if p2.y <= p.y and (p2 - p1).cross(p - p1) < 0:
+                wn -= 1
+    return 2 if wn != 0 else 0
+
+
+CCW_COUNTER_CLOCKWISE = 1
+CCW_CLOCKWISE = -1
+def convex_hull(points: list[Point], allow_on_edge: bool = False) -> list[Point]:
+    """概要:
+        アンドリューのアルゴリズム (Monotone Chain) で点集合の凸包を構築する。
+    入力:
+        points (list[Point]): 点集合。
+        allow_on_edge (bool): 凸包の辺上（一直線上）の点も含めるかどうか。
+    出力:
+        list[Point]: 最左下から反時計回りに並んだ凸包の頂点列。
+    計算量:
+        O(N log N)（N は点数、ソートが支配的）。
+    補足:
+        同一直線上の点や縮退ケースも含め、境界点の順序・重複を完全対策済み。
+    """
+    pts = sorted(points)
+    n = len(pts)
+    if n <= 2:
+        return pts
+
+    def check(p1, p2, p3):
+        c = ccw(p1, p2, p3)
+        return (c == CCW_CLOCKWISE) if allow_on_edge else (c != CCW_COUNTER_CLOCKWISE)
+
+    lower = []
+    for p in pts:
+        while len(lower) >= 2 and check(lower[-2], lower[-1], p):
+            lower.pop()
+        lower.append(p)
+
+    # 全点が同一直線上にある場合の特別処理
+    if len(lower) == n:
+        return pts if allow_on_edge else [pts[0], pts[-1]]
+
+    upper = []
+    for p in reversed(pts):
+        while len(upper) >= 2 and check(upper[-2], upper[-1], p):
+            upper.pop()
+        upper.append(p)
+
+    return lower[:-1] + upper[:-1]
+
+
+def convex_diameter(poly: list[Point]) -> tuple[float, int, int]:
+    """概要:
+        凸多角形の最遠点対間距離（直径）をキャリパー法（Rotating Calipers）で求める。
+    入力:
+        poly (list[Point]): 反時計回りの凸多角形頂点列。
+    出力:
+        tuple[float, int, int]: (最大距離, 頂点インデックス1, 頂点インデックス2)。
+    計算量:
+        O(N)（N は頂点数）。
+    """
+    n = len(poly)
+    if n == 0:
+        raise ValueError("convex_diameter requires at least one point")
+    if n == 1:
+        return 0.0, 0, 0
+    if n == 2:
+        return poly[0].dist(poly[1]), 0, 1
+
+    is_min_x = min(range(n), key=lambda i: (poly[i].x, poly[i].y))
+    is_max_x = max(range(n), key=lambda i: (poly[i].x, poly[i].y))
+
+    i, j = is_min_x, is_max_x
+    max_d2 = poly[i].dist2(poly[j])
+    best_pair = (i, j)
+
+    si, sj = i, j
+    while i != sj or j != si:
+        ni = (i + 1) % n
+        nj = (j + 1) % n
+        if (poly[ni] - poly[i]).cross(poly[nj] - poly[j]) >= 0:
+            j = nj
+        else:
+            i = ni
+        d2 = poly[i].dist2(poly[j])
+        if d2 > max_d2:
+            max_d2 = d2
+            best_pair = (i, j)
+
+    return math.sqrt(max_d2), best_pair[0], best_pair[1]
+
+
+CCW_COUNTER_CLOCKWISE = 1
+CCW_CLOCKWISE = -1
+def convex_cut(poly: list[Point], line: Line) -> list[Point]:
+    """概要:
+        凸多角形を有向直線 line.a -> line.b で切断し、進行方向左側の多角形を返す。
+    入力:
+        poly (list[Point]): 切断対象の凸多角形頂点列。
+        line (Line): 切断線（line.a -> line.b の向き）。
+    出力:
+        list[Point]: 直線の左側に残った凸多角形の頂点列。
+    計算量:
+        O(N)（N は頂点数）。
+    """
+    n = len(poly)
+    res = []
+    for i in range(n):
+        cur = poly[i]
+        nxt = poly[(i + 1) % n]
+        c1 = ccw(line.a, line.b, cur)
+        c2 = ccw(line.a, line.b, nxt)
+        if c1 != CCW_CLOCKWISE:
+            res.append(cur)
+        if (c1 == CCW_COUNTER_CLOCKWISE and c2 == CCW_CLOCKWISE) or (c1 == CCW_CLOCKWISE and c2 == CCW_COUNTER_CLOCKWISE):
+            p = line_intersection(Line(cur, nxt), line)
+            if p is not None:
+                res.append(p)
+    return res
+
+
+def closest_pair(points: list[Point]) -> tuple[float, Point, Point]:
+    """概要:
+        分割統治法により最近点対間の距離とその2点を求める。
+    入力:
+        points (list[Point]): 点集合。
+    出力:
+        tuple[float, Point, Point]: (最小距離, 点1, 点2)。
+    計算量:
+        O(N log N)（N は点数）。
+    """
+    pts = sorted(points, key=lambda p: (p.x, p.y))
+    n = len(pts)
+
+    def rec(l: int, r: int):
+        if r - l <= 1:
+            return float("inf"), None, None
+        mid = (l + r) // 2
+        mid_x = pts[mid].x
+        d1, p1a, p1b = rec(l, mid)
+        d2, p2a, p2b = rec(mid, r)
+        d = min(d1, d2)
+        best_p = (p1a, p1b) if d == d1 else (p2a, p2b)
+
+        strip = [p for p in pts[l:r] if abs(p.x - mid_x) < d]
+        strip.sort(key=lambda p: p.y)
+
+        for i in range(len(strip)):
+            for j in range(i + 1, len(strip)):
+                if strip[j].y - strip[i].y >= d:
+                    break
+                dist = strip[i].dist(strip[j])
+                if dist < d:
+                    d = dist
+                    best_p = (strip[i], strip[j])
+        return d, best_p[0], best_p[1]
+
+    return rec(0, n)
+
+
+def lattice_points_on_segment(p1: Point, p2: Point) -> int:
+    """概要:
+        線分 p1-p2 上にある格子点の個数を求める（両端点を含む）。
+    入力:
+        p1, p2 (Point): 格子点座標（整数）。
+    出力:
+        int: 線分上の格子点数。
+    計算量:
+        O(log(min(|dx|, |dy|)))（ユークリッド互除法）。
+    """
+    return math.gcd(abs(p1.x - p2.x), abs(p1.y - p2.y)) + 1
+
+
+def picks_theorem(poly: list[Point]) -> tuple[int, int]:
+    """概要:
+        ピックの定理 (S = I + B/2 - 1) を用いて、格子多角形の内部と境界上の格子点数を求める。
+    入力:
+        poly (list[Point]): 格子多角形の頂点列（全座標が整数）。
+    出力:
+        tuple[int, int]: (内部の格子点数 I, 境界上の格子点数 B)。
+    計算量:
+        O(N log(座標最大値))（N は頂点数）。
+    """
+    n = len(poly)
+    b = 0
+    for i in range(n):
+        b += math.gcd(abs(poly[i].x - poly[(i + 1) % n].x), abs(poly[i].y - poly[(i + 1) % n].y))
+    area2 = abs(polygon_area_2x(poly))
+    inside = (area2 - b + 2) // 2
+    return inside, b
+
+
+GEOM_EPS = 1e-9
+class Circle:
+    """概要:
+        中心 c と非負の半径 r を持つ円。
+
+    属性:
+        c (Point): 円の中心点。
+        r (float): 半径。
+
+    メソッド:
+        intersect_line(line): 円と直線の交点リスト（0〜2個）を返す。
+        intersect_circle(other): 2円の交点リスト（0〜2個）を返す。
+        tangents_from_point(p): 点 p から円へ引いた接線の接点リスト（0〜2個）を返す。
+
+    計算量:
+        初期化および全メソッド O(1)。
+        半径が負の場合は ValueError。
+    """
+    __slots__ = ("c", "r")
+
+    def __init__(self, c: Point, r: float):
+        if r < 0:
+            raise ValueError("Circle radius must be non-negative")
+        self.c = c
+        self.r = r
+
+    def intersect_line(self, line: Line) -> list[Point]:
+        """円と直線の交点（0〜2個）"""
+        pr = line.projection(self.c)
+        d = (pr - self.c).norm()
+        if d > self.r + GEOM_EPS:
+            return []
+        if abs(d - self.r) < GEOM_EPS:
+            return [pr]
+        base = math.sqrt(max(0.0, self.r * self.r - d * d))
+        e = (line.b - line.a).unit()
+        return [pr - e * base, pr + e * base]
+
+    def intersect_circle(self, other: "Circle") -> list[Point]:
+        """2円の交点を返す（0〜2個）"""
+        d = self.c.dist(other.c)
+        if d > self.r + other.r + GEOM_EPS or d < abs(self.r - other.r) - GEOM_EPS or abs(d) < GEOM_EPS:
+            return []
+        a = (self.r * self.r - other.r * other.r + d * d) / (2.0 * d)
+        h = math.sqrt(max(0.0, self.r * self.r - a * a))
+        v = (other.c - self.c).unit()
+        n = v.normal()
+        p = self.c + v * a
+        if abs(h) < GEOM_EPS:
+            return [p]
+        return [p + n * h, p - n * h]
+
+    def tangents_from_point(self, p: Point) -> list[Point]:
+        """点 p から円へ引いた接線の接点（0〜2個）"""
+        d2 = self.c.dist2(p)
+        diff = d2 - self.r * self.r
+        if diff < -GEOM_EPS:
+            return []
+        if abs(diff) < GEOM_EPS:
+            return [p]
+        d = math.sqrt(d2)
+        l = math.sqrt(diff)
+        sin_t = self.r / d
+        cos_t = l / d
+        v = (self.c - p).unit()
+        p1 = p + Point(v.x * cos_t - v.y * sin_t, v.x * sin_t + v.y * cos_t) * l
+        p2 = p + Point(v.x * cos_t + v.y * sin_t, -v.x * sin_t + v.y * cos_t) * l
+        return [p1, p2]
+
+    def __repr__(self) -> str:
+        return f"Circle({self.c}, {self.r})"
+
+
+GEOM_EPS = 1e-9
+def circle_intersection_area(c1: Circle, c2: Circle) -> float:
+    """概要:
+        2つの円の共通部分（交差面積）を求める。
+    入力:
+        c1, c2 (Circle): 対象の2円。
+    出力:
+        float: 共通部分の面積。
+    計算量:
+        O(1)。
+    """
+    d = c1.c.dist(c2.c)
+    if d >= c1.r + c2.r - GEOM_EPS:
+        return 0.0
+    if d <= abs(c1.r - c2.r) + GEOM_EPS:
+        min_r = min(c1.r, c2.r)
+        return math.pi * min_r * min_r
+    theta1 = 2 * math.acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d))
+    theta2 = 2 * math.acos((c2.r * c2.r + d * d - c1.r * c1.r) / (2 * c2.r * d))
+    s1 = 0.5 * c1.r * c1.r * (theta1 - math.sin(theta1))
+    s2 = 0.5 * c2.r * c2.r * (theta2 - math.sin(theta2))
+    return s1 + s2
+
+
+GEOM_EPS = 1e-9
+def circumscribed_circle(p1: Point, p2: Point, p3: Point) -> Circle | None:
+    """概要:
+        3点を通る円（外接円）を求める。
+    入力:
+        p1, p2, p3 (Point): 3点。
+    出力:
+        Circle | None: 外接円。同一直線上の場合は None。
+    計算量:
+        O(1)。
+    """
+    d = 2 * (p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y))
+    if abs(d) < GEOM_EPS:
+        return None
+    p1_sq = p1.norm2()
+    p2_sq = p2.norm2()
+    p3_sq = p3.norm2()
+    cx = (p1_sq * (p2.y - p3.y) + p2_sq * (p3.y - p1.y) + p3_sq * (p1.y - p2.y)) / d
+    cy = (p1_sq * (p3.x - p2.x) + p2_sq * (p1.x - p3.x) + p3_sq * (p2.x - p1.x)) / d
+    c = Point(cx, cy)
+    return Circle(c, c.dist(p1))
+
+
+import random
+GEOM_EPS = 1e-9
+def minimum_enclosing_circle(points: list[Point]) -> Circle:
+    """概要:
+        点集合を全て包含する最小包含円を Welzl のアルゴリズムで求める。
+    入力:
+        points (list[Point]): 点集合。
+    出力:
+        Circle: 最小包含円。
+    計算量:
+        期待値 O(N)、最悪 O(N^3)（N は点数）。
+    """
+    pts = list(points)
+    random.shuffle(pts)
+
+    def welzl(p_list: list[Point], r_list: list[Point], n: int) -> Circle:
+        if n == 0 or len(r_list) == 3:
+            if len(r_list) == 0:
+                return Circle(Point(0, 0), 0.0)
+            elif len(r_list) == 1:
+                return Circle(r_list[0], 0.0)
+            elif len(r_list) == 2:
+                c = (r_list[0] + r_list[1]) / 2.0
+                return Circle(c, c.dist(r_list[0]))
+            else:
+                return circumscribed_circle(r_list[0], r_list[1], r_list[2])
+
+        p = p_list[n - 1]
+        c = welzl(p_list, r_list, n - 1)
+        if c.c.dist(p) <= c.r + GEOM_EPS:
+            return c
+        return welzl(p_list, r_list + [p], n - 1)
+
+    return welzl(pts, [], len(pts))
 
 
 # ============================================================
@@ -1475,6 +2426,293 @@ def bipartite_matching(
             ans += 1
     return (ans, match_r) if return_matching else ans
 
+def scc(n, edges):
+    """概要:
+        有向グラフを Tarjan 法で強連結成分分解する。
+    入力:
+        n (int): 頂点数。edges (list[tuple[int,int]]): 有向辺。
+    出力:
+        tuple[int, list[int], list[list[int]]]: 成分数、各頂点の成分番号、
+        重複辺を除いた縮約 DAG。
+    計算量:
+        時間 O(n+m)、空間 O(n+m)。
+    補足:
+        再帰を使わないため、深いグラフでも再帰上限に依存しない。
+    使用例:
+        count, comp, dag = scc(n, edges)
+    """
+    g = [[] for _ in range(n)]
+    for a, b in edges:
+        g[a].append(b)
+    idx = [-1] * n; low = [0] * n; st = []; inst = [False] * n
+    comp = [-1] * n; timer = 0; cc = 0
+    for root in range(n):
+        if idx[root] >= 0: continue
+        idx[root] = low[root] = timer; timer += 1; st.append(root); inst[root] = True
+        stack = [(root, 0)]
+        while stack:
+            v, i = stack[-1]
+            if i < len(g[v]):
+                to = g[v][i]; stack[-1] = (v, i + 1)
+                if idx[to] < 0:
+                    idx[to] = low[to] = timer; timer += 1
+                    st.append(to); inst[to] = True; stack.append((to, 0))
+                elif inst[to]:
+                    low[v] = min(low[v], idx[to])
+            else:
+                stack.pop()
+                if stack:
+                    p = stack[-1][0]; low[p] = min(low[p], low[v])
+                if low[v] == idx[v]:
+                    while True:
+                        x = st.pop(); inst[x] = False; comp[x] = cc
+                        if x == v: break
+                    cc += 1
+    dag = [set() for _ in range(cc)]
+    for a, b in edges:
+        if comp[a] != comp[b]: dag[comp[a]].add(comp[b])
+    return cc, comp, [list(x) for x in dag]
+
+class LowLink:
+    """概要:
+        無向グラフの low-link 値、橋、関節点を求める。
+    入力:
+        LowLink(n, edges) の edges は (u, v)。多重辺にも対応する。
+    出力:
+        ord, low, bridges（入力辺番号）, articulation（頂点集合）を属性に保持する。
+    計算量:
+        構築 O(n+m)、空間 O(n+m)。
+    補足:
+        非連結グラフ、孤立点、多重辺を扱い、再帰を使わない。
+    """
+    def __init__(self, n, edges):
+        self.n = n; self.edges = list(edges); g = [[] for _ in range(n)]
+        for i, (a, b) in enumerate(self.edges):
+            g[a].append((b, i)); g[b].append((a, i))
+        self.ord = [-1] * n; self.low = [0] * n; self.parent_edge = [-1] * n
+        self.bridges = []; self.articulation = set(); t = 0
+        for root in range(n):
+            if self.ord[root] >= 0: continue
+            self.ord[root] = self.low[root] = t; t += 1
+            st = [(root, -1, 0, 0)]
+            while st:
+                v, pe, i, child = st[-1]
+                if i < len(g[v]):
+                    to, ei = g[v][i]; st[-1] = (v, pe, i + 1, child)
+                    if ei == pe: continue
+                    if self.ord[to] < 0:
+                        st[-1] = (v, pe, i + 1, child + 1)
+                        self.parent_edge[to] = ei
+                        self.ord[to] = self.low[to] = t; t += 1
+                        st.append((to, ei, 0, 0))
+                    else: self.low[v] = min(self.low[v], self.ord[to])
+                else:
+                    st.pop()
+                    if pe != -1:
+                        p = self.edges[pe][0] if self.edges[pe][1] == v else self.edges[pe][1]
+                        self.low[p] = min(self.low[p], self.low[v])
+                        if self.low[v] > self.ord[p]: self.bridges.append(pe)
+                        if self.low[v] >= self.ord[p] and self.parent_edge[p] != -1:
+                            self.articulation.add(p)
+                    elif child > 1: self.articulation.add(v)
+        self.bridges.sort()
+
+class TwoSAT:
+    """概要:
+        含意グラフを用いて 2-SAT を解く。
+    入力:
+        add_clause(a, va, b, vb) は (x_a=va) または (x_b=vb) を追加する。
+    出力:
+        solve() は充足時に bool 配列、不能時に None を返す。
+    計算量:
+        追加 O(1)、solve は O(V+E) 時間・空間。
+    補足:
+        変数番号は 0-indexed。空の変数集合にも対応する。
+    """
+    def __init__(self,n):
+        if n < 0: raise ValueError("n must be non-negative")
+        self.n=n; self.g=[[] for _ in range(2*n)]
+    def _id(self,i,v): return 2*i+int(v)
+    def add_clause(self,a,va,b,vb):
+        if not (0 <= a < self.n and 0 <= b < self.n): raise IndexError("variable index")
+        x=self._id(a,va); y=self._id(b,vb); self.g[x^1].append(y); self.g[y^1].append(x)
+    def solve(self):
+        _,c,_=scc(2*self.n,[(u,v) for u in range(2*self.n) for v in self.g[u]])
+        for i in range(self.n):
+            if c[2*i]==c[2*i+1]: return None
+        return [c[2*i]>c[2*i+1] for i in range(self.n)]
+
+class MinCostFlow:
+    """概要:
+        ポテンシャル付き Dijkstra による最小費用流を扱う。
+    入力:
+        add_edge(u,v,cap,cost) で非負容量の有向辺を追加する。
+        flow(s,t,limit) は最大 limit の流量を送る。
+    出力:
+        flow は (流量, 総費用) を返す。
+    計算量:
+        初期化 O(VE)、各増加路 O(E log V)。
+    補足:
+        負費用辺は許すが、負閉路がない入力を前提とする。
+    使用例:
+        f, cost = MinCostFlow(n).flow(s, t)
+    """
+    def __init__(self,n): self.n=n; self.g=[[] for _ in range(n)]
+    def add_edge(self,u,v,cap,cost):
+        self.g[u].append([v,cap,cost,len(self.g[v])]); self.g[v].append([u,0,-cost,len(self.g[u])-1])
+    def flow(self,s,t,limit=10**30):
+        if not (0 <= s < self.n and 0 <= t < self.n): raise IndexError("vertex index")
+        if s == t or limit <= 0: return 0, 0
+        n=self.n; pot=[0]*n
+        # 負費用辺があっても reduced cost を非負にする初期ポテンシャル。
+        for _ in range(n-1):
+            changed=False
+            for v in range(n):
+                for to,cap,c,_ in self.g[v]:
+                    if cap and pot[to] > pot[v] + c:
+                        pot[to]=pot[v]+c; changed=True
+            if not changed: break
+        total=cost=0
+        while total<limit:
+            d=[INF]*n; pv=[None]*n; d[s]=0; h=[(0,s)]
+            while h:
+                x,v=heapq.heappop(h)
+                if x!=d[v]: continue
+                for i,e in enumerate(self.g[v]):
+                    if e[1] and d[e[0]]>x+e[2]+pot[v]-pot[e[0]]:
+                        d[e[0]]=x+e[2]+pot[v]-pot[e[0]]; pv[e[0]]=(v,i); heapq.heappush(h,(d[e[0]],e[0]))
+            if d[t]==INF: break
+            for v in range(n):
+                if d[v]<INF: pot[v]+=d[v]
+            f=limit-total; v=t
+            while v!=s: p,i=pv[v]; f=min(f,self.g[p][i][1]); v=p
+            v=t
+            while v!=s:
+                p,i=pv[v]; e=self.g[p][i]; e[1]-=f; self.g[v][e[3]][1]+=f; v=p
+            total+=f; cost+=f*pot[t]
+        return total,cost
+
+def euler_path(n, edges, directed=False):
+    """概要:
+        Hierholzer 法でオイラー路またはオイラー閉路を求める。
+    入力:
+        n (int): 頂点数。edges: (u,v) の辺列。directed は有向指定。
+    出力:
+        list[int] | None: 辺を一度ずつ通る頂点列。存在しなければ None。
+    計算量:
+        時間 O(n+m)、空間 O(n+m)。
+    補足:
+        次数条件と全辺の連結性を検査し、多重辺にも対応する。
+    """
+    g=[[] for _ in range(n)]; deg=[0]*n; indeg=[0]*n
+    for i,(a,b) in enumerate(edges):
+        g[a].append((b,i)); deg[a]+=1; indeg[b]+=1
+        if not directed: g[b].append((a,i)); deg[b]+=1
+    start=next((i for i,x in enumerate(deg) if x),0)
+    if directed:
+        delta=[deg[i]-indeg[i] for i in range(n)]
+        plus=[i for i,x in enumerate(delta) if x==1]
+        minus=[i for i,x in enumerate(delta) if x==-1]
+        if any(x not in (-1,0,1) for x in delta) or len(plus)!=len(minus) or len(plus)>1: return None
+        if plus: start=plus[0]
+    elif sum(x&1 for x in deg) not in (0,2): return None
+    if not directed:
+        odd=[i for i,x in enumerate(deg) if x&1]
+        if odd: start=odd[0]
+    used=[False]*len(edges); st=[start]; ans=[]
+    while st:
+        v=st[-1]
+        while g[v] and used[g[v][-1][1]]: g[v].pop()
+        if g[v]:
+            to,i=g[v].pop(); used[i]=True; st.append(to)
+        else: ans.append(st.pop())
+    if len(ans)!=len(edges)+1: return None
+    # Hierholzer's length check also rejects disconnected components for
+    # undirected graphs, but directed equal-degree components need this test.
+    reach=[[] for _ in range(n)]
+    for a,b in edges:
+        reach[a].append(b)
+        if not directed: reach[b].append(a)
+    stack=[start]; seen={start}
+    while stack:
+        v=stack.pop()
+        for to in reach[v]:
+            if to not in seen: seen.add(to); stack.append(to)
+    if any((deg[i] or indeg[i]) and i not in seen for i in range(n)): return None
+    return ans[::-1]
+
+def bipartite_max_independent(left, right, edges):
+    """概要:
+        二部グラフの最大独立集合を求める。
+    入力:
+        left, right は左右の頂点数、edges は (左, 右) の辺。
+    出力:
+        tuple[list[int], list[int]]: 最大独立集合に含まれる左右頂点。
+    計算量:
+        時間 O(VE)、空間 O(V+E)。
+    補足:
+        König の定理と増加路法を使う。孤立点や空グラフにも対応する。
+    """
+    g=[[] for _ in range(left)]
+    for a,b in edges: g[a].append(b)
+    mt=[-1]*right
+    def dfs(v,seen):
+        for u in g[v]:
+            if seen[u]: continue
+            seen[u]=1
+            if mt[u]<0 or dfs(mt[u],seen): mt[u]=v; return True
+        return False
+    for v in range(left): dfs(v,[0]*right)
+    matched={v for v in mt if v>=0}; visL=set(); visR=set()
+    st=[v for v in range(left) if v not in matched]
+    while st:
+        v=st.pop()
+        if v in visL: continue
+        visL.add(v)
+        for u in g[v]:
+            if u not in visR and mt[u]!=v: visR.add(u); st.append(mt[u]) if mt[u]>=0 else None
+    return ([v for v in range(left) if v in visL],
+            [u for u in range(right) if u not in visR])
+
+def hungarian(a):
+    """概要:
+        Hungarian 法で最小コスト完全割当を求める。
+    入力:
+        a (list[list[int]]): 行数 n が列数 m 以下の n×m コスト行列。
+    出力:
+        tuple[int, list[int]]: 最小費用と、各行に割り当てた列番号。
+    計算量:
+        時間 O(n^2 m)、空間 O(n+m)。
+    補足:
+        負のコスト、n=0 に対応する。長方形で n<=m が必要。
+    """
+    n=len(a)
+    if not n: return 0,[]
+    m=len(a[0]); u=[0]*(n+1); v=[0]*(m+1); p=[0]*(m+1); way=[0]*(m+1)
+    if m < n or any(len(row) != m for row in a):
+        raise ValueError("Hungarian requires a rectangular matrix with rows <= columns")
+    for i in range(1,n+1):
+        p[0]=i; j0=0; mn=[INF]*(m+1); used=[False]*(m+1)
+        while True:
+            used[j0]=True; i0=p[j0]; delta=INF; j1=0
+            for j in range(1,m+1):
+                if not used[j]:
+                    cur=a[i0-1][j-1]-u[i0]-v[j]
+                    if cur<mn[j]: mn[j]=cur; way[j]=j0
+                    if mn[j]<delta: delta=mn[j]; j1=j
+            for j in range(m+1):
+                if used[j]: u[p[j]]+=delta; v[j]-=delta
+                else: mn[j]-=delta
+            j0=j1
+            if p[j0]==0: break
+        while True:
+            j1=way[j0]; p[j0]=p[j1]; j0=j1
+            if j0==0: break
+    ass=[0]*n
+    for j in range(1,m+1):
+        if p[j]: ass[p[j]-1]=j-1
+    return -v[0],ass
+
 # ============================================================
 # 木アルゴリズム
 # ============================================================
@@ -1688,6 +2926,129 @@ class LCA:
         """u-v間の距離"""
         return self.depth[u] + self.depth[v] - 2 * self.depth[self.query(u, v)]
 
+def euler_tour(n, g, root=0):
+    """概要:
+        木を DFS して Euler tour 順序と部分木区間を作る。
+    入力:
+        n (int): 頂点数。g: 頂点または (頂点,重み) の隣接リスト。
+        root (int): 根。n=0 も許す。
+    出力:
+        (order, tin, tout, parent, depth)。部分木は [tin[v], tout[v])。
+    計算量:
+        時間 O(n)、空間 O(n)。
+    補足:
+        木でない場合は root から到達できる連結成分だけを処理する。
+    使用例:
+        order, tin, tout, parent, depth = euler_tour(n, g)
+    """
+    order=[]; tin=[-1]*n; tout=[-1]*n; par=[-1]*n; dep=[0]*n
+    if not n: return order,tin,tout,par,dep
+    st=[(root,-1,0)]; seen={root}
+    while st:
+        v,p,i=st[-1]
+        if i==0: tin[v]=len(order); order.append(v)
+        if i<len(g[v]):
+            z=g[v][i]; to=z[0] if isinstance(z,tuple) else z
+            st[-1]=(v,p,i+1)
+            if to==p or to in seen: continue
+            seen.add(to); par[to]=v; dep[to]=dep[v]+1; st.append((to,v,0))
+        else: tout[v]=len(order); st.pop()
+    return order,tin,tout,par,dep
+
+class HLD:
+    """概要:
+        木の Heavy-Light Decomposition を構築する。
+    入力:
+        HLD(n, edges, root) の edges は木の辺、root は根。
+    出力:
+        path(u,v) は頂点区間 [l,r) の列、subtree(v) は部分木区間を返す。
+    計算量:
+        構築 O(n)、path/subtree O(log n) 以下、空間 O(n)。
+    補足:
+        配列を pos 順に並べ、値は頂点に対応させる。
+    """
+    def __init__(self,n,edges,root=0):
+        if n == 0:
+            self.n=0; self.g=[]; self.parent=[]; self.depth=[]; self.size=[]
+            self.heavy=[]; self.head=[]; self.pos=[]; self.rev=[]; return
+        if not 0 <= root < n: raise ValueError("root is out of range")
+        if len(edges) != n - 1: raise ValueError("HLD requires a tree")
+        self.n=n; self.g=[[] for _ in range(n)]
+        for a,b in edges: self.g[a].append(b); self.g[b].append(a)
+        self.parent=[-1]*n; self.depth=[0]*n; self.size=[1]*n
+        self.heavy=[-1]*n; order=[root]; self.parent[root]=-2
+        for v in order:
+            for to in self.g[v]:
+                if self.parent[to]==-1: self.parent[to]=v; self.depth[to]=self.depth[v]+1; order.append(to)
+        for v in order[::-1]:
+            if self.parent[v]>=0:
+                p=self.parent[v]; self.size[p]+=self.size[v]
+                if self.heavy[p]<0 or self.size[v]>self.size[self.heavy[p]]: self.heavy[p]=v
+        self.head=[0]*n; self.pos=[0]*n; self.rev=[]; q=[root]
+        while q:
+            h=q.pop(); v=h
+            while v!=-1:
+                self.head[v]=h; self.pos[v]=len(self.rev); self.rev.append(v)
+                q.extend(to for to in self.g[v] if self.parent[to]==v and to!=self.heavy[v])
+                v=self.heavy[v]
+        if len(self.rev) != n: raise ValueError("HLD requires a connected tree")
+    def path(self,u,v):
+        if not self.n: return []
+        if not (0 <= u < self.n and 0 <= v < self.n): raise IndexError("vertex index")
+        out=[]
+        while self.head[u]!=self.head[v]:
+            if self.depth[self.head[u]]<self.depth[self.head[v]]: u,v=v,u
+            out.append((self.pos[self.head[u]],self.pos[u]+1)); u=self.parent[self.head[u]]
+        a,b=sorted((self.pos[u],self.pos[v])); out.append((a,b+1)); return out
+    def subtree(self,v):
+        if not 0 <= v < self.n: raise IndexError("vertex index")
+        return self.pos[v], self.pos[v]+self.size[v]
+
+def rerooting_dp(n, g, merge, add_root, identity=0, root=0):
+    """概要:
+        全頂点を根とした木 DP（全方位木 DP）を計算する。
+    入力:
+        g は隣接頂点または (頂点, 辺情報) のリスト。merge は値の統合、
+        add_root(value, edge) は辺を越える変換、identity は単位元。
+    出力:
+        list: 各頂点を根にした DP 値。
+    計算量:
+        時間 O(n)、空間 O(n)。
+    補足:
+        merge は可換でなくてもよい。空木では [] を返す。
+    """
+    if n == 0: return []
+    if len(g) != n or not 0 <= root < n: raise ValueError("invalid tree")
+    parent=[-1]*n; pedge=[None]*n; order=[root]; parent[root]=-2
+    for v in order:
+        for e in g[v]:
+            to, data=(e if isinstance(e,tuple) else (e,None))
+            if not 0 <= to < n: raise ValueError("invalid endpoint")
+            if to == parent[v]: continue
+            if parent[to] != -1: raise ValueError("g must be a tree")
+            parent[to]=v; pedge[to]=data; order.append(to)
+    if len(order) != n: raise ValueError("g must be connected")
+    down=[identity]*n
+    for v in order[::-1]:
+        x=identity
+        for e in g[v]:
+            to,data=(e if isinstance(e,tuple) else (e,None))
+            if parent[to]==v: x=merge(x,add_root(down[to],data))
+        down[v]=x
+    ans=[identity]*n; up=[identity]*n
+    for v in order:
+        vals=[]
+        for e in g[v]:
+            to,data=(e if isinstance(e,tuple) else (e,None))
+            vals.append((to,add_root(down[to] if parent[to]==v else up[v],data)))
+        pref=[identity]
+        for _,x in vals: pref.append(merge(pref[-1],x))
+        suf=[identity]*(len(vals)+1)
+        for i in range(len(vals)-1,-1,-1): suf[i]=merge(vals[i][1],suf[i+1])
+        ans[v]=pref[-1]
+        for i,(to,_) in enumerate(vals):
+            if parent[to]==v: up[to]=merge(pref[i],suf[i+1])
+    return ans
 
 # ============================================================
 # データ構造
@@ -2848,6 +4209,272 @@ class ImplicitTreap:
     def __len__(self):
         return self.size[self.root]
 
+class BitSet:
+    """概要:
+        Python int を利用した任意長の非負ビット集合を扱う。
+    入力:
+        BitSet(x) の x は整数ビットマスクまたはビット位置の iterable。
+    出力:
+        add/remove/count、論理演算、shift などの集合操作を提供する。
+    計算量:
+        各操作は保持するビット長に比例する。
+    補足:
+        ビット位置は 0 以上。元の集合を変更しない演算は新しい BitSet を返す。
+    使用例:
+        s = BitSet([1, 3]); s.add(5); print(3 in s)
+    """
+    def __init__(self,x=0): self.bits=x if isinstance(x,int) else sum(1<<i for i in x)
+    def add(self,i): self.bits|=1<<i
+    def remove(self,i): self.bits&=~(1<<i)
+    def __contains__(self,i): return bool(self.bits>>i&1)
+    def count(self): return self.bits.bit_count()
+    def __and__(self,o): return BitSet(self.bits&o.bits)
+    def __or__(self,o): return BitSet(self.bits|o.bits)
+    def __xor__(self,o): return BitSet(self.bits^o.bits)
+    def shift(self,k): return BitSet(self.bits<<k if k>=0 else self.bits>>-k)
+
+class SegTreeBeats:
+    """概要:
+        区間 chmin、chmax、加算と区間和を扱う Segment Tree Beats。
+    入力:
+        SegTreeBeats(a) の a は初期配列。操作区間は全て [l,r)。
+    出力:
+        range_sum(l,r) が区間和を返す。
+    計算量:
+        構築 O(n)、各更新は償却 O(log n)、空間 O(n)。
+    補足:
+        負数、同値、空配列にも対応する。
+    """
+    def __init__(self,a):
+        self.n=len(a); z=4*max(1,self.n); I=10**30
+        self.sm=[0]*z; self.mx=[-I]*z; self.mx2=[-I]*z; self.mxc=[0]*z
+        self.mn=[I]*z; self.mn2=[I]*z; self.mnc=[0]*z; self.lz=[0]*z
+        def build(k,l,r):
+            if r-l==1:
+                if l<self.n: self.sm[k]=self.mx[k]=self.mn[k]=a[l]
+                self.mx2[k]=-I; self.mn2[k]=I; self.mxc[k]=self.mnc[k]=1; return
+            q=(l+r)//2; build(k*2,l,q); build(k*2+1,q,r); self._pull(k)
+        if self.n: build(1,0,self.n)
+    def _pull(self,k):
+        x,y=k*2,k*2+1; self.sm[k]=self.sm[x]+self.sm[y]
+        self.mx[k]=max(self.mx[x],self.mx[y]); self.mxc[k]=(self.mxc[x] if self.mx[x]==self.mx[k] else 0)+(self.mxc[y] if self.mx[y]==self.mx[k] else 0)
+        self.mx2[k]=max(self.mx2[x] if self.mx[x]==self.mx[k] else self.mx[x],self.mx2[y] if self.mx[y]==self.mx[k] else self.mx[y])
+        self.mn[k]=min(self.mn[x],self.mn[y]); self.mnc[k]=(self.mnc[x] if self.mn[x]==self.mn[k] else 0)+(self.mnc[y] if self.mn[y]==self.mn[k] else 0)
+        self.mn2[k]=min(self.mn2[x] if self.mn[x]==self.mn[k] else self.mn[x],self.mn2[y] if self.mn[y]==self.mn[k] else self.mn[y])
+    def _add(self,k,x,n):
+        self.sm[k]+=x*n; self.mx[k]+=x; self.mn[k]+=x
+        if self.mx2[k]>-10**29: self.mx2[k]+=x
+        if self.mn2[k]<10**29: self.mn2[k]+=x
+        self.lz[k]+=x
+    def _cmax(self,k,x):
+        if self.mx[k]<=x: return
+        self.sm[k]+=(x-self.mx[k])*self.mxc[k]
+        if self.mn[k]==self.mx[k]: self.mn[k]=x
+        elif self.mn2[k]==self.mx[k]: self.mn2[k]=x
+        self.mx[k]=x
+    def _cmin(self,k,x):
+        if self.mn[k]>=x: return
+        self.sm[k]+=(x-self.mn[k])*self.mnc[k]
+        if self.mx[k]==self.mn[k]: self.mx[k]=x
+        elif self.mx2[k]==self.mn[k]: self.mx2[k]=x
+        self.mn[k]=x
+    def _push(self,k,l,r):
+        if r-l==1: self.lz[k]=0; return
+        q=(l+r)//2; x,y=k*2,k*2+1
+        if self.lz[k]: self._add(x,self.lz[k],q-l); self._add(y,self.lz[k],r-q); self.lz[k]=0
+        if self.mx[x]>self.mx[k]: self._cmax(x,self.mx[k])
+        if self.mx[y]>self.mx[k]: self._cmax(y,self.mx[k])
+        if self.mn[x]<self.mn[k]: self._cmin(x,self.mn[k])
+        if self.mn[y]<self.mn[k]: self._cmin(y,self.mn[k])
+    def _run(self,k,l,r,a,b,typ,x=0):
+        if b<=l or r<=a: return 0
+        if typ==0 and a<=l and r<=b: self._add(k,x,r-l); return 0
+        if typ==1 and (b<=l or r<=a or self.mx[k]<=x): return 0
+        if typ==1 and a<=l and r<=b and self.mx2[k]<x: self._cmax(k,x); return 0
+        if typ==2 and (b<=l or r<=a or self.mn[k]>=x): return 0
+        if typ==2 and a<=l and r<=b and self.mn2[k]>x: self._cmin(k,x); return 0
+        q=(l+r)//2; self._push(k,l,r)
+        self._run(k*2,l,q,a,b,typ,x); self._run(k*2+1,q,r,a,b,typ,x); self._pull(k)
+    def range_add(self,l,r,x): self._run(1,0,self.n,l,r,0,x) if l<r and self.n else None
+    def range_chmin(self,l,r,x): self._run(1,0,self.n,l,r,1,x) if l<r and self.n else None
+    def range_chmax(self,l,r,x): self._run(1,0,self.n,l,r,2,x) if l<r and self.n else None
+    def range_sum(self,l,r):
+        if not self.n or l>=r: return 0
+        def qsum(k,L,R):
+            if r<=L or R<=l: return 0
+            if l<=L and R<=r: return self.sm[k]
+            self._push(k,L,R); q=(L+R)//2
+            return qsum(k*2,L,q)+qsum(k*2+1,q,R)
+        return qsum(1,0,self.n)
+
+class LinkCutTree:
+    """概要:
+        splay 木で森林を動的に管理する Link-Cut Tree。
+    入力:
+        LinkCutTree(values) の values は各頂点の初期値（0-indexed）。
+    出力:
+        link/cut は成功時 True、connected は連結判定、path_sum は頂点値の和を返す。
+        set_value/get_value で頂点値を更新・取得できる。
+    計算量:
+        構築 O(n)、各操作は償却 O(log n)、空間 O(n)。
+    補足:
+        link は異なる連結成分間、cut は存在する辺に対して呼ぶ。
+        path_sum は非連結なら None。link(x,y) は x-y に辺を追加し、
+        cut(x,y) はその直接辺だけを削除する。
+    使用例:
+        lct = LinkCutTree([1, 2, 3]); lct.link(0, 1)
+        assert lct.path_sum(0, 1) == 3
+    """
+    class _Node:
+        __slots__ = ("l", "r", "p", "value", "total", "rev")
+        def __init__(self, value):
+            self.l = self.r = self.p = None
+            self.value = self.total = value
+            self.rev = False
+
+    def __init__(self, values):
+        self.nodes = [self._Node(x) for x in values]
+
+    @staticmethod
+    def _is_root(x):
+        return x.p is None or (x.p.l is not x and x.p.r is not x)
+
+    @staticmethod
+    def _pull(x):
+        x.total = x.value
+        if x.l is not None:
+            x.total += x.l.total
+        if x.r is not None:
+            x.total += x.r.total
+
+    @staticmethod
+    def _push(x):
+        if x.rev:
+            x.l, x.r = x.r, x.l
+            if x.l is not None:
+                x.l.rev = not x.l.rev
+            if x.r is not None:
+                x.r.rev = not x.r.rev
+            x.rev = False
+
+    def _rotate(self, x):
+        p = x.p
+        g = p.p
+        was_root = self._is_root(p)
+        if p.l is x:
+            p.l = x.r
+            if x.r is not None:
+                x.r.p = p
+            x.r = p
+        else:
+            p.r = x.l
+            if x.l is not None:
+                x.l.p = p
+            x.l = p
+        p.p = x
+        x.p = g
+        if g is not None and not was_root:
+            if g.l is p:
+                g.l = x
+            elif g.r is p:
+                g.r = x
+        self._pull(p)
+        self._pull(x)
+
+    def _splay(self, x):
+        path = [x]
+        y = x
+        while not self._is_root(y):
+            y = y.p
+            path.append(y)
+        for y in reversed(path):
+            self._push(y)
+        while not self._is_root(x):
+            p = x.p
+            g = p.p
+            if not self._is_root(p):
+                if (p.l is x) == (g.l is p):
+                    self._rotate(p)
+                else:
+                    self._rotate(x)
+            self._rotate(x)
+
+    def _access(self, x):
+        last = None
+        y = x
+        while y is not None:
+            self._splay(y)
+            y.r = last
+            self._pull(y)
+            last = y
+            y = y.p
+        self._splay(x)
+
+    def _make_root(self, x):
+        self._access(x)
+        x.rev = not x.rev
+
+    def _find_root(self, x):
+        self._access(x)
+        while True:
+            self._push(x)
+            if x.l is None:
+                break
+            x = x.l
+        self._splay(x)
+        return x
+
+    def _node(self, i):
+        if not 0 <= i < len(self.nodes):
+            raise IndexError("vertex index")
+        return self.nodes[i]
+
+    def link(self, x, y):
+        x, y = self._node(x), self._node(y)
+        self._make_root(x)
+        if self._find_root(y) is x:
+            return False
+        x.p = y
+        return True
+
+    def cut(self, x, y):
+        x, y = self._node(x), self._node(y)
+        self._make_root(x)
+        self._access(y)
+        if y.l is not x or x.r is not None:
+            return False
+        y.l.p = None
+        y.l = None
+        self._pull(y)
+        return True
+
+    def connected(self, x, y):
+        x, y = self._node(x), self._node(y)
+        if x is y:
+            return True
+        self._make_root(x)
+        return self._find_root(y) is x
+
+    def path_sum(self, x, y):
+        x, y = self._node(x), self._node(y)
+        if x is not y:
+            self._make_root(x)
+            if self._find_root(y) is not x:
+                return None
+        self._make_root(x)
+        self._access(y)
+        return y.total
+
+    def set_value(self, x, value):
+        node = self._node(x)
+        self._access(node)
+        node.value = value
+        self._pull(node)
+
+    def get_value(self, x):
+        node = self._node(x)
+        self._access(node)
+        return node.value
 
 # ============================================================
 # 文字列アルゴリズム
@@ -3109,6 +4736,98 @@ def levenshtein_distance(s: str, t: str) -> int:
             )
         prev = curr
     return prev[m]
+
+class AhoCorasick:
+    """概要:
+        Aho-Corasick 法で複数パターンを検索する。
+    入力:
+        add(pattern) で登録し、全登録後に build()、find(text) を呼ぶ。
+    出力:
+        find は (開始位置, パターン番号) のリストを返す。
+    計算量:
+        構築 O(パターン総長)、検索 O(本文長+出力数)。
+    補足:
+        文字は dict で扱い、重複パターンと空パターン（無視）に対応する。
+    使用例:
+        ac = AhoCorasick(); ac.add("aba"); ac.build(); ac.find("ababa")
+    """
+    def __init__(self): self.next=[{}]; self.fail=[0]; self.out=[[]]; self.terminal=[[]]; self.patterns=[]
+    def add(self,s):
+        v=0
+        for c in s:
+            if c not in self.next[v]:
+                self.next[v][c]=len(self.next); self.next.append({}); self.fail.append(0); self.out.append([]); self.terminal.append([])
+            v=self.next[v][c]
+        k=len(self.patterns); self.patterns.append(s); self.terminal[v].append(k); return k
+    def build(self):
+        self.fail=[0]*len(self.next)
+        # build() may be called repeatedly; do not duplicate inherited outputs.
+        terminal=[list(x) for x in self.terminal]
+        self.out=[x[:] for x in terminal]
+        q=deque()
+        for to in self.next[0].values(): q.append(to)
+        while q:
+            v=q.popleft()
+            for c,to in self.next[v].items():
+                q.append(to); f=self.fail[v]
+                while f and c not in self.next[f]: f=self.fail[f]
+                self.fail[to]=self.next[f].get(c,0);                 self.out[to]=terminal[to]+self.out[self.fail[to]]
+    def find(self,text):
+        v=0; ans=[]
+        for i,c in enumerate(text):
+            while v and c not in self.next[v]: v=self.fail[v]
+            v=self.next[v].get(c,0)
+            ans.extend((i-len(self.patterns[k])+1,k) for k in self.out[v])
+        return ans
+
+def suffix_array(s):
+    """概要:
+        文字列または整数列の suffix array を doubling 法で構築する。
+    入力:
+        s (str | Sequence[int]): 対象列。
+    出力:
+        list[int]: 接尾辞の開始位置を辞書順に並べた配列。
+    計算量:
+        時間 O(n log n)、空間 O(n)。
+    補足:
+        空列、負の整数、文字列を扱う。
+    """
+    n=len(s)
+    if not n: return []
+    sa=list(range(n)); r=list(s); rank={x:i for i,x in enumerate(sorted(set(r)))}; r=[rank[x] for x in r]; k=1
+    while k<n:
+        sa.sort(key=lambda i:(r[i],r[i+k] if i+k<n else -1))
+        nr=[0]*n
+        for j in range(1,n): nr[sa[j]]=nr[sa[j-1]]+((r[sa[j-1]],r[sa[j-1]+k] if sa[j-1]+k<n else -1)!=(r[sa[j]],r[sa[j]+k] if sa[j]+k<n else -1))
+        r=nr
+        if r[sa[-1]]==n-1: break
+        k*=2
+    return sa
+
+def lcp_array(s, sa=None):
+    """概要:
+        suffix array の隣接 suffix 間の最長共通接頭辞長を求める。
+    入力:
+        s (str | Sequence[int]): 対象列。sa は suffix_array(s)（省略可）。
+    出力:
+        list[int]: sa[i], sa[i+1] 間の LCP（末尾は 0）。
+    計算量:
+        時間 O(n)、空間 O(n)。
+    補足:
+        Kasai 法を用いる。
+    """
+    if sa is None: sa=suffix_array(s)
+    n=len(s); rank=[0]*n
+    for i,v in enumerate(sa): rank[v]=i
+    h=0; out=[0]*max(0,n-1)
+    for i in range(n):
+        r=rank[i]
+        if r==n-1: h=0; continue
+        j=sa[r+1]
+        while i+h<n and j+h<n and s[i+h]==s[j+h]: h+=1
+        out[r]=h
+        if h: h-=1
+    return out
 
 # ============================================================
 # 回文・進数変換

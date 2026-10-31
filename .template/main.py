@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.3.2 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.4.0 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py
 # ALL: https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
