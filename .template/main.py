@@ -13,8 +13,18 @@ import heapq
 import math
 import string
 
-# ===== 設定・制限解除 =====
+# ===== JIT 設定・制限解除 =====
+# 深い再帰のアンロールを無効化 (実測で約8.9倍高速 TLE/MLE防止)
+try:
+    import pypyjit
+    pypyjit.set_param('max_unroll_recursion=-1')
+except ImportError:
+    pass
+# 再帰深度の上限引き上げ
 sys.setrecursionlimit(2*10**6)
+# 巨大整数の文字列変換エラーを防止
+if hasattr(sys, 'set_int_max_str_digits'):
+    sys.set_int_max_str_digits(0)
 
 # ===== 入力ヘルパ =====
 input = lambda: sys.stdin.readline().rstrip()
@@ -90,7 +100,7 @@ def print_grid(grid: list[list], sep: str = '') -> None:
 # AtCoder提出時は自動で無力化
 if "ATCODER" not in os.environ and "ONLINE_JUDGE" not in os.environ:
     def debug(*args, sep=' ', end='\n', flush=False) -> None:
-        """デバッグ出力（標準エラー）"""
+        """デバッグ出力 (標準エラー) """
         print("[DEBUG]", *args, sep=sep, end=end, file=sys.stderr, flush=flush)
 else:
     def debug(*args, **kwargs) -> None:

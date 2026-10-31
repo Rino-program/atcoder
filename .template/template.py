@@ -1,22 +1,30 @@
 # AtCoder Competition Template v2.4.0 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
-import os
-import sys
+import os, sys
 from collections import deque, defaultdict, Counter
-from bisect import bisect_left, bisect_right
-import heapq
-import math
 from itertools import permutations, combinations, accumulate, product, chain
 from sortedcontainers import SortedSet, SortedList, SortedDict
-from functools import lru_cache, reduce
+from bisect import bisect_left, bisect_right
 from collections.abc import Callable
 from copy import deepcopy
 import operator
+import heapq
+import math
 import string
 
-# ===== 設定・制限解除 =====
+# ===== JIT 設定・制限解除 =====
+# 深い再帰のアンロールを無効化 (実測で約8.9倍高速 TLE/MLE防止)
+try:
+    import pypyjit
+    pypyjit.set_param('max_unroll_recursion=-1')
+except ImportError:
+    pass
+# 再帰深度の上限引き上げ
 sys.setrecursionlimit(2*10**6)
+# 巨大整数の文字列変換エラーを防止
+if hasattr(sys, 'set_int_max_str_digits'):
+    sys.set_int_max_str_digits(0)
 
 # ===== 入力ヘルパ =====
 input = lambda: sys.stdin.readline().rstrip()
