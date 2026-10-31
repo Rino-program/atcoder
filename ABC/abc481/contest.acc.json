@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc481",
+    "title": "SMBC Programming Contest #2 (AtCoder Beginner Contest 481）",
+    "url": "https://atcoder.jp/contests/abc481"
+  },
+  "tasks": [
+    {
+      "id": "abc481_a",
+      "label": "A",
+      "title": "Digits of A+B",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc481_b",
+      "label": "B",
+      "title": "Polyline",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc481_c",
+      "label": "C",
+      "title": "Bank Accounts",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc481_d",
+      "label": "D",
+      "title": "Autopilot",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc481_e",
+      "label": "E",
+      "title": "Most Brilliant Starry Sky",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc481_f",
+      "label": "F",
+      "title": "Evil Shortest Path",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_f",
+      "directory": {
+        "path": "f",
+        "testdir": "../input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc481_g",
+      "label": "G",
+      "title": "Half-Baked",
+      "url": "https://atcoder.jp/contests/abc481/tasks/abc481_g",
+      "directory": {
+        "path": "g",
+        "testdir": "../input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}

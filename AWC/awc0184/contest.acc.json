@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0184",
+    "title": "AtCoder Weekday Contest 0184 Beta",
+    "url": "https://atcoder.jp/contests/awc0184"
+  },
+  "tasks": [
+    {
+      "id": "awc0184_a",
+      "label": "A",
+      "title": "Excess Baggage",
+      "url": "https://atcoder.jp/contests/awc0184/tasks/awc0184_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0184_b",
+      "label": "B",
+      "title": "Paving Stone Path",
+      "url": "https://atcoder.jp/contests/awc0184/tasks/awc0184_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0184_c",
+      "label": "C",
+      "title": "Number of Readable Books",
+      "url": "https://atcoder.jp/contests/awc0184/tasks/awc0184_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0184_d",
+      "label": "D",
+      "title": "Snow Plow Deployment Plan",
+      "url": "https://atcoder.jp/contests/awc0184/tasks/awc0184_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0184_e",
+      "label": "E",
+      "title": "Restoring the Sequence",
+      "url": "https://atcoder.jp/contests/awc0184/tasks/awc0184_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
