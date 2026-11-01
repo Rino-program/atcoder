@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc482",
+    "title": "AtCoder Beginner Contest 482",
+    "url": "https://atcoder.jp/contests/abc482"
+  },
+  "tasks": [
+    {
+      "id": "abc482_a",
+      "label": "A",
+      "title": "Nigiri",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc482_b",
+      "label": "B",
+      "title": "Blank Bingo",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc482_c",
+      "label": "C",
+      "title": "Band Count",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc482_d",
+      "label": "D",
+      "title": "Wannabe Zombie",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc482_e",
+      "label": "E",
+      "title": "Diameter Endpoint Colors",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc482_f",
+      "label": "F",
+      "title": "Mod M Divisor",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_f",
+      "directory": {
+        "path": "f",
+        "testdir": "../input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc482_g",
+      "label": "G",
+      "title": "Degree Harmony 2",
+      "url": "https://atcoder.jp/contests/abc482/tasks/abc482_g",
+      "directory": {
+        "path": "g",
+        "testdir": "../input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
