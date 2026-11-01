@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.4.0 SHORT (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.4.1 SHORT (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/main.py
 # ALL: https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
@@ -27,7 +27,7 @@ if hasattr(sys, 'set_int_max_str_digits'):
     sys.set_int_max_str_digits(0)
 
 # ===== 入力ヘルパ =====
-input = lambda: sys.stdin.readline().rstrip()
+input = lambda: sys.stdin.readline().rstrip("\n")
 INT = lambda: int(input())
 INT0 = lambda: int(input()) - 1
 MAP = lambda: map(int, input().split())

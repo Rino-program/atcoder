@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.4.0 ALL (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.4.1 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os, sys
@@ -27,7 +27,7 @@ if hasattr(sys, 'set_int_max_str_digits'):
     sys.set_int_max_str_digits(0)
 
 # ===== 入力ヘルパ =====
-input = lambda: sys.stdin.readline().rstrip()
+input = lambda: sys.stdin.readline().rstrip("\n")
 INT = lambda: int(input())
 INT0 = lambda: int(input()) - 1
 MAP = lambda: map(int, input().split())
@@ -205,6 +205,8 @@ def pollard_rho(n: int) -> int:
     戻り値:
         int: n の非自明な約数 (n が素数の場合は n 自身、偶数の場合は 2)
     """
+    if n <= 1:
+        raise ValueError("n must be greater than 1")
     if n % 2 == 0:
         return 2
     if is_prime(n):
@@ -276,7 +278,9 @@ def prime_factors(n: int) -> dict[int, int]:
         dict[int, int]: {素因数: 指数} の昇順辞書 (例: 60 -> {2: 2, 3: 1, 5: 1})
                         n <= 1 の場合は空辞書 {}
     """
-    if n <= 1:
+    if n < 1:
+        raise ValueError("n must be positive")
+    if n == 1:
         return {}
 
     factors = {}
@@ -334,6 +338,8 @@ def divisors(n: int) -> list[int]:
     補足:
         計算量は O(√n)。
     """
+    if n <= 0:
+        raise ValueError("n must be positive")
     small = []
     large = []
     for i in range(1, math.isqrt(n) + 1):
@@ -353,6 +359,8 @@ def sieve(n: int) -> tuple[list[bool], list[int]]:
     補足:
         計算量は O(n log log n)。偶数スキップにより高速化。
     """
+    if n < 0:
+        raise ValueError("n must be non-negative")
     is_prime_arr = [True] * (n + 1)
     if n >= 0: is_prime_arr[0] = False
     if n >= 1: is_prime_arr[1] = False
@@ -362,6 +370,65 @@ def sieve(n: int) -> tuple[list[bool], list[int]]:
             is_prime_arr[p * p : n + 1 : 2 * p] = [False] * (((n - p * p) // (2 * p)) + 1)
     primes = ([2] if n >= 2 else []) + [i for i in range(3, n + 1, 2) if is_prime_arr[i]]
     return is_prime_arr, primes
+
+class SPFSieve:
+    """概要:
+        最小素因数（Smallest Prime Factor）表を構築するクラス。
+    入力:
+        n (int): 扱う整数の上限（0..n）。
+    メソッド:
+        factorize(x): x を素因数分解して (素因数, 指数) のリストを返す。
+        is_prime(x): x が素数か判定する。
+    計算量:
+        構築は O(N log log N)、素因数分解は O(log x)、空間は O(N)。
+    """
+    def __init__(self, n: int):
+        if n < 0:
+            raise ValueError("n must be non-negative")
+        self.n = n
+        self.spf = list(range(n + 1))
+        if n >= 0:
+            self.spf[0] = 0
+        if n >= 1:
+            self.spf[1] = 1
+        for p in range(2, math.isqrt(n) + 1):
+            if self.spf[p] == p:
+                for x in range(p * p, n + 1, p):
+                    if self.spf[x] == x:
+                        self.spf[x] = p
+        self.primes = [x for x in range(2, n + 1) if self.spf[x] == x]
+
+    def is_prime(self, x: int) -> bool:
+        """0 <= x <= n の素数判定。"""
+        if not 0 <= x <= self.n:
+            raise ValueError("x must be within the initialized limit")
+        return x >= 2 and self.spf[x] == x
+
+    def factorize(self, x: int) -> list[tuple[int, int]]:
+        """x (1 <= x <= n) を (素因数, 指数) の昇順で返す。"""
+        if not 1 <= x <= self.n:
+            raise ValueError("x must satisfy 1 <= x <= n")
+        result = []
+        while x > 1:
+            p = self.spf[x]
+            count = 0
+            while x % p == 0:
+                x //= p
+                count += 1
+            result.append((p, count))
+        return result
+
+def spf_sieve(n: int) -> list[int]:
+    """概要:
+        0..n の最小素因数表を返す。
+    入力:
+        n (int): 上限値。
+    出力:
+        list[int]: `spf[x]` が x の最小素因数。0 と 1 はそのまま。
+    補足:
+        繰り返し素因数分解を行う場合は `SPFSieve` が便利。計算量は O(N log log N)。
+    """
+    return SPFSieve(n).spf
 
 def ext_gcd(a: int, b: int) -> tuple[int, int, int]:
     """概要:
@@ -444,6 +511,115 @@ def ntt_convolution(a,b,mod=998244353,root=3):
     x=[z%mod for z in a]+[0]*(n-len(a)); y=[z%mod for z in b]+[0]*(n-len(b))
     ntt(x); ntt(y); x=[u*v%mod for u,v in zip(x,y)]; ntt(x,True)
     return x[:len(a)+len(b)-1]
+
+class FormalPowerSeries:
+    """概要:
+        係数列を法 MOD の形式的冪級数として扱う軽量クラス。
+    入力:
+        coeffs は定数項からの係数列、mod は素数法。
+    出力:
+        add/sub/mul/inv/pow/derivative/integral で新しい係数列を返す。
+    計算量:
+        加減 O(N)、乗算 O(N log N)（NTT 法の場合）。
+        逆元は MOD=998244353 で O(N log N)、その他の法では O(N^2)。
+    補足:
+        `inv` は定数項が 0 でない場合、`pow` は指数非負の場合に限る。
+    使用例:
+        f = FormalPowerSeries([1, 2, 3])
+        g = f.inv(8)
+    """
+    def __init__(self, coeffs=(), mod=MOD):
+        if mod <= 1 or not is_prime(mod):
+            raise ValueError("mod must be prime")
+        self.a = [x % mod for x in coeffs]; self.mod = mod
+    def _coerce(self, other):
+        return other.a if isinstance(other, FormalPowerSeries) else list(other)
+    def add(self, other):
+        b=self._coerce(other); n=max(len(self.a),len(b)); r=[0]*n
+        for i in range(n): r[i]=((self.a[i] if i<len(self.a) else 0)+(b[i] if i<len(b) else 0))%self.mod
+        return FormalPowerSeries(r,self.mod)
+    def sub(self, other):
+        b=self._coerce(other); n=max(len(self.a),len(b)); r=[0]*n
+        for i in range(n): r[i]=((self.a[i] if i<len(self.a) else 0)-(b[i] if i<len(b) else 0))%self.mod
+        return FormalPowerSeries(r,self.mod)
+    def mul(self, other, n=None):
+        b=self._coerce(other)
+        if not self.a or not b: return FormalPowerSeries([],self.mod)
+        if self.mod == 998244353: r=ntt_convolution(self.a,b,self.mod)
+        else:
+            r=[0]*(len(self.a)+len(b)-1)
+            for i,x in enumerate(self.a):
+                for j,y in enumerate(b): r[i+j]=(r[i+j]+x*y)%self.mod
+        return FormalPowerSeries(r if n is None else r[:n],self.mod)
+    def inv(self, n):
+        if n<0: raise ValueError("n must be non-negative")
+        if n==0: return FormalPowerSeries([],self.mod)
+        if (self.a and self.a[0]==0) or not self.a: raise ValueError("inverse requires nonzero constant term")
+        r=[pow(self.a[0],self.mod-2,self.mod)]
+        if self.mod == 998244353:
+            size=1
+            while size<n:
+                size=min(size*2,n)
+                f=self.a[:size]+[0]*max(0,size-len(self.a))
+                rr=r+[0]*max(0,size-len(r))
+                fr=ntt_convolution(f,rr,self.mod)[:size]
+                correction=[(-x)%self.mod for x in fr]
+                correction[0]=(2-fr[0])%self.mod
+                r=ntt_convolution(rr,correction,self.mod)[:size]
+            return FormalPowerSeries(r,self.mod)
+        for k in range(1,n):
+            s=sum((self.a[i] if i<len(self.a) else 0)*r[k-i] for i in range(1,min(k,len(self.a)-1)+1))
+            r.append((-s*r[0])%self.mod)
+        return FormalPowerSeries(r,self.mod)
+    def derivative(self):
+        return FormalPowerSeries([(i+1)*self.a[i+1] for i in range(len(self.a)-1)],self.mod)
+    def integral(self):
+        if not self.mod > len(self.a): raise ValueError("mod must exceed series length")
+        return FormalPowerSeries([0]+[x*pow(i+1,self.mod-2,self.mod)%self.mod for i,x in enumerate(self.a)],self.mod)
+    def pow(self, e, n):
+        if e<0: raise ValueError("exponent must be non-negative")
+        r=FormalPowerSeries([1],self.mod); b=self
+        while e:
+            if e&1: r=r.mul(b,n)
+            e>>=1
+            if e: b=b.mul(b,n)
+        return FormalPowerSeries(r.a[:n],self.mod)
+
+def convolution_any_mod(a, b, mod):
+    """概要:
+        任意法で畳み込みを計算する。
+    入力:
+        a, b は整数列、mod は正の法。
+    出力:
+        sum(a[i]*b[j]) を mod で還元した係数列。
+    計算量:
+        CRT が安全な範囲では O(N log N)、範囲外は O(NM)。
+    補足:
+        入力は先に mod で正規化するため、負数や mod=2 も正しく扱う。
+        3法の積で係数を一意に復元できない場合は、整数の直接畳み込みにフォールバックする。
+    """
+    if mod <= 0: raise ValueError("mod must be positive")
+    if not a or not b: return []
+    ps=(998244353,1004535809,469762049)
+    aa=[x%mod for x in a]; bb=[x%mod for x in b]
+    bound=min(len(aa),len(bb))*(mod-1)*(mod-1)
+    m12=ps[0]*ps[1]; inv01=pow(ps[0],ps[1]-2,ps[1]); inv012=pow(m12%ps[2],ps[2]-2,ps[2])
+    product=m12*ps[2]
+    if bound >= product//2:
+        out=[0]*(len(aa)+len(bb)-1)
+        for i,x in enumerate(aa):
+            for j,y in enumerate(bb):
+                out[i+j]=(out[i+j]+x*y)%mod
+        return out
+    cs=[ntt_convolution(aa,bb,p) for p in ps]
+    out=[]
+    for x,y,z in zip(*cs):
+        t=((y-x)%ps[1]*inv01)%ps[1]
+        u=((z-(x+ps[0]*t)%ps[2])%ps[2]*inv012)%ps[2]
+        value=x+ps[0]*t+m12*u
+        if value > product//2: value-=product
+        out.append(value%mod)
+    return out
 
 def mat_mul(a,b,mod=None):
     """概要:
@@ -570,6 +746,85 @@ def gf2_solve(rows, m=None):
     return x,free
 
 # ============================================================
+# DP 最適化・分割統治
+# ============================================================
+
+def meet_in_middle_subset_sum(values: list[int], target: int) -> bool:
+    """概要:
+        meet-in-the-middle 法で部分集合和が target になるか判定する。
+    入力:
+        values (list[int]): 整数列（負数にも対応）。
+        target (int): 目標和。
+    出力:
+        bool: 部分集合で target を作れるか。
+    補足:
+        要素数を半分に分けて全和を列挙する。計算量は O(2^(N/2) log 2^(N/2))、
+        空間計算量は O(2^(N/2))。
+    """
+    m = len(values) // 2
+    left, right = values[:m], values[m:]
+    def sums(a):
+        result = [0]
+        for x in a:
+            result += [s + x for s in result]
+        return result
+    a = sums(left)
+    b = sorted(sums(right))
+    return any(bisect_left(b, target - x) < len(b) and b[bisect_left(b, target - x)] == target - x for x in a)
+
+def cdq_divide_conquer(n, solve):
+    """概要:
+        CDQ 分割統治の骨格を実行する。入力: 要素数 n と solve(l,m,r)。
+    出力: solve の副作用を持つ処理結果。計算量: solve の設計に依存し、骨格は O(n log n)。
+    補足: solve は区間 [l,m),[m,r) の寄与を処理する callable。
+    使用例: cdq_divide_conquer(n, lambda l,m,r: process(l,m,r))
+    """
+    if n<0: raise ValueError("n must be non-negative")
+    def rec(l,r):
+        if r-l<=1:return
+        m=(l+r)//2; rec(l,m); solve(l,m,r); rec(m,r)
+    rec(0,n)
+
+def divide_conquer_dp(n, layers, cost):
+    """概要:
+        Monge 性を仮定した分割統治 DP 最適化。
+    入力:
+        opt[i][j] = min_{k<=j}(opt[i-1][k-1]+cost(k,j)) を返す。
+    出力: DP 表（初段は cost(0,j)）。
+    計算量: O(K N log N)、空間 O(KN)。補足: cost は cost(k,j), k<=j。
+    使用例: dp = divide_conquer_dp(K, lambda k,j: a[j]-a[k])
+    """
+    if n<0 or layers<0: raise ValueError("n and layers must be non-negative")
+    prev=[cost(0,j) for j in range(n)]; table=[prev]
+    for _ in range(1,layers):
+        cur=[INF]*n
+        def rec(l,r,lo,hi):
+            if l>=r:return
+            m=(l+r)//2; best=min(range(lo,min(hi,m)+1),key=lambda k:(prev[k-1] if k else 0)+cost(k,m))
+            cur[m]=(prev[best-1] if best else 0)+cost(best,m)
+            rec(l,m,lo,best); rec(m+1,r,best,hi)
+        rec(0,n,0,n-1); prev=cur; table.append(cur)
+    return table
+
+def knuth_dp(n, cost):
+    """概要:
+        Knuth 最適化で区間 DP を計算する。入力: n と cost(l,r)。
+    出力: n×n の DP 表。計算量: O(N^2)、空間 O(N^2)。
+    補足: quadrangle inequality と monotone opt を満たす cost を前提とする。
+    使用例: dp = knuth_dp(n, lambda l,r: prefix[r]-prefix[l])
+    """
+    if n<0: raise ValueError("n must be non-negative")
+    dp=[[0]*n for _ in range(n)]; opt=[[i]*n for i in range(n)]
+    for length in range(2,n+1):
+        for l in range(n-length+1):
+            r=l+length-1; best=INF; br=opt[l][r-1]
+            for k in range(opt[l][r-1],min(opt[l+1][r] if l+1<n else r,r-1)+1):
+                v=dp[l][k]+dp[k+1][r]+cost(l,r)
+                if v<best: best=v; br=k
+            dp[l][r]=best; opt[l][r]=br
+    return dp
+
+# ============================================================
 # 平面幾何 (2D Geometry)
 # ============================================================
 
@@ -634,9 +889,6 @@ class Point:
             return self.x == other.x and self.y == other.y
         return abs(self.x - other.x) < GEOM_EPS and abs(self.y - other.y) < GEOM_EPS
 
-    def __hash__(self) -> int:
-        return hash((self.x, self.y))
-
     def __lt__(self, other: "Point") -> bool:
         if isinstance(self.x, int) and isinstance(self.y, int) and isinstance(other.x, int) and isinstance(other.y, int):
             return (self.x, self.y) < (other.x, other.y)
@@ -674,6 +926,8 @@ class Point:
     def unit(self) -> "Point":
         """単位ベクトル"""
         l = self.norm()
+        if l == 0:
+            raise ValueError("zero vector has no unit vector")
         return Point(self.x / l, self.y / l)
 
     def normal(self) -> "Point":
@@ -1326,7 +1580,9 @@ def minimum_enclosing_circle(points: list[Point]) -> Circle:
         期待値 O(N)、最悪 O(N^3)（N は点数）。
     """
     pts = list(points)
-    random.shuffle(pts)
+    if not pts:
+        raise ValueError("points must be non-empty")
+    random.Random().shuffle(pts)
 
     def welzl(p_list: list[Point], r_list: list[Point], n: int) -> Circle:
         if n == 0 or len(r_list) == 3:
@@ -1451,6 +1707,51 @@ def fast_mod_nCr(n: int, r: int, MOD: int = MOD) -> int:
 # 累積和
 # ============================================================
 
+def prefix_sum_1d(arr: list[int]) -> list[int]:
+    """概要:
+        1次元配列の累積和を構築する。
+    入力:
+        arr (list[int]): 対象配列。
+    出力:
+        list[int]: `ps[0]=0`, `ps[i+1]=arr[:i+1]` の累積和。
+    補足:
+        区間和は `ps[r] - ps[l]` で O(1) に求められる。計算量は O(N)。
+    """
+    ps = [0] * (len(arr) + 1)
+    for i, x in enumerate(arr):
+        ps[i + 1] = ps[i] + x
+    return ps
+
+def range_sum_1d(ps: list[int], l: int, r: int) -> int:
+    """概要:
+        1次元累積和から半開区間 [l, r) の和を返す。
+    入力:
+        ps (list[int]): `prefix_sum_1d` で構築した累積和。
+        l, r (int): 0-indexed の半開区間境界。
+    出力:
+        int: 指定区間の総和。
+    補足:
+        境界外や l > r は ValueError とする。計算量は O(1)。
+    """
+    if not 0 <= l <= r < len(ps):
+        raise ValueError("range must satisfy 0 <= l <= r <= len(ps)-1")
+    return ps[r] - ps[l]
+
+def prefix_xor(arr: list[int]) -> list[int]:
+    """概要:
+        1次元配列の累積 XOR を構築する。
+    入力:
+        arr (list[int]): 対象配列。
+    出力:
+        list[int]: `ps[0]=0`, `ps[i+1]=arr[0]^...^arr[i]` の配列。
+    補足:
+        半開区間 [l, r) の XOR は `ps[r] ^ ps[l]` で求められる。計算量は O(N)。
+    """
+    ps = [0] * (len(arr) + 1)
+    for i, x in enumerate(arr):
+        ps[i + 1] = ps[i] ^ x
+    return ps
+
 def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     """概要:
         2次元配列の累積和テーブルを構築する。
@@ -1465,6 +1766,8 @@ def prefix_sum_2d(grid: list[list[int]]) -> list[list[int]]:
     if H == 0:
         return [[0]]
     W = len(grid[0])
+    if any(len(row) != W for row in grid):
+        raise ValueError("grid must be rectangular")
     ps = [[0] * (W + 1) for _ in range(H + 1)]
     for i in range(H):
         for j in range(W):
@@ -1482,6 +1785,9 @@ def range_sum_2d(ps: list[list[int]], y1: int, x1: int, y2: int, x2: int) -> int
     補足:
         `prefix_sum_2d` の戻り値を前提とする。計算量は O(1)。
     """
+    H, W = len(ps) - 1, len(ps[0]) - 1
+    if not (0 <= y1 <= y2 <= H and 0 <= x1 <= x2 <= W):
+        raise ValueError("rectangle must be inside the prefix-sum table")
     return ps[y2][x2] - ps[y1][x2] - ps[y2][x1] + ps[y1][x1]
 
 
@@ -1548,27 +1854,32 @@ class Imos2D:
         result = imos.build()
     """
     def __init__(self, h: int, w: int):
+        if h < 0 or w < 0:
+            raise ValueError("h and w must be non-negative")
         self.h = h
         self.w = w
         self.diff = [[0] * (w + 1) for _ in range(h + 1)]
 
     def add(self, y1: int, x1: int, y2: int, x2: int, x: int = 1) -> None:
         """[y1, y2) × [x1, x2) に x を加算（0-indexed）"""
+        if not (0 <= y1 <= y2 <= self.h and 0 <= x1 <= x2 <= self.w):
+            raise ValueError("rectangle must be inside the grid")
         self.diff[y1][x1] += x
         self.diff[y1][x2] -= x
         self.diff[y2][x1] -= x
         self.diff[y2][x2] += x
 
     def build(self) -> list[list[int]]:
-        """累積和を計算して結果を返す"""
+        """累積和を計算して結果を返す（何度呼んでも同じ結果）。"""
         result = [row[:self.w] for row in self.diff[:self.h]]
         for i in range(self.h):
             for j in range(self.w):
+                if i:
+                    result[i][j] += result[i - 1][j]
                 if j:
                     result[i][j] += result[i][j - 1]
-        for j in range(self.w):
-            for i in range(1, self.h):
-                result[i][j] += result[i - 1][j]
+                if i and j:
+                    result[i][j] -= result[i - 1][j - 1]
         return result
 
 
@@ -1789,6 +2100,14 @@ def bfs_path(g: list[list[int]], s: int, t: int) -> list[int] | None:
         計算量は O(V+E)。経路が複数ある場合は最短の1つを返す。
     """
     n = len(g)
+    if not (0 <= s < n and 0 <= t < n):
+        raise ValueError("vertices must be valid")
+    for edges in g:
+        for to, w in edges:
+            if not 0 <= to < n:
+                raise ValueError("edge endpoint must be a valid vertex")
+            if w < 0:
+                raise ValueError("Dijkstra requires non-negative edge weights")
     parent = [-1] * n
     visited = [False] * n
     visited[s] = True
@@ -1864,6 +2183,116 @@ def bfs_grid(grid: list[list[str]], sy: int, sx: int, wall: str = '#') -> list[l
                 q.append((ny, nx))
     return dist
 
+def grid_components(
+        grid: list[list],
+        wall = '#',
+        directions: tuple[tuple[int, int], ...] = DIR4,
+) -> list[list[tuple[int, int]]]:
+        """概要:
+            グリッドの通行可能セルを連結成分ごとに列挙する。
+        入力:
+            grid (list[list]): 盤面。wall と異なるセルを通行可能とする。
+            wall: 壁として扱う値。
+            directions: 隣接方向（DIR4, DIR8 など）。
+        出力:
+            list[list[tuple[int,int]]]: 各成分の座標リスト。
+        補足:
+            長方形グリッドを前提とし、計算量は O(HW)。
+        """
+        H, W = len(grid), len(grid[0]) if grid else 0
+        if any(len(row) != W for row in grid):
+            raise ValueError("grid must be rectangular")
+        seen = [[False] * W for _ in range(H)]
+        result = []
+        for sy in range(H):
+            for sx in range(W):
+                if seen[sy][sx] or grid[sy][sx] == wall:
+                    continue
+                seen[sy][sx] = True
+                q = deque([(sy, sx)])
+                component = []
+                while q:
+                    y, x = q.popleft()
+                    component.append((y, x))
+                    for dy, dx in directions:
+                        ny, nx = y + dy, x + dx
+                        if 0 <= ny < H and 0 <= nx < W and not seen[ny][nx] and grid[ny][nx] != wall:
+                            seen[ny][nx] = True
+                            q.append((ny, nx))
+                result.append(component)
+        return result
+
+def flood_fill(grid: list[list], start: tuple[int, int], wall = '#',
+                   directions: tuple[tuple[int, int], ...] = DIR4) -> list[tuple[int, int]]:
+        """概要:
+            start から到達可能な通行可能セルを flood fill で列挙する。
+        入力:
+            grid, start (y, x), wall, directions: 盤面と探索条件。
+        出力:
+            list[tuple[int,int]]: 到達した座標（BFS順）。
+        補足:
+            start が範囲外または壁なら空リスト。計算量は O(HW)。
+        """
+        H, W = len(grid), len(grid[0]) if grid else 0
+        if any(len(row) != W for row in grid):
+            raise ValueError("grid must be rectangular")
+        sy, sx = start
+        if not (0 <= sy < H and 0 <= sx < W) or grid[sy][sx] == wall:
+            return []
+        return _grid_bfs_cells(grid, [start], wall, directions)
+
+def _grid_bfs_cells(grid, starts, wall, directions):
+        H, W = len(grid), len(grid[0]) if grid else 0
+        seen = [[False] * W for _ in range(H)]
+        q = deque()
+        for y, x in starts:
+            if 0 <= y < H and 0 <= x < W and not seen[y][x] and grid[y][x] != wall:
+                seen[y][x] = True
+                q.append((y, x))
+        result = []
+        while q:
+            y, x = q.popleft()
+            result.append((y, x))
+            for dy, dx in directions:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and not seen[ny][nx] and grid[ny][nx] != wall:
+                    seen[ny][nx] = True
+                    q.append((ny, nx))
+        return result
+
+def grid_bfs(grid: list[list], starts, wall = '#',
+                 directions: tuple[tuple[int, int], ...] = DIR4) -> list[list[int]]:
+        """概要:
+            複数始点・任意方向のグリッド BFS で距離表を構築する。
+        入力:
+            grid, starts: 盤面と (y, x) の始点（単一座標も可）。
+            wall, directions: 壁値と隣接方向。
+        出力:
+            list[list[int]]: 各セルまでの最短距離。未到達は -1。
+        補足:
+            始点は距離0で同時投入する。計算量は O(HW)。
+        """
+        H, W = len(grid), len(grid[0]) if grid else 0
+        if any(len(row) != W for row in grid):
+            raise ValueError("grid must be rectangular")
+        if isinstance(starts, tuple) and len(starts) == 2 and all(isinstance(x, int) for x in starts):
+            starts = [starts]
+        dist = [[-1] * W for _ in range(H)]
+        q = deque()
+        for y, x in starts:
+            if not (0 <= y < H and 0 <= x < W):
+                raise ValueError("start is outside the grid")
+            if grid[y][x] != wall and dist[y][x] == -1:
+                dist[y][x] = 0
+                q.append((y, x))
+        while q:
+            y, x = q.popleft()
+            for dy, dx in directions:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and dist[ny][nx] == -1 and grid[ny][nx] != wall:
+                    dist[ny][nx] = dist[y][x] + 1
+                    q.append((ny, nx))
+        return dist
 def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
     """概要:
         非負重みグラフで始点 s からの最短距離を求める。
@@ -1876,7 +2305,16 @@ def dijkstra(g: list[list[tuple[int, int]]], s: int) -> list[int]:
         計算量は O((V+E)logE)。単純グラフなど E = O(V^2) の場合は
         O((V+E)logV) と書ける。負辺は非対応。
     """
-    dist = [INF] * len(g)
+    n = len(g)
+    if not 0 <= s < n:
+        raise ValueError("source must be a valid vertex")
+    for edges in g:
+        for to, w in edges:
+            if not 0 <= to < n:
+                raise ValueError("edge endpoint must be a valid vertex")
+            if w < 0:
+                raise ValueError("Dijkstra requires non-negative edge weights")
+    dist = [INF] * n
     dist[s] = 0
     pq = [(0, s)]
     heappop = heapq.heappop
@@ -1983,6 +2421,14 @@ def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, 
         経路が複数ある場合は最短の1つを返す。
     """
     n = len(g)
+    if not (0 <= s < n and 0 <= t < n):
+        raise ValueError("vertices must be valid")
+    for edges in g:
+        for to, w in edges:
+            if not 0 <= to < n:
+                raise ValueError("edge endpoint must be a valid vertex")
+            if w < 0:
+                raise ValueError("Dijkstra requires non-negative edge weights")
     dist = [INF] * n
     parent = [-1] * n
     dist[s] = 0
@@ -2168,11 +2614,17 @@ def bipartite_coloring(g: list[list[int]]) -> tuple[bool, list[int]]:
         while q:
             v = q.popleft()
             for to in g[v]:
+                if not 0 <= to < n:
+                    raise ValueError("graph contains a vertex outside its range")
                 if color[to] == -1:
                     color[to] = color[v] ^ 1
                     q.append(to)
                 elif color[to] == color[v]:
                     return False, color
+    for v in range(n):
+        for to in g[v]:
+            if color[v] == color[to]:
+                return False, color
     return True, color
 
 def kruskal(n: int, edges: list[tuple[int, int, int]]) -> tuple[int, list[tuple[int, int, int]], bool]:
@@ -2224,6 +2676,8 @@ class MaxFlow:
 
     def add_edge(self, u: int, v: int, cap: int) -> None:
         """u→v に容量 cap の有向辺を追加（逆辺も自動追加）"""
+        if not (0 <= u < self.n and 0 <= v < self.n):
+            raise ValueError("edge endpoints must be valid vertices")
         if cap < 0:
             raise ValueError("capacity must be non-negative")
         self.graph[u].append([v, cap, len(self.graph[v])])
@@ -2544,11 +2998,109 @@ class TwoSAT:
     def add_clause(self,a,va,b,vb):
         if not (0 <= a < self.n and 0 <= b < self.n): raise IndexError("variable index")
         x=self._id(a,va); y=self._id(b,vb); self.g[x^1].append(y); self.g[y^1].append(x)
+    def add_implication(self, a, va, b, vb):
+        """(x_a=va) => (x_b=vb) を追加。"""
+        self.add_clause(a, not va, b, vb)
+    def add_equal(self, a, b):
+        """x_a == x_b を追加。"""
+        self.add_implication(a, True, b, True); self.add_implication(b, True, a, True)
+        self.add_implication(a, False, b, False); self.add_implication(b, False, a, False)
+    def add_xor(self, a, b):
+        """x_a != x_b を追加。"""
+        self.add_clause(a, True, b, True); self.add_clause(a, False, b, False)
+    def add_exactly_one(self, a, b):
+        """2変数のうちちょうど一つを True にする。"""
+        self.add_clause(a, True, b, True); self.add_clause(a, False, b, False)
     def solve(self):
         _,c,_=scc(2*self.n,[(u,v) for u in range(2*self.n) for v in self.g[u]])
         for i in range(self.n):
             if c[2*i]==c[2*i+1]: return None
         return [c[2*i]>c[2*i+1] for i in range(self.n)]
+
+class KruskalReconstructionTree:
+    """概要:
+        重み順に連結成分を併合する Kruskal 再構築木を作る。
+    入力:
+        n、辺 (u,v,w)。出力: parent/weight と根、元頂点は 0..n-1。
+    計算量:
+        O((N+E)log E)、空間 O(N+E)。
+    補足:
+        同じ重みの辺も入力順に処理し、LCA でボトルネック値を求められる。
+    使用例:
+        krt = KruskalReconstructionTree(n, edges)
+    """
+    def __init__(self,n,edges):
+        if n<0: raise ValueError("n must be non-negative")
+        self.n=n; self.edges=sorted(edges,key=lambda e:e[2]); self.g=[[] for _ in range(2*n)]
+        p=list(range(2*n)); self.weight=[None]*(2*n); nxt=n
+        def find(x):
+            while p[x]!=x: p[x]=p[p[x]]; x=p[x]
+            return x
+        for u,v,w in self.edges:
+            if not (0<=u<n and 0<=v<n): raise ValueError("edge endpoint out of range")
+            a,b=find(u),find(v)
+            if a==b: continue
+            if nxt==len(p): p.append(nxt); self.g.append([]); self.weight.append(None)
+            p[a]=p[b]=nxt; self.g[nxt]+=[a,b]; self.weight[nxt]=w; nxt+=1
+        self.parent=p[:nxt]; self.roots=[i for i in range(nxt) if p[i]==i]
+        self.g=self.g[:nxt]; self.weight=self.weight[:nxt]
+
+class RollbackDSU:
+    """概要: 経路圧縮なしのロールバック可能 DSU。入力: 頂点数。出力: merge/snapshot/rollback。計算量: 各 merge O(logN)、rollback O(1)。"""
+    def __init__(self,n):
+        if n<0: raise ValueError("n must be non-negative")
+        self.p=list(range(n)); self.sz=[1]*n; self.history=[]; self.components=n
+    def leader(self,x):
+        while self.p[x]!=x: x=self.p[x]
+        return x
+    def same(self,a,b): return self.leader(a)==self.leader(b)
+    def merge(self,a,b):
+        a,b=self.leader(a),self.leader(b)
+        if a==b: self.history.append(None); return False
+        if self.sz[a]<self.sz[b]: a,b=b,a
+        self.history.append((b,self.sz[a])); self.p[b]=a; self.sz[a]+=self.sz[b]; self.components-=1; return True
+    def snapshot(self): return len(self.history)
+    def rollback(self,snapshot=None):
+        target=0 if snapshot is None else snapshot
+        if not 0<=target<=len(self.history): raise ValueError("invalid snapshot")
+        while len(self.history)>target:
+            h=self.history.pop()
+            if h is not None:
+                b,old=h; a=self.p[b]; self.sz[a]=old; self.p[b]=b; self.components+=1
+
+def offline_dynamic_connectivity(n, operations):
+    """概要: 時刻区間上の辺追加/削除を処理する。入力: ('add'/'remove'/'query',u,v) 列。出力: query の bool 列。計算量: O((Q+E)logQ logN)。補足: add/remove は同じ無向辺に対応させる。"""
+    q=len(operations); seg=[[] for _ in range(4*max(1,q))]; active={}; ans=[]
+    def key(u,v): return (u,v) if u<=v else (v,u)
+    intervals=[]
+    for t,op in enumerate(operations):
+        if len(op)!=3: raise ValueError("operation must be (kind,u,v)")
+        typ,u,v=op
+        if not (0<=u<n and 0<=v<n): raise ValueError("vertex out of range")
+        k=key(u,v)
+        if typ=="add": active.setdefault(k,[]).append(t)
+        elif typ=="remove":
+            if not active.get(k): raise ValueError("remove without add")
+            intervals.append((active[k].pop(),t,k))
+        elif typ!="query": raise ValueError("unknown operation")
+    for k,ts in active.items():
+        for s in ts: intervals.append((s,q,k))
+    def put(node,l,r,a,b,e):
+        if b<=l or r<=a:return
+        if a<=l and r<=b: seg[node].append(e); return
+        m=(l+r)//2; put(node*2,l,m,a,b,e); put(node*2+1,m,r,a,b,e)
+    for a,b,e in intervals: put(1,0,q,a,b,e)
+    d=RollbackDSU(n)
+    def dfs(node,l,r):
+        snap=d.snapshot()
+        for u,v in seg[node]: d.merge(u,v)
+        if r-l==1:
+            if operations[l][0]=="query": ans.append(d.same(operations[l][1],operations[l][2]))
+        else:
+            m=(l+r)//2; dfs(node*2,l,m); dfs(node*2+1,m,r)
+        d.rollback(snap)
+    if q: dfs(1,0,q)
+    return ans
 
 class MinCostFlow:
     """概要:
@@ -2565,11 +3117,20 @@ class MinCostFlow:
     使用例:
         f, cost = MinCostFlow(n).flow(s, t)
     """
-    def __init__(self,n): self.n=n; self.g=[[] for _ in range(n)]
+    def __init__(self,n):
+        if n < 0:
+            raise ValueError("n must be non-negative")
+        self.n=n; self.g=[[] for _ in range(n)]
     def add_edge(self,u,v,cap,cost):
+        if not (0 <= u < self.n and 0 <= v < self.n):
+            raise ValueError("edge endpoints must be valid vertices")
+        if cap < 0:
+            raise ValueError("capacity must be non-negative")
         self.g[u].append([v,cap,cost,len(self.g[v])]); self.g[v].append([u,0,-cost,len(self.g[u])-1])
     def flow(self,s,t,limit=10**30):
         if not (0 <= s < self.n and 0 <= t < self.n): raise IndexError("vertex index")
+        if limit < 0:
+            raise ValueError("limit must be non-negative")
         if s == t or limit <= 0: return 0, 0
         n=self.n; pot=[0]*n
         # 負費用辺があっても reduced cost を非負にする初期ポテンシャル。
@@ -2597,7 +3158,7 @@ class MinCostFlow:
             v=t
             while v!=s:
                 p,i=pv[v]; e=self.g[p][i]; e[1]-=f; self.g[v][e[3]][1]+=f; v=p
-            total+=f; cost+=f*pot[t]
+            total+=f; cost+=f*(pot[t]-pot[s])
         return total,cost
 
 def euler_path(n, edges, directed=False):
@@ -2934,6 +3495,87 @@ class LCA:
         """u-v間の距離"""
         return self.depth[u] + self.depth[v] - 2 * self.depth[self.query(u, v)]
 
+def build_virtual_tree(vertices, g, lca):
+    """概要:
+        指定頂点と必要な LCA だけから仮想木を構築する。
+    入力:
+        vertices、元木 g、LCA互換オブジェクト（query/depth属性）。
+    出力:
+        (nodes, edges): nodes は DFS 順、edges は (親,子)。
+    計算量:
+        O(K log K)、空間 O(K)。
+    補足:
+        同じ頂点は自動除去し、根からの tin は元木を一度 DFS して求める。
+    使用例:
+        nodes, edges = build_virtual_tree(query_vertices, g, lca)
+    """
+    if not vertices: return [], []
+    n=len(g); tin=[-1]*n; t=0; st=[(0,-1,0)]
+    while st:
+        v,p,i=st[-1]
+        if i==0: tin[v]=t; t+=1
+        if i<len(g[v]):
+            to=g[v][i]; st[-1]=(v,p,i+1)
+            if to!=p: st.append((to,v,0))
+        else: st.pop()
+    vs=sorted(set(vertices),key=lambda x:tin[x])
+    if any(not 0<=v<n or tin[v]<0 for v in vs): raise ValueError("vertex out of range")
+    allv=vs+[lca.query(a,b) for a,b in zip(vs,vs[1:])]
+    nodes=sorted(set(allv),key=lambda x:tin[x]); edges=[]; stack=[]
+    # Euler interval via parent/depth makes a stack sufficient; verify ancestry by depth.
+    for v in nodes:
+        while stack and lca.query(stack[-1],v)!=stack[-1]: stack.pop()
+        if stack: edges.append((stack[-1],v))
+        stack.append(v)
+    return nodes,edges
+
+def virtual_tree(vertices, g, lca):
+    """build_virtual_tree の短い別名。"""
+    return build_virtual_tree(vertices, g, lca)
+
+def _subtree_size(root,g):
+    size=1; st=[(root,-1)]
+    while st:
+        v,p=st.pop()
+        for to in g[v]:
+            if to!=p: size+=1; st.append((to,v))
+    return size
+
+class CentroidDecomposition:
+    """概要:
+        木を重心分解し、各頂点の重心親を構築する。
+    入力:
+        g は連結な木の隣接リスト。出力: parent と decomposition_order。
+    計算量:
+        O(N log N) 時間・空間。
+    補足:
+        分解後の距離情報は centroid_parent を辿って利用できる。
+    使用例:
+        cd = CentroidDecomposition(g)
+    """
+    def __init__(self,g):
+        self.n=len(g); self.parent=[-1]*self.n; self.decomposition_order=[]
+        dead=[False]*self.n
+        def build(start,par):
+            comp=[]; st=[(start,-1)]
+            while st:
+                v,p=st.pop(); comp.append((v,p))
+                for to in g[v]:
+                    if to!=p and not dead[to]: st.append((to,v))
+            sz={v:1 for v,_ in comp}
+            for v,p in comp[::-1]:
+                if p!=-1: sz[p]+=sz[v]
+            total=len(comp); c=start
+            for v,_ in comp:
+                mx=total-sz[v]
+                for to in g[v]:
+                    if not dead[to] and sz.get(to,0)<sz.get(v,0): mx=max(mx,sz[to])
+                if mx*2<=total: c=v; break
+            dead[c]=True; self.parent[c]=par; self.decomposition_order.append(c)
+            for to in g[c]:
+                if not dead[to]: build(to,c)
+        if self.n: build(0,-1)
+
 def euler_tour(n, g, root=0):
     """概要:
         木を DFS して Euler tour 順序と部分木区間を作る。
@@ -3204,6 +3846,8 @@ class SegTree:
 
     def set(self, i: int, v: Any) -> None:
         """a[i] = v"""
+        if not 0 <= i < self.n:
+            raise IndexError("index out of range")
         i += self.size
         self.data[i] = v
         while i > 1:
@@ -3212,10 +3856,14 @@ class SegTree:
 
     def get(self, i: int) -> Any:
         """a[i]を取得"""
+        if not 0 <= i < self.n:
+            raise IndexError("index out of range")
         return self.data[self.size + i]
 
     def query(self, l: int, r: int) -> Any:
         """[l, r) の演算結果"""
+        if not (0 <= l <= r <= self.n):
+            raise ValueError("query range out of bounds")
         sml = self.e
         smr = self.e
         l += self.size
@@ -3235,8 +3883,10 @@ class SegTree:
         """最大の r を返す（f(query(l, r)) が True）"""
         if l == self.n:
             return self.n
-        assert 0 <= l <= self.n
-        assert f(self.e)
+        if not 0 <= l <= self.n:
+            raise ValueError("index out of range")
+        if not f(self.e):
+            raise ValueError("predicate must accept the identity")
 
         l += self.size
         sm = self.e
@@ -3262,8 +3912,10 @@ class SegTree:
         """最小の l を返す（f(query(l, r)) が True）"""
         if r == 0:
             return 0
-        assert 0 <= r <= self.n
-        assert f(self.e)
+        if not 0 <= r <= self.n:
+            raise ValueError("index out of range")
+        if not f(self.e):
+            raise ValueError("predicate must accept the identity")
 
         r += self.size
         sm = self.e
@@ -3366,6 +4018,8 @@ class LazySegTree:
             self.lazy[k] = self.identity
 
     def set(self, p: int, x: Any) -> None:
+        if not 0 <= p < self.n:
+            raise IndexError("index out of range")
         p += self.size
         for i in range(self.log, 0, -1):
             self._push(p >> i)
@@ -3374,6 +4028,8 @@ class LazySegTree:
             self._update(p >> i)
 
     def get(self, p: int) -> Any:
+        if not 0 <= p < self.n:
+            raise IndexError("index out of range")
         p += self.size
         for i in range(self.log, 0, -1):
             self._push(p >> i)
@@ -3381,6 +4037,8 @@ class LazySegTree:
 
     def query(self, l: int, r: int) -> Any:
         """[l, r) の演算結果"""
+        if not (0 <= l <= r <= self.n):
+            raise ValueError("query range out of bounds")
         if l >= r:
             return self.e
         l += self.size
@@ -3409,6 +4067,8 @@ class LazySegTree:
 
     def apply(self, l: int, r: int, f: Any) -> None:
         """[l, r) に作用fを適用"""
+        if not (0 <= l <= r <= self.n):
+            raise ValueError("range out of bounds")
         if l >= r:
             return
         l += self.size
@@ -3437,8 +4097,10 @@ class LazySegTree:
 
     def max_right(self, l: int, g: Callable[[Any], bool]) -> int:
         """最大の r を返す（g(query(l, r)) が True となる最大の r）"""
-        assert 0 <= l <= self.n
-        assert g(self.e)
+        if not 0 <= l <= self.n:
+            raise ValueError("index out of range")
+        if not g(self.e):
+            raise ValueError("predicate must accept the identity")
         if l == self.n:
             return self.n
 
@@ -3466,8 +4128,10 @@ class LazySegTree:
 
     def min_left(self, r: int, g: Callable[[Any], bool]) -> int:
         """最小の l を返す（g(query(l, r)) が True となる最小の l）"""
-        assert 0 <= r <= self.n
-        assert g(self.e)
+        if not 0 <= r <= self.n:
+            raise ValueError("index out of range")
+        if not g(self.e):
+            raise ValueError("predicate must accept the identity")
         if r == 0:
             return 0
 
@@ -4593,6 +5257,84 @@ def run_length_encode(s: str | list) -> list[tuple]:
     result.append((current, count))
     return result
 
+def run_length_decode(groups: list[tuple]) -> list:
+    """概要:
+        run_length_encode の結果を元の配列へ復元する。
+    入力:
+        groups (list[tuple]): (値, 連続数) の配列。個数は非負。
+    出力:
+        list: 復元された配列。
+    補足:
+        連続数が負の場合は ValueError。計算量は復元要素数に比例する。
+    """
+    result = []
+    for value, count in groups:
+        if count < 0:
+            raise ValueError("run length must be non-negative")
+        result.extend([value] * count)
+    return result
+
+def next_permutation(arr: list) -> bool:
+    """概要:
+        arr を辞書順で次の順列へ置換する。
+    入力:
+        arr (list): 書き換える順列。
+    出力:
+        bool: 次の順列が存在すれば True、最大順列なら False。
+    補足:
+        重複要素にも対応し、計算量は O(N)、追加メモリは O(1)。
+    """
+    i = len(arr) - 2
+    while i >= 0 and arr[i] >= arr[i + 1]:
+        i -= 1
+    if i < 0:
+        arr.reverse()
+        return False
+    j = len(arr) - 1
+    while arr[j] <= arr[i]:
+        j -= 1
+    arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1:] = reversed(arr[i + 1:])
+    return True
+
+def prev_permutation(arr: list) -> bool:
+    """概要:
+        arr を辞書順で前の順列へ置換する。
+    入力・出力・計算量:
+        `next_permutation` と同じ（比較方向のみ逆）。
+    """
+    i = len(arr) - 2
+    while i >= 0 and arr[i] <= arr[i + 1]:
+        i -= 1
+    if i < 0:
+        arr.reverse()
+        return False
+    j = len(arr) - 1
+    while arr[j] >= arr[i]:
+        j -= 1
+    arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1:] = reversed(arr[i + 1:])
+    return True
+
+def group_consecutive(arr: list) -> list[tuple]:
+    """概要:
+        等しい値の連続区間を (値, 開始, 終了) にまとめる。
+    入力:
+        arr (list): 対象配列。
+    出力:
+        list[tuple]: 半開区間 `(value, l, r)` の配列。
+    補足:
+        run_length_encode と異なり位置も保持する。計算量は O(N)。
+    """
+    result = []
+    for i, x in enumerate(arr):
+        if not result or result[-1][0] != x:
+            result.append((x, i, i + 1))
+        else:
+            value, l, _ = result[-1]
+            result[-1] = (value, l, i + 1)
+    return result
+
 
 class Trie:
     """概要:
@@ -5600,6 +6342,8 @@ def kadane_max(arr: list[int]) -> tuple[int, int, int]:
         val, l, r = kadane_max(A)
         print(val, l, r)  # 6, 3, 6  (A[3:7] = [4,-1,2,1])
     """
+    if not arr:
+        raise ValueError("arr must be non-empty")
     best      = arr[0]
     cur       = arr[0]
     best_l    = 0
@@ -5637,6 +6381,8 @@ def kadane_min(arr: list[int]) -> tuple[int, int, int]:
         val, l, r = kadane_min(A)
         print(val, l, r)  # -5, 8, 8
     """
+    if not arr:
+        raise ValueError("arr must be non-empty")
     best   = arr[0]
     cur    = arr[0]
     best_l = 0
@@ -5678,6 +6424,8 @@ def kadane_circular_max(arr: list[int]) -> int:
         # A = [5, -3, 5]
         print(kadane_circular_max([5, -3, 5]))  # 10  ([5,-3,5] 折り返して 5+5=10)
     """
+    if not arr:
+        raise ValueError("arr must be non-empty")
     total    = sum(arr)
     max_val  = kadane_max(arr)[0]
     min_val  = kadane_min(arr)[0]
@@ -5849,6 +6597,25 @@ def sliding_window_min(arr: list[int], k: int) -> list[int]:
                 dq.popleft()
             result.append(arr[dq[0]])
     return result
+
+def two_pointer(arr: list, valid: Callable[[int, int], bool]) -> int:
+    """概要:
+        単調性を満たす条件のもとで有効な部分配列数を数える。
+    入力:
+        arr (list): 対象配列。
+        valid (callable): `valid(l, r)` が半開区間 [l, r) の判定を返す。
+            r を増やすと一度 False になった後は戻らない条件を想定する。
+    出力:
+        int: 条件を満たす空でない部分配列の個数。
+    補足:
+        右端を一度ずつ進めるため計算量は O(N)（判定を O(1) とする）。
+    """
+    left = ans = 0
+    for right in range(1, len(arr) + 1):
+        while left < right and not valid(left, right):
+            left += 1
+        ans += right - left
+    return ans
 
 def count_subarrays_range_le(arr: list[int], limit: int) -> int:
     """概要:
