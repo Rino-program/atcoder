@@ -1,0 +1,64 @@
+{
+  "contest": {
+    "id": "awc0080",
+    "title": "AtCoder Weekday Contest 0080 Beta",
+    "url": "https://atcoder.jp/contests/awc0080"
+  },
+  "tasks": [
+    {
+      "id": "awc0080_a",
+      "label": "A",
+      "title": "Bomb Disposal Squad",
+      "url": "https://atcoder.jp/contests/awc0080/tasks/awc0080_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "awc0080_b",
+      "label": "B",
+      "title": "Quality Inspection and Product Disposal",
+      "url": "https://atcoder.jp/contests/awc0080/tasks/awc0080_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "awc0080_c",
+      "label": "C",
+      "title": "Reward for Carrying Luggage",
+      "url": "https://atcoder.jp/contests/awc0080/tasks/awc0080_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "awc0080_d",
+      "label": "D",
+      "title": "Network Construction",
+      "url": "https://atcoder.jp/contests/awc0080/tasks/awc0080_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "awc0080_e",
+      "label": "E",
+      "title": "Paint Drop",
+      "url": "https://atcoder.jp/contests/awc0080/tasks/awc0080_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    }
+  ]
+}
