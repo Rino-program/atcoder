@@ -1,0 +1,86 @@
+{
+  "contest": {
+    "id": "abc485",
+    "title": "AtCoder Beginner Contest 485",
+    "url": "https://atcoder.jp/contests/abc485"
+  },
+  "tasks": [
+    {
+      "id": "abc485_a",
+      "label": "A",
+      "title": "Same Side",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_a",
+      "directory": {
+        "path": "a",
+        "testdir": "../input/a",
+        "submit": "maina.py"
+      }
+    },
+    {
+      "id": "abc485_b",
+      "label": "B",
+      "title": "Faucets and Drains",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_b",
+      "directory": {
+        "path": "b",
+        "testdir": "../input/b",
+        "submit": "mainb.py"
+      }
+    },
+    {
+      "id": "abc485_c",
+      "label": "C",
+      "title": "Different Neighbor",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_c",
+      "directory": {
+        "path": "c",
+        "testdir": "../input/c",
+        "submit": "mainc.py"
+      }
+    },
+    {
+      "id": "abc485_d",
+      "label": "D",
+      "title": "ABC|ABC|ABC",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_d",
+      "directory": {
+        "path": "d",
+        "testdir": "../input/d",
+        "submit": "maind.py"
+      }
+    },
+    {
+      "id": "abc485_e",
+      "label": "E",
+      "title": "Colorful Route",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_e",
+      "directory": {
+        "path": "e",
+        "testdir": "../input/e",
+        "submit": "maine.py"
+      }
+    },
+    {
+      "id": "abc485_f",
+      "label": "F",
+      "title": "Big Bridge",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_f",
+      "directory": {
+        "path": "f",
+        "testdir": "../input/f",
+        "submit": "mainf.py"
+      }
+    },
+    {
+      "id": "abc485_g",
+      "label": "G",
+      "title": "Similar Adjacent Subarrays",
+      "url": "https://atcoder.jp/contests/abc485/tasks/abc485_g",
+      "directory": {
+        "path": "g",
+        "testdir": "../input/g",
+        "submit": "maing.py"
+      }
+    }
+  ]
+}
