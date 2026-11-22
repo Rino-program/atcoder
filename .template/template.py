@@ -336,18 +336,32 @@ def divisors(n: int) -> list[int]:
     出力:
         list[int]: n の約数を昇順に並べたリスト。
     補足:
-        計算量は O(√n)。
+        n <= 10^9 は O(√n)、n > 10^9 は prime_factors を用いて高速に列挙する (10^18 対応)。
+        ※ 元の O(√n) 版を残したい場合は関数名を divisors_fast 等に変更してください。
     """
     if n <= 0:
         raise ValueError("n must be positive")
-    small = []
-    large = []
-    for i in range(1, math.isqrt(n) + 1):
-        if n % i == 0:
-            small.append(i)
-            if i != n // i:
-                large.append(n // i)
-    return small + large[::-1]
+    if n <= 10**9:
+        small = []
+        large = []
+        for i in range(1, math.isqrt(n) + 1):
+            if n % i == 0:
+                small.append(i)
+                q = n // i
+                if i != q:
+                    large.append(q)
+        return small + large[::-1]
+
+    res = [1]
+    for p, e in prime_factors(n).items():
+        prev_len = len(res)
+        pow_p = 1
+        for _ in range(e):
+            pow_p *= p
+            for i in range(prev_len):
+                res.append(res[i] * pow_p)
+    res.sort()
+    return res
 
 def sieve(n: int) -> tuple[list[bool], list[int]]:
     """概要:
@@ -391,12 +405,16 @@ class SPFSieve:
             self.spf[0] = 0
         if n >= 1:
             self.spf[1] = 1
-        for p in range(2, math.isqrt(n) + 1):
+        if n >= 4:
+            self.spf[4::2] = [2] * (((n - 4) // 2) + 1)
+        for p in range(3, math.isqrt(n) + 1, 2):
             if self.spf[p] == p:
-                for x in range(p * p, n + 1, p):
+                for x in range(p * p, n + 1, 2 * p):
                     if self.spf[x] == x:
                         self.spf[x] = p
-        self.primes = [x for x in range(2, n + 1) if self.spf[x] == x]
+        self.primes = ([2] if n >= 2 else []) + [
+            x for x in range(3, n + 1, 2) if self.spf[x] == x
+        ]
 
     def is_prime(self, x: int) -> bool:
         """0 <= x <= n の素数判定。"""
@@ -2401,6 +2419,57 @@ def dijkstra_multi(
                 dist[to] = new_state
                 sequence += 1
                 heapq.heappush(pq, (new_state[0], sequence, to, new_state))
+
+    return dist
+
+def multi_source_dijkstra(
+    graph: list[list[tuple[int, int]]] | list[list[list[int]]],
+    starts: list[int] | list[tuple[int, int]] | list[list[int]] | tuple[int, ...],
+) -> list[int]:
+    """概要:
+        非負重み付きグラフ上で、複数の始点からの最短距離を多始点ダイクストラ法で求める。
+        各始点には 0 以外の初期コストを指定することも可能。
+    入力:
+        graph (list[list[tuple[int, int]]] | list[list[list[int]]]):
+            隣接リスト。graph[u] に (v, w) または [v, w] を持つ。
+        starts (list[int] | list[tuple[int, int]] | list[list[int]] | tuple[int, ...]):
+            始点頂点の列、または (始点頂点, 初期コスト) / [始点頂点, 初期コスト] の列。
+    出力:
+        list[int]: 各頂点への最短距離（到達不能な頂点は INF）。
+    計算量:
+        時間 O((V + E) log V)、空間 O(V)。
+    補足:
+        - 仮想の超頂点 S から各始点 s へ重み 0（または初期コスト）の辺を張って
+          通常のダイクストラ法を行うのと等価。
+        - 辺の重みは非負である必要がある。
+        - 重みがすべて 1 なら多始点 BFS、0/1 のみなら 0-1 BFS の方が高速。
+    使用例:
+        dist = multi_source_dijkstra(graph, [0, 3, 5])
+        dist = multi_source_dijkstra(graph, [(i, cost[i]) for i in range(n)])
+    """
+    n = len(graph)
+    dist = [INF] * n
+    hq: list[tuple[int, int]] = []
+    heappush = heapq.heappush
+    heappop = heapq.heappop
+
+    for item in starts:
+        s, d = (item, 0) if isinstance(item, int) else item
+        if not 0 <= s < n:
+            raise ValueError("start vertex out of range")
+        if d < dist[s]:
+            dist[s] = d
+            heappush(hq, (d, s))
+
+    while hq:
+        d, u = heappop(hq)
+        if d > dist[u]:
+            continue
+        for v, w in graph[u]:
+            nd = d + w
+            if nd < dist[v]:
+                dist[v] = nd
+                heappush(hq, (nd, v))
 
     return dist
 
@@ -5147,6 +5216,126 @@ class LinkCutTree:
         node = self._node(x)
         self._access(node)
         return node.value
+
+class SparseTable:
+    """概要:
+        静的な配列に対するべき等な区間クエリ（min, max, gcd, AND, OR など）を
+        前計算 O(N log N)、クエリ O(1) で処理するデータ構造。
+
+    入力:
+        arr (list): 対象の配列（長さ N）。
+        op (Callable): 結合則とべき等性 (x * x = x) を満たす 2 引数演算。
+                       例: min, max, math.gcd, operator.and_, operator.or_
+
+    メソッド:
+        query(l, r): 半開区間 [l, r) の演算結果を O(1) で返す (0 <= l < r <= N)。
+
+    計算量:
+        構築 O(N log N)、クエリ O(1)、空間 O(N log N)。
+
+    補足:
+        - 更新操作は不可。配列は静的である必要がある。
+        - 和 (+) や XOR (^) などべき等でない演算には使用できない。
+        - 単位元は不要だが、空区間 (l == r) のクエリは不可。
+
+    使用例:
+        st_min = SparseTable(A, min)
+        st_gcd = SparseTable(A, math.gcd)
+        ans = st_min.query(l, r)
+    """
+    __slots__ = ("n", "op", "table")
+
+    def __init__(self, arr: list, op: Callable):
+        n = len(arr)
+        self.n = n
+        self.op = op
+        if n == 0:
+            self.table = []
+            return
+
+        max_k = n.bit_length()
+        table = [list(arr)]
+        for k in range(1, max_k):
+            half = 1 << (k - 1)
+            prev = table[k - 1]
+            cur_len = n - (1 << k) + 1
+            table.append([op(prev[i], prev[i + half]) for i in range(cur_len)])
+        self.table = table
+
+    def query(self, l: int, r: int) -> int:
+        """半開区間 [l, r) の演算結果を O(1) で返す。"""
+        if not (0 <= l < r <= self.n):
+            raise ValueError(f"Invalid range [{l}, {r}) for length {self.n}")
+        k = (r - l).bit_length() - 1
+        row = self.table[k]
+        return self.op(row[l], row[r - (1 << k)])
+
+class DisjointSparseTable:
+    """概要:
+        静的な配列に対する任意のモノイド（結合則を満たす演算）の区間積クエリを
+        前計算 O(N log N)、クエリ O(1) で処理するデータ構造。
+        べき等性が不要なため、総積 mod m や行列積・アフィン変換なども載る。
+
+    入力:
+        arr (list): 対象の配列（長さ N）。
+        op (Callable): 結合則を満たす 2 引数演算 (a * b)。非可換でも可。
+
+    メソッド:
+        query(l, r): 半開区間 [l, r) の区間積を O(1) で返す (0 <= l < r <= N)。
+
+    計算量:
+        構築 O(N log N)、クエリ O(1)、空間 O(N log N)。
+
+    補足:
+        - 更新操作は不可。配列は静的である必要がある。
+        - 単位元は不要だが、空区間 (l == r) のクエリは不可。
+        - min/max/gcd などべき等な演算なら通常の SparseTable の方がシンプルで高速。
+
+    使用例:
+        dst = DisjointSparseTable(A, lambda x, y: (x * y) % MOD)
+        ans = dst.query(l, r)
+    """
+    __slots__ = ("n", "op", "arr", "table")
+
+    def __init__(self, arr: list, op: Callable):
+        n = len(arr)
+        self.n = n
+        self.op = op
+        self.arr = list(arr)
+        if n <= 1:
+            self.table = []
+            return
+
+        max_k = (n - 1).bit_length()
+        table = [[None] * n for _ in range(max_k)]
+        for k in range(max_k):
+            row = table[k]
+            half = 1 << k
+            step = half << 1
+            for a in range(0, n, step):
+                c = a + half
+                if c >= n:
+                    break
+                # 左半分 [a, c): c に向かう suffix 積（非可換対応のため arr[i] * row[i+1]）
+                row[c - 1] = self.arr[c - 1]
+                for i in range(c - 2, a - 1, -1):
+                    row[i] = op(self.arr[i], row[i + 1])
+                # 右半分 [c, min(a + step, n)): c からの prefix 積（row[i-1] * arr[i]）
+                b = min(a + step, n)
+                row[c] = self.arr[c]
+                for i in range(c + 1, b):
+                    row[i] = op(row[i - 1], self.arr[i])
+        self.table = table
+
+    def query(self, l: int, r: int):
+        """半開区間 [l, r) の区間積を O(1) で返す。"""
+        if not (0 <= l < r <= self.n):
+            raise ValueError(f"Invalid range [{l}, {r}) for length {self.n}")
+        if l + 1 == r:
+            return self.arr[l]
+        k = (l ^ (r - 1)).bit_length() - 1
+        row = self.table[k]
+        return self.op(row[l], row[r - 1])
 
 # ============================================================
 # 文字列アルゴリズム
