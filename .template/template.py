@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.4.1 ALL (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.4.2 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os, sys
