@@ -1,4 +1,4 @@
-# AtCoder Competition Template v2.4.2 ALL (PyPy 7.3.20 / Python 3.11)
+# AtCoder Competition Template v2.4.3 ALL (PyPy 7.3.20 / Python 3.11)
 # ↑ https://github.com/Rino-program/atcoder/blob/main/.template/template.py
 
 import os, sys
@@ -693,7 +693,7 @@ def divisor_transform(a, zeta=False, multiple=False, inverse=False, mod=None):
     n=len(a); b=a[:]
     for p in range(2,n):
         if all(p%d for d in range(2,int(p**0.5)+1)):
-            js=range(p,n,p) if (multiple != inverse) else range(((n-1)//p)*p,p-1,-p)
+            js=range(p,n,p) if (multiple == inverse) else range(((n-1)//p)*p,p-1,-p)
             for j in js:
                 if multiple:
                     if inverse: b[j//p]=(b[j//p]-b[j])%mod if mod else b[j//p]-b[j]
@@ -760,7 +760,14 @@ def gf2_solve(rows, m=None):
     x=0
     for i,c in enumerate(piv):
         if a[i]>>m&1: x|=1<<c
-    free=[1<<c for c in range(m) if c not in piv]
+    pivoted=set(piv)
+    free=[]
+    for c in range(m):
+        if c in pivoted: continue
+        v=1<<c
+        for i,pc in enumerate(piv):
+            if (a[i]>>c)&1: v|=1<<pc
+        free.append(v)
     return x,free
 
 # ============================================================
@@ -1215,6 +1222,34 @@ def segment_intersection(s1: Segment, s2: Segment) -> Point | None:
     """
     if not s1.intersects(s2):
         return None
+    # 点に退化した線分は、その点自身がもう一方の線分上にある。
+    if s1.a == s1.b:
+        return s1.a
+    if s2.a == s2.b:
+        return s2.a
+
+    v1 = s1.b - s1.a
+    v2 = s2.b - s2.a
+    is_int = (
+        isinstance(s1.a.x, int) and isinstance(s1.a.y, int) and
+        isinstance(s1.b.x, int) and isinstance(s1.b.y, int) and
+        isinstance(s2.a.x, int) and isinstance(s2.a.y, int) and
+        isinstance(s2.b.x, int) and isinstance(s2.b.y, int)
+    )
+    d = v1.cross(v2)
+    if (d == 0 if is_int else abs(d) < GEOM_EPS):
+        # 平行かつ交差する場合は同一直線上で重なっている。
+        # 両線分上にある端点のうち、重なり区間の始点側を返す。
+        candidates = []
+        for q in (s1.a, s1.b, s2.a, s2.b):
+            if s1.dist_to_point(q) < GEOM_EPS and s2.dist_to_point(q) < GEOM_EPS:
+                candidates.append(q)
+        if not candidates:
+            return s1.a
+        if abs(v1.x) >= abs(v1.y):
+            return min(candidates, key=lambda q: (q.x, q.y))
+        return min(candidates, key=lambda q: (q.y, q.x))
+
     return line_intersection(Line(s1.a, s1.b), Line(s2.a, s2.b))
 
 
@@ -1227,8 +1262,8 @@ def polygon_area_2x(points: list[Point]) -> int | float:
         int | float: 反時計回りなら正、時計回りなら負の面積の2倍値。
     計算量:
         O(N)（N は頂点数）。
-        点が空の場合は ValueError、1点の場合は (0.0, 0, 0)。
     補足:
+        点が空または1点の場合は 0 を返す。
         全頂点が整数座標の場合、除算を行わないため完全整数演算となり誤差が発生しない。
     """
     n = len(points)
@@ -1296,7 +1331,11 @@ def convex_hull(points: list[Point], allow_on_edge: bool = False) -> list[Point]
     補足:
         同一直線上の点や縮退ケースも含め、境界点の順序・重複を完全対策済み。
     """
-    pts = sorted(points)
+    ordered = sorted(points)
+    pts = []
+    for p in ordered:
+        if not pts or pts[-1] != p:
+            pts.append(p)
     n = len(pts)
     if n <= 2:
         return pts
@@ -1312,7 +1351,7 @@ def convex_hull(points: list[Point], allow_on_edge: bool = False) -> list[Point]
         lower.append(p)
 
     # 全点が同一直線上にある場合の特別処理
-    if len(lower) == n:
+    if all(ccw(pts[0], pts[-1], p) not in (CCW_COUNTER_CLOCKWISE, CCW_CLOCKWISE) for p in pts):
         return pts if allow_on_edge else [pts[0], pts[-1]]
 
     upper = []
@@ -1334,35 +1373,64 @@ def convex_diameter(poly: list[Point]) -> tuple[float, int, int]:
     計算量:
         O(N)（N は頂点数）。
     """
-    n = len(poly)
+    # 連続する重複頂点を取り除く（閉じた多角形の末尾重複も含む）。
+    pts = []
+    ids = []
+    for idx, p in enumerate(poly):
+        if not pts or pts[-1] != p:
+            pts.append(p)
+            ids.append(idx)
+    if len(pts) > 1 and pts[0] == pts[-1]:
+        pts.pop()
+        ids.pop()
+
+    n = len(pts)
     if n == 0:
         raise ValueError("convex_diameter requires at least one point")
     if n == 1:
-        return 0.0, 0, 0
+        return 0.0, ids[0], ids[0]
     if n == 2:
-        return poly[0].dist(poly[1]), 0, 1
+        return pts[0].dist(pts[1]), ids[0], ids[1]
 
-    is_min_x = min(range(n), key=lambda i: (poly[i].x, poly[i].y))
-    is_max_x = max(range(n), key=lambda i: (poly[i].x, poly[i].y))
+    # 全点が同一直線上なら、射影の両端が最遠点対になる。
+    if all(ccw(pts[0], pts[-1], p) not in (CCW_COUNTER_CLOCKWISE, CCW_CLOCKWISE) for p in pts):
+        direction = pts[-1] - pts[0]
+        lo = hi = 0
+        lo_val = hi_val = 0
+        for k, p in enumerate(pts):
+            value = (p - pts[0]).dot(direction)
+            if value < lo_val:
+                lo_val = value
+                lo = k
+            if value > hi_val:
+                hi_val = value
+                hi = k
+        return pts[lo].dist(pts[hi]), ids[lo], ids[hi]
 
-    i, j = is_min_x, is_max_x
-    max_d2 = poly[i].dist2(poly[j])
-    best_pair = (i, j)
-
-    si, sj = i, j
-    while i != sj or j != si:
+    # 各辺について反対側の頂点を回転させながら最遠点対を探す。
+    # 外積の絶対値を用いるため、頂点列の向き（反時計回り/時計回り）に依存しない。
+    max_d2 = -1.0
+    best_pair = (0, 1)
+    j = 1
+    for i in range(n):
         ni = (i + 1) % n
-        nj = (j + 1) % n
-        if (poly[ni] - poly[i]).cross(poly[nj] - poly[j]) >= 0:
-            j = nj
-        else:
-            i = ni
-        d2 = poly[i].dist2(poly[j])
-        if d2 > max_d2:
-            max_d2 = d2
-            best_pair = (i, j)
+        steps = 0
+        while steps < n:
+            nj = (j + 1) % n
+            cur = abs((pts[ni] - pts[i]).cross(pts[j] - pts[i]))
+            nxt = abs((pts[ni] - pts[i]).cross(pts[nj] - pts[i]))
+            if nxt >= cur:
+                j = nj
+                steps += 1
+            else:
+                break
+        for a, b in ((i, j), (ni, j)):
+            d2 = pts[a].dist2(pts[b])
+            if d2 > max_d2:
+                max_d2 = d2
+                best_pair = (a, b)
 
-    return math.sqrt(max_d2), best_pair[0], best_pair[1]
+    return math.sqrt(max_d2), ids[best_pair[0]], ids[best_pair[1]]
 
 
 CCW_COUNTER_CLOCKWISE = 1
@@ -1460,8 +1528,10 @@ def picks_theorem(poly: list[Point]) -> tuple[int, int]:
     b = 0
     for i in range(n):
         b += math.gcd(abs(poly[i].x - poly[(i + 1) % n].x), abs(poly[i].y - poly[(i + 1) % n].y))
+    if n < 3:
+        return 0, b
     area2 = abs(polygon_area_2x(poly))
-    inside = (area2 - b + 2) // 2
+    inside = max(0, (area2 - b + 2) // 2)
     return inside, b
 
 
@@ -1532,6 +1602,8 @@ class Circle:
         v = (self.c - p).unit()
         p1 = p + Point(v.x * cos_t - v.y * sin_t, v.x * sin_t + v.y * cos_t) * l
         p2 = p + Point(v.x * cos_t + v.y * sin_t, -v.x * sin_t + v.y * cos_t) * l
+        if p1 == p2:
+            return [p1]
         return [p1, p2]
 
     def __repr__(self) -> str:
@@ -1555,8 +1627,11 @@ def circle_intersection_area(c1: Circle, c2: Circle) -> float:
     if d <= abs(c1.r - c2.r) + GEOM_EPS:
         min_r = min(c1.r, c2.r)
         return math.pi * min_r * min_r
-    theta1 = 2 * math.acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d))
-    theta2 = 2 * math.acos((c2.r * c2.r + d * d - c1.r * c1.r) / (2 * c2.r * d))
+    def clamp_cos(value: float) -> float:
+        return max(-1.0, min(1.0, value))
+
+    theta1 = 2 * math.acos(clamp_cos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d)))
+    theta2 = 2 * math.acos(clamp_cos((c2.r * c2.r + d * d - c1.r * c1.r) / (2 * c2.r * d)))
     s1 = 0.5 * c1.r * c1.r * (theta1 - math.sin(theta1))
     s2 = 0.5 * c2.r * c2.r * (theta2 - math.sin(theta2))
     return s1 + s2
@@ -1681,7 +1756,19 @@ class Combination:
         """重複組み合わせ nHr = C(n+r-1, r)"""
         if n == 0 and r == 0: return 1
         if n <= 0 or r < 0: return 0
-        return self.nCr(n + r - 1, r)
+        top = n + r - 1
+        if top >= self.mod:
+            raise ValueError("nHr requires n+r-1 < mod")
+        if top >= len(self.fact):
+            old = len(self.fact)
+            self.fact.extend([1] * (top + 1 - old))
+            for i in range(old, top + 1):
+                self.fact[i] = self.fact[i - 1] * i % self.mod
+            self.inv_fact.extend([1] * (top + 1 - old))
+            self.inv_fact[top] = pow(self.fact[top], self.mod - 2, self.mod)
+            for i in range(top - 1, old - 1, -1):
+                self.inv_fact[i] = self.inv_fact[i + 1] * (i + 1) % self.mod
+        return self.nCr(top, r)
 
     def catalan(self, n: int) -> int:
         """カタラン数 C_n"""
@@ -2121,11 +2208,9 @@ def bfs_path(g: list[list[int]], s: int, t: int) -> list[int] | None:
     if not (0 <= s < n and 0 <= t < n):
         raise ValueError("vertices must be valid")
     for edges in g:
-        for to, w in edges:
+        for to in edges:
             if not 0 <= to < n:
                 raise ValueError("edge endpoint must be a valid vertex")
-            if w < 0:
-                raise ValueError("Dijkstra requires non-negative edge weights")
     parent = [-1] * n
     visited = [False] * n
     visited[s] = True
@@ -2400,6 +2485,84 @@ def dijkstra_multi(
         return False
 
     _better = better if better else default_better
+
+    def _has_positive_cycle(nodes, edges):
+        """零主コスト部分グラフの強連結成分に、副基準が辞書式で正の閉路があるか。"""
+        dims = n_criteria - 1
+        zero = (0,) * dims
+        # 全辺が非負（または非正）なら、閉路の符号は辺の符号から直ちに分かる。
+        all_nonneg = True
+        has_pos = False
+        all_nonpos = True
+        for _, _, edge in edges:
+            w = edge[2:]
+            if w > zero:
+                has_pos = True
+                all_nonpos = False
+            elif w < zero:
+                all_nonneg = False
+        if all_nonpos:
+            return False
+        if all_nonneg and has_pos:
+            return True
+        pos = {v: i for i, v in enumerate(nodes)}
+        d = [zero] * len(nodes)
+        for _ in range(len(nodes)):
+            updated = False
+            for u, v, edge in edges:
+                ui = pos[u]
+                vi = pos[v]
+                candidate = tuple(d[ui][i] + edge[2 + i] for i in range(dims))
+                if candidate > d[vi]:
+                    d[vi] = candidate
+                    updated = True
+            if not updated:
+                return False
+        return True
+
+    # 既定の better は同一主コストで副基準を最大化する。主コスト 0 の閉路で
+    # 副基準が増え続けると最良値が存在せず、従来は無限ループになった。
+    # 到達可能な零主コスト閉路に正の利得があれば、その旨を例外で報告する。
+    if better is None and n_criteria > 1:
+        reachable = [False] * n
+        reachable[s] = True
+        stack = [s]
+        while stack:
+            v = stack.pop()
+            for edge in g[v]:
+                to = edge[0]
+                if not reachable[to]:
+                    reachable[to] = True
+                    stack.append(to)
+
+        zero_edges = []
+        for u in range(n):
+            if not reachable[u]:
+                continue
+            for edge in g[u]:
+                if reachable[edge[0]] and edge[1] == 0:
+                    zero_edges.append((u, edge[0], edge))
+
+        if zero_edges:
+            cc, comp, _ = scc(n, [(u, v) for u, v, _ in zero_edges])
+            comp_edges = [[] for _ in range(cc)]
+            comp_nodes = [[] for _ in range(cc)]
+            for u, v, edge in zero_edges:
+                if comp[u] == comp[v]:
+                    comp_edges[comp[u]].append((u, v, edge))
+            for v in range(n):
+                if reachable[v]:
+                    comp_nodes[comp[v]].append(v)
+
+            for cid in range(cc):
+                edges_c = comp_edges[cid]
+                if not edges_c:
+                    continue
+                if _has_positive_cycle(comp_nodes[cid], edges_c):
+                    raise ValueError(
+                        "dijkstra_multi: secondary criteria are unbounded "
+                        "because a positive cycle with zero primary cost is reachable"
+                    )
 
     # 主コストだけをヒープ順に使い、副基準の比較は better に委ねる。
     sequence = 0
@@ -2869,7 +3032,11 @@ class LowerBoundFlow:
         if not (0 <= s < self.n and 0 <= t < self.n) or s == t:
             raise ValueError("requires distinct vertices in range")
 
-        constraints = self.edges + self.circulations
+        # 人工辺 t->s と重複する循環辺 t->s は、流量の強制を打ち消して
+        # しまうため min_flow の制約から除外する。
+        constraints = self.edges + [
+            (u, v, lo, hi) for (u, v, lo, hi) in self.circulations if not (u == t and v == s)
+        ]
 
         def build(upper: int, lower: int = 0):
             if lower < 0 or upper < lower:
@@ -3579,7 +3746,10 @@ def build_virtual_tree(vertices, g, lca):
         nodes, edges = build_virtual_tree(query_vertices, g, lca)
     """
     if not vertices: return [], []
-    n=len(g); tin=[-1]*n; t=0; st=[(0,-1,0)]
+    n=len(g)
+    # DFS は LCA オブジェクトが使っている根から行う（根 0 とは限らない）。
+    root=min(range(n),key=lambda v:lca.depth[v])
+    tin=[-1]*n; t=0; st=[(root,-1,0)]
     while st:
         v,p,i=st[-1]
         if i==0: tin[v]=t; t+=1
@@ -5749,11 +5919,12 @@ def lcp_array(s, sa=None):
     入力:
         s (str | Sequence[int]): 対象列。sa は suffix_array(s)（省略可）。
     出力:
-        list[int]: sa[i], sa[i+1] 間の LCP（末尾は 0）。
+        list[int]: sa[i], sa[i+1] 間の LCP を長さ n-1 の配列で返す
+        （n<=1 なら空。末尾に 0 は含まない）。
     計算量:
         時間 O(n)、空間 O(n)。
     補足:
-        Kasai 法を用いる。
+        Kasai 法を用いる。例えば lcp_array("banana") は [1,3,0,0,2] を返す。
     """
     if sa is None: sa=suffix_array(s)
     n=len(s); rank=[0]*n
@@ -6306,7 +6477,7 @@ def merge_intervals(intervals: list[tuple[int, int]], half_open: bool = True) ->
         list[tuple[int, int]]: マージ済みの区間リスト（Lで昇順ソート済み）。
     補足:
         右半開区間では [1,3) と [3,5) はマージされて [1,5) になる（L<=curR でマージ）。
-        閉区間では [1,3] と [4,5] はマージされない（L<=curR+1 でマージ）。
+        閉区間では [1,3] と [4,5] は隣接するためマージされて [1,5] になる（L<=curR+1 でマージ）。
         計算量は O(N log N)（ソートが支配的）。
     使用例:
         ivs = [(1,3),(2,5),(7,9)]
@@ -6609,7 +6780,7 @@ def kadane_circular_max(arr: list[int]) -> int:
         全要素が負の場合は折り返しを使わない通常の最大値を返す（ケース2は空になるため）。
     使用例:
         A = [8, -1, 3, -2]
-        print(kadane_circular_max(A))  # 12  (8 + 3 + (-2) + (-1) の折り返し = 12 ではなく 8+3+fold)
+        print(kadane_circular_max(A))  # 10  (8 + 3 + (-1) = 10)
         # A = [5, -3, 5]
         print(kadane_circular_max([5, -3, 5]))  # 10  ([5,-3,5] 折り返して 5+5=10)
     """
