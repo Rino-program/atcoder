@@ -2710,13 +2710,14 @@ def multi_source_dijkstra(
 
     return dist
 
-def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, list[int] | None]:
+def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int, validate: bool = False) -> tuple[int, list[int] | None]:
     """概要:
         非負重みグラフで s から t への最短距離と経路を求める。
     入力:
         g (list[list[tuple[int, int]]]): 重み付き隣接リスト（要素は (to, cost)）。
         s (int): 始点。
         t (int): 終点。
+        validate (bool): True なら全辺の端点と重みを事前検証する。
     出力:
         tuple[int, list[int] | None]:
             (最短距離, s から t への頂点列)。
@@ -2725,16 +2726,19 @@ def dijkstra_path(g: list[list[tuple[int, int]]], s: int, t: int) -> tuple[int, 
         計算量は O((V+E)logE + V)。単純グラフなど E = O(V^2) の場合は
         O((V+E)logV) と書ける。負辺は非対応。
         経路が複数ある場合は最短の1つを返す。
+        既定では全辺チェックを行わない。不正な辺を早期に検出したい場合は
+        validate=True を指定する。
     """
     n = len(g)
     if not (0 <= s < n and 0 <= t < n):
         raise ValueError("vertices must be valid")
-    for edges in g:
-        for to, w in edges:
-            if not 0 <= to < n:
-                raise ValueError("edge endpoint must be a valid vertex")
-            if w < 0:
-                raise ValueError("Dijkstra requires non-negative edge weights")
+    if validate:
+        for edges in g:
+            for to, w in edges:
+                if not 0 <= to < n:
+                    raise ValueError("edge endpoint must be a valid vertex")
+                if w < 0:
+                    raise ValueError("Dijkstra requires non-negative edge weights")
     dist = [INF] * n
     parent = [-1] * n
     dist[s] = 0
@@ -3848,7 +3852,8 @@ class LCA:
         初期化は O(NlogN)、query と dist は O(logN)。
 
     補足:
-        初期化時に BFS と親テーブル構築を行い、クエリは O(logN)。
+        初期化時に反復DFSで根・深さ・親・Euler区間(tin/tout)を構築し、
+        クエリは O(logN)。root, depth, parent, tin, tout を属性として保持する。
 
     使用例:
         lca = LCA(g, root=0)
@@ -3859,19 +3864,34 @@ class LCA:
         _validate_tree_input(g, root)
         self.n = len(g)
         self.log = max(1, (self.n - 1).bit_length())
+        self.root = root
         self.depth = [-1] * self.n
         self.parent = [[-1] * self.n for _ in range(self.log)]
+        self.tin = [-1] * self.n
+        self.tout = [-1] * self.n
 
-        # BFSで深さと親を計算
+        # 反復DFSで深さ・親・Euler区間を一度に計算する。
         self.depth[root] = 0
-        q = deque([root])
-        while q:
-            v = q.popleft()
-            for to in g[v]:
-                if self.depth[to] == -1:
-                    self.depth[to] = self.depth[v] + 1
-                    self.parent[0][to] = v
-                    q.append(to)
+        timer = 0
+        self.tin[root] = timer
+        timer += 1
+        it = [0] * self.n
+        stack = [root]
+        while stack:
+            v = stack[-1]
+            if it[v] < len(g[v]):
+                to = g[v][it[v]]
+                it[v] += 1
+                if self.depth[to] != -1:
+                    continue
+                self.depth[to] = self.depth[v] + 1
+                self.parent[0][to] = v
+                self.tin[to] = timer
+                timer += 1
+                stack.append(to)
+            else:
+                self.tout[v] = timer
+                stack.pop()
 
         # ダブリングテーブル構築
         for k in range(1, self.log):
@@ -3912,24 +3932,28 @@ def build_virtual_tree(vertices, g, lca):
     出力:
         (nodes, edges): nodes は DFS 順、edges は (親,子)。
     計算量:
-        O(K log K)、空間 O(K)。
+        LCA が tin を保持している場合は O(K log K)、空間 O(K)。
+        保持していない LCA 互換オブジェクトでは tin の再計算に O(N) が加わる。
     補足:
-        同じ頂点は自動除去し、根からの tin は元木を一度 DFS して求める。
+        同じ頂点は自動除去する。LCA.tin があればそれを再利用し、
+        なければ元木を一度 DFS して tin を求める。
     使用例:
         nodes, edges = build_virtual_tree(query_vertices, g, lca)
     """
     if not vertices: return [], []
     n=len(g)
-    # DFS は LCA オブジェクトが使っている根から行う（根 0 とは限らない）。
-    root=min(range(n),key=lambda v:lca.depth[v])
-    tin=[-1]*n; t=0; st=[(root,-1,0)]
-    while st:
-        v,p,i=st[-1]
-        if i==0: tin[v]=t; t+=1
-        if i<len(g[v]):
-            to=g[v][i]; st[-1]=(v,p,i+1)
-            if to!=p: st.append((to,v,0))
-        else: st.pop()
+    tin=getattr(lca,"tin",None)
+    if tin is None or len(tin)!=n:
+        # LCA 互換オブジェクト用フォールバック（従来どおり O(N) で tin を作る）。
+        root=min(range(n),key=lambda v:lca.depth[v])
+        tin=[-1]*n; t=0; st=[(root,-1,0)]
+        while st:
+            v,p,i=st[-1]
+            if i==0: tin[v]=t; t+=1
+            if i<len(g[v]):
+                to=g[v][i]; st[-1]=(v,p,i+1)
+                if to!=p: st.append((to,v,0))
+            else: st.pop()
     vs=sorted(set(vertices),key=lambda x:tin[x])
     if any(not 0<=v<n or tin[v]<0 for v in vs): raise ValueError("vertex out of range")
     allv=vs+[lca.query(a,b) for a,b in zip(vs,vs[1:])]
